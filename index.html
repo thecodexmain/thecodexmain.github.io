@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CryptoSwap – Sell USDT with 100% Advance Payment Security</title>
+  <meta name="description" content="CryptoSwap – The most trusted platform to sell USDT with 100% advance payment guarantee. Bank Transfer, CDM Deposit, Physical Cash. Verified clients only." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS – Animate On Scroll -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            dark: '#0b0f1a',
+            'dark-card': 'rgba(255,255,255,0.04)',
+            cyan: { DEFAULT: '#00e5ff', 900: '#00b8d4' },
+            teal: { DEFAULT: '#00bfa5' },
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          backgroundImage: {
+            'hero-glow': 'radial-gradient(ellipse 80% 60% at 50% -20%, rgba(0,229,255,0.18) 0%, transparent 70%)',
+            'card-glow': 'linear-gradient(135deg, rgba(0,229,255,0.08) 0%, rgba(0,191,165,0.06) 100%)',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* ===== Base ===== */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: #0b0f1a;
+      color: #e2e8f0;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ===== Gradient text ===== */
+    .grad-text {
+      background: linear-gradient(90deg, #00e5ff, #00bfa5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .grad-text-blue {
+      background: linear-gradient(90deg, #60a5fa, #00e5ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ===== Glassmorphism card ===== */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(0, 229, 255, 0.12);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 1rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .glass-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 0 32px rgba(0, 229, 255, 0.18);
+      border-color: rgba(0, 229, 255, 0.35);
+    }
+
+    /* ===== Glow button ===== */
+    .btn-glow {
+      background: linear-gradient(135deg, #00e5ff, #00bfa5);
+      color: #0b0f1a;
+      font-weight: 700;
+      border-radius: 9999px;
+      padding: 0.75rem 2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.45);
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    .btn-glow:hover {
+      box-shadow: 0 0 40px rgba(0, 229, 255, 0.7), 0 0 80px rgba(0, 229, 255, 0.25);
+      transform: translateY(-2px) scale(1.04);
+    }
+
+    /* ===== Outline button ===== */
+    .btn-outline {
+      background: transparent;
+      color: #00e5ff;
+      font-weight: 600;
+      border-radius: 9999px;
+      padding: 0.75rem 2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      border: 1.5px solid rgba(0, 229, 255, 0.5);
+      text-decoration: none;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .btn-outline:hover {
+      background: rgba(0, 229, 255, 0.08);
+      border-color: #00e5ff;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.25);
+    }
+
+    /* ===== Navbar ===== */
+    #navbar {
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    #navbar.scrolled {
+      background: rgba(11, 15, 26, 0.92);
+      box-shadow: 0 2px 24px rgba(0, 229, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    /* ===== Hero animated gradient background ===== */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 600px;
+      background: radial-gradient(ellipse, rgba(0, 229, 255, 0.14) 0%, transparent 70%);
+      animation: heroPulse 6s ease-in-out infinite alternate;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      right: -10%;
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(0, 191, 165, 0.10) 0%, transparent 70%);
+      animation: heroPulse 8s ease-in-out 2s infinite alternate-reverse;
+    }
+    @keyframes heroPulse {
+      0%   { opacity: 0.6; transform: translateX(-50%) scale(1); }
+      100% { opacity: 1;   transform: translateX(-50%) scale(1.12); }
+    }
+
+    /* ===== Badge ===== */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      border-radius: 9999px;
+      padding: 0.35rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #00e5ff;
+      letter-spacing: 0.04em;
+    }
+
+    /* ===== Steps connector ===== */
+    .step-connector {
+      position: absolute;
+      top: 50%;
+      left: 100%;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(0,229,255,0.5), transparent);
+      transform: translateY(-50%);
+    }
+
+    /* ===== Section divider ===== */
+    .section-divider {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,229,255,0.2), transparent);
+      margin: 0 auto;
+    }
+
+    /* ===== Warning card ===== */
+    .warn-card {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 1rem;
+      backdrop-filter: blur(12px);
+    }
+
+    /* ===== Mobile menu ===== */
+    #mobile-menu {
+      transition: max-height 0.4s ease, opacity 0.4s ease;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+    }
+    #mobile-menu.open {
+      max-height: 400px;
+      opacity: 1;
+    }
+
+    /* ===== Floating orbs ===== */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    /* ===== Number circle ===== */
+    .step-num {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00e5ff, #00bfa5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0b0f1a;
+      flex-shrink: 0;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.45);
+    }
+
+    /* ===== Telegram CTA ===== */
+    .tg-section {
+      background: linear-gradient(135deg, rgba(0,229,255,0.06), rgba(0,191,165,0.04));
+      border: 1px solid rgba(0, 229, 255, 0.15);
+      border-radius: 1.5rem;
+    }
+
+    /* ===== Region tag ===== */
+    .region-tag {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(0, 229, 255, 0.12);
+      border-radius: 0.75rem;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    .region-tag:hover {
+      border-color: rgba(0, 229, 255, 0.4);
+      background: rgba(0, 229, 255, 0.07);
+      transform: scale(1.04);
+    }
+
+    /* ===== Scrollbar ===== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0b0f1a; }
+    ::-webkit-scrollbar-thumb { background: rgba(0,229,255,0.3); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- ======================================================
+     NAVBAR
+====================================================== -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 px-4 py-4">
+  <div class="max-w-6xl mx-auto flex items-center justify-between">
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-2 text-xl font-extrabold tracking-tight">
+      <span class="text-2xl">⚡</span>
+      <span class="grad-text">CryptoSwap</span>
+    </a>
+
+    <!-- Desktop Nav -->
+    <ul class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+      <li><a href="#features" class="hover:text-cyan-400 transition-colors">Features</a></li>
+      <li><a href="#services" class="hover:text-cyan-400 transition-colors">Services</a></li>
+      <li><a href="#how-it-works" class="hover:text-cyan-400 transition-colors">How It Works</a></li>
+      <li><a href="#regions" class="hover:text-cyan-400 transition-colors">Regions</a></li>
+    </ul>
+
+    <!-- CTA + Hamburger -->
+    <div class="flex items-center gap-3">
+      <a href="https://t.me/CryptoSwap2026_Bot" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex btn-glow text-sm py-2 px-5">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+        Telegram
+      </a>
+      <!-- Hamburger -->
+      <button id="hamburger" aria-label="Toggle menu" class="md:hidden flex flex-col gap-1.5 p-2">
+        <span class="hamburger-line block w-6 h-0.5 bg-cyan-400 rounded transition-all duration-300"></span>
+        <span class="hamburger-line block w-6 h-0.5 bg-cyan-400 rounded transition-all duration-300"></span>
+        <span class="hamburger-line block w-6 h-0.5 bg-cyan-400 rounded transition-all duration-300"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="md:hidden">
+    <div class="max-w-6xl mx-auto mt-4 px-2 pb-4">
+      <div class="glass-card p-4 flex flex-col gap-3 text-sm font-medium text-slate-300">
+        <a href="#features"     class="hover:text-cyan-400 transition-colors py-1" onclick="closeMobileMenu()">Features</a>
+        <a href="#services"     class="hover:text-cyan-400 transition-colors py-1" onclick="closeMobileMenu()">Services</a>
+        <a href="#how-it-works" class="hover:text-cyan-400 transition-colors py-1" onclick="closeMobileMenu()">How It Works</a>
+        <a href="#regions"      class="hover:text-cyan-400 transition-colors py-1" onclick="closeMobileMenu()">Regions</a>
+        <a href="https://t.me/CryptoSwap2026_Bot" target="_blank" rel="noopener noreferrer" class="btn-glow justify-center text-sm py-2 mt-2">
+          Open Telegram Bot
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ======================================================
+     HERO SECTION
+====================================================== -->
+<section class="relative min-h-screen flex items-center justify-center px-4 pt-24 pb-16 overflow-hidden">
+  <div class="hero-bg"></div>
+
+  <!-- Background orbs -->
+  <div class="orb w-96 h-96 bg-cyan-400 top-10 -left-20"></div>
+  <div class="orb w-72 h-72 bg-teal-400 bottom-0 right-0"></div>
+
+  <div class="relative z-10 max-w-4xl mx-auto text-center">
+    <!-- Badge -->
+    <div class="mb-6" data-aos="fade-down" data-aos-duration="600">
+      <span class="badge">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+        Advance Payment Guaranteed
+      </span>
+    </div>
+
+    <!-- Headline -->
+    <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-6" data-aos="fade-up" data-aos-duration="700">
+      Sell USDT with<br />
+      <span class="grad-text">100% Advance Payment</span><br />
+      Security
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="text-slate-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+      The most trusted OTC crypto exchange. We pay you <strong class="text-slate-200">before</strong> you send any USDT.
+      Verified clients, zero risk, lightning-fast settlements.
+    </p>
+
+    <!-- CTA Buttons -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+      <a href="https://t.me/CryptoSwap2026_Bot" target="_blank" rel="noopener noreferrer" class="btn-glow text-base">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+        Contact on Telegram
+      </a>
+      <a href="#how-it-works" class="btn-outline text-base">
+        <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
+        How It Works
+      </a>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="mt-16 flex justify-center opacity-40 animate-bounce" data-aos="fade-up" data-aos-delay="600">
+      <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================
+     TRUST BADGES
+====================================================== -->
+<section class="py-12 px-4">
+  <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
+    <!-- SSL -->
+    <div class="glass-card p-5 flex flex-col items-center text-center gap-3" data-aos="zoom-in" data-aos-duration="500" data-aos-delay="0">
+      <div class="w-12 h-12 rounded-full bg-cyan-400/10 flex items-center justify-center text-cyan-400">
+        <svg class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+      </div>
+      <p class="font-700 text-sm text-slate-200 font-semibold">SSL Secured</p>
+      <p class="text-xs text-slate-400">End-to-end encrypted</p>
+    </div>
+    <!-- Advance Payment -->
+    <div class="glass-card p-5 flex flex-col items-center text-center gap-3" data-aos="zoom-in" data-aos-duration="500" data-aos-delay="80">
+      <div class="w-12 h-12 rounded-full bg-cyan-400/10 flex items-center justify-center text-cyan-400">
+        <svg class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/></svg>
+      </div>
+      <p class="font-700 text-sm text-slate-200 font-semibold">Advance Payment</p>
+      <p class="text-xs text-slate-400">Pay before you send</p>
+    </div>
+    <!-- Best Rates -->
+    <div class="glass-card p-5 flex flex-col items-center text-center gap-3" data-aos="zoom-in" data-aos-duration="500" data-aos-delay="160">
+      <div class="w-12 h-12 rounded-full bg-cyan-400/10 flex items-center justify-center text-cyan-400">
+        <svg class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd"/></svg>
+      </div>
+      <p class="font-700 text-sm text-slate-200 font-semibold">Best Rates</p>
+      <p class="text-xs text-slate-400">Market-competitive pricing</p>
+    </div>
+    <!-- Zero Risk -->
+    <div class="glass-card p-5 flex flex-col items-center text-center gap-3" data-aos="zoom-in" data-aos-duration="500" data-aos-delay="240">
+      <div class="w-12 h-12 rounded-full bg-cyan-400/10 flex items-center justify-center text-cyan-400">
+        <svg class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+      </div>
+      <p class="font-700 text-sm text-slate-200 font-semibold">Zero Risk</p>
+      <p class="text-xs text-slate-400">Fully verified process</p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
+
+<!-- ======================================================
+     FEATURES GRID
+====================================================== -->
+<section id="features" class="py-20 px-4">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14" data-aos="fade-up">
+      <span class="badge mb-4">Why CryptoSwap</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold mt-4">
+        Built for <span class="grad-text">Trust &amp; Scale</span>
+      </h2>
+      <p class="text-slate-400 mt-3 max-w-xl mx-auto">Everything you need to exchange USDT safely, fast, and at the best rates.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- China-Based -->
+      <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="0">
+        <div class="text-3xl mb-4">🇨🇳</div>
+        <h3 class="font-bold text-lg text-slate-100 mb-2">China-Based Operations</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">Headquartered in China with deep liquidity access and strong banking relationships across Asia.</p>
+      </div>
+      <!-- Verified -->
+      <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="80">
+        <div class="text-3xl mb-4">✅</div>
+        <h3 class="font-bold text-lg text-slate-100 mb-2">Verified &amp; Trusted</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">Every transaction is KYC-backed. Only verified clients can trade, ensuring a safe ecosystem for all.</p>
+      </div>
+      <!-- Global Clients -->
+      <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="160">
+        <div class="text-3xl mb-4">🌏</div>
+        <h3 class="font-bold text-lg text-slate-100 mb-2">Global Client Base</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">Serving clients across Southeast Asia, South Asia, and beyond with a growing international network.</p>
+      </div>
+      <!-- Liquidity -->
+      <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="240">
+        <div class="text-3xl mb-4">💧</div>
+        <h3 class="font-bold text-lg text-slate-100 mb-2">Strong Liquidity</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">Handle large-volume OTC orders with ease. No slippage, no delays — just instant execution.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
+
+<!-- ======================================================
+     SERVICES
+====================================================== -->
+<section id="services" class="py-20 px-4 relative overflow-hidden">
+  <div class="orb w-80 h-80 bg-teal-400 top-0 -right-20 opacity-10"></div>
+
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14" data-aos="fade-up">
+      <span class="badge mb-4">Payment Methods</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold mt-4">
+        Flexible <span class="grad-text">Services</span>
+      </h2>
+      <p class="text-slate-400 mt-3 max-w-xl mx-auto">Choose the payment method that works best for you.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-3 gap-6">
+      <!-- Bank Transfer -->
+      <div class="glass-card p-8 relative" data-aos="zoom-in" data-aos-delay="0">
+        <div class="absolute top-4 right-4">
+          <span class="text-xs font-bold bg-gradient-to-r from-cyan-400 to-teal-400 text-dark px-3 py-1 rounded-full">Most Popular</span>
+        </div>
+        <div class="text-4xl mb-5">🏦</div>
+        <h3 class="text-xl font-bold text-white mb-3">Bank Transfer</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-5">Direct bank wire to your account. Secure, traceable, and accepted in all regions we operate in.</p>
+        <ul class="space-y-2 text-sm text-slate-300">
+          <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Same-day settlement</li>
+          <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> All major banks</li>
+          <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Full paper trail</li>
+        </ul>
+      </div>
+
+      <!-- CDM Deposit -->
+      <div class="glass-card p-8 relative" data-aos="zoom-in" data-aos-delay="100">
+        <div class="absolute top-4 right-4">
+          <span class="text-xs font-bold bg-blue-500/20 text-blue-300 border border-blue-400/30 px-3 py-1 rounded-full">Fast</span>
+        </div>
+        <div class="text-4xl mb-5">🏧</div>
+        <h3 class="text-xl font-bold text-white mb-3">CDM Deposit</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-5">Cash Deposit Machine drop – fast, anonymous, and verifiable. Ideal for clients who prefer offline transactions.</p>
+        <ul class="space-y-2 text-sm text-slate-300">
+          <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> No bank visit needed</li>
+          <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Instant confirmation</li>
+          <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Available 24/7</li>
+        </ul>
+      </div>
+
+      <!-- Physical Cash -->
+      <div class="glass-card p-8 relative" data-aos="zoom-in" data-aos-delay="200">
+        <div class="absolute top-4 right-4">
+          <span class="text-xs font-bold bg-teal-500/20 text-teal-300 border border-teal-400/30 px-3 py-1 rounded-full">Instant</span>
+        </div>
+        <div class="text-4xl mb-5">💵</div>
+        <h3 class="text-xl font-bold text-white mb-3">Physical Cash</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-5">In-person cash handover in selected cities. Escrow-style meeting with a trusted intermediary.</p>
+        <ul class="space-y-2 text-sm text-slate-300">
+          <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Face-to-face deal</li>
+          <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Immediate exchange</li>
+          <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Selected cities</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
+
+<!-- ======================================================
+     HOW IT WORKS
+====================================================== -->
+<section id="how-it-works" class="py-20 px-4">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-14" data-aos="fade-up">
+      <span class="badge mb-4">Process</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold mt-4">
+        How It <span class="grad-text">Works</span>
+      </h2>
+      <p class="text-slate-400 mt-3 max-w-xl mx-auto">Three simple steps to sell your USDT safely and quickly.</p>
+    </div>
+
+    <div class="space-y-6">
+      <!-- Step 1 -->
+      <div class="glass-card p-6 sm:p-8 flex gap-5 items-start" data-aos="fade-right" data-aos-delay="0">
+        <div class="step-num shrink-0">1</div>
+        <div>
+          <h3 class="text-xl font-bold text-white mb-2">Contact &amp; Confirm Rate</h3>
+          <p class="text-slate-400 leading-relaxed">Reach out via our Telegram bot <span class="text-cyan-400 font-semibold">@CryptoSwap2026_Bot</span>. Our agent confirms the live exchange rate, your preferred payment method, and the transaction amount.</p>
+        </div>
+      </div>
+
+      <!-- Step 2 – Highlighted -->
+      <div style="background: linear-gradient(135deg, rgba(0,229,255,0.08), rgba(0,191,165,0.05)); border: 1px solid rgba(0,229,255,0.3);"
+           class="rounded-xl p-6 sm:p-8 flex gap-5 items-start relative overflow-hidden" data-aos="fade-right" data-aos-delay="100">
+        <div class="absolute top-0 right-0 w-40 h-40 bg-cyan-400/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl"></div>
+        <div class="step-num shrink-0">2</div>
+        <div>
+          <div class="flex items-center gap-3 mb-2">
+            <h3 class="text-xl font-bold text-white">Receive Advance Payment</h3>
+            <span class="badge text-xs">Key Step</span>
+          </div>
+          <p class="text-slate-300 leading-relaxed">This is what sets us apart. <strong class="text-cyan-400">We send you the full payment first</strong> — via bank transfer, CDM, or cash — before you release a single USDT. Zero risk for sellers.</p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="glass-card p-6 sm:p-8 flex gap-5 items-start" data-aos="fade-right" data-aos-delay="200">
+        <div class="step-num shrink-0">3</div>
+        <div>
+          <h3 class="text-xl font-bold text-white mb-2">Send USDT After Payment</h3>
+          <p class="text-slate-400 leading-relaxed">Once payment is confirmed in your account, transfer the agreed USDT amount to our wallet. Transaction complete — simple, secure, and stress-free.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
+
+<!-- ======================================================
+     PAYMENT MODEL
+====================================================== -->
+<section class="py-20 px-4 relative overflow-hidden">
+  <div class="orb w-96 h-96 bg-cyan-400 -top-20 -left-32 opacity-8"></div>
+
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14" data-aos="fade-up">
+      <span class="badge mb-4">Payment Model</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold mt-4">
+        Our <span class="grad-text">Secure Model</span>
+      </h2>
+    </div>
+
+    <div class="grid sm:grid-cols-3 gap-6">
+      <div class="glass-card p-7 text-center" data-aos="zoom-in" data-aos-delay="0">
+        <div class="text-4xl mb-4">🛡️</div>
+        <h3 class="text-lg font-bold text-white mb-2">Verified Clients Only</h3>
+        <p class="text-slate-400 text-sm">We only transact with KYC-verified clients. No anonymous trades — safety for everyone.</p>
+      </div>
+      <div class="glass-card p-7 text-center" data-aos="zoom-in" data-aos-delay="100">
+        <div class="text-4xl mb-4">💳</div>
+        <h3 class="text-lg font-bold text-white mb-2">Payment First</h3>
+        <p class="text-slate-400 text-sm">You receive 100% of the agreed amount before any USDT changes hands. Always, no exceptions.</p>
+      </div>
+      <div class="glass-card p-7 text-center" data-aos="zoom-in" data-aos-delay="200">
+        <div class="text-4xl mb-4">🪪</div>
+        <h3 class="text-lg font-bold text-white mb-2">Identity Verification</h3>
+        <p class="text-slate-400 text-sm">Robust identity checks protect both parties. Trade with complete confidence and legal clarity.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
+
+<!-- ======================================================
+     WHY CHOOSE US
+====================================================== -->
+<section class="py-20 px-4">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14" data-aos="fade-up">
+      <span class="badge mb-4">Advantages</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold mt-4">
+        Why <span class="grad-text">Choose CryptoSwap</span>
+      </h2>
+    </div>
+
+    <div class="grid sm:grid-cols-3 gap-6">
+      <div class="glass-card p-7" data-aos="fade-up" data-aos-delay="0">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400/20 to-teal-400/10 flex items-center justify-center text-cyan-400 mb-5">
+          <svg class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">Advance Payment Guarantee</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Our core promise: you get paid in full before any USDT transfer. Backed by our track record of thousands of successful transactions.</p>
+      </div>
+      <div class="glass-card p-7" data-aos="fade-up" data-aos-delay="100">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400/20 to-teal-400/10 flex items-center justify-center text-cyan-400 mb-5">
+          <svg class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">Zero Risk</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Our payment-first model completely eliminates seller risk. You're always protected — no chargeback, no reversal, no excuses.</p>
+      </div>
+      <div class="glass-card p-7" data-aos="fade-up" data-aos-delay="200">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400/20 to-teal-400/10 flex items-center justify-center text-cyan-400 mb-5">
+          <svg class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">Trusted Liquidity</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Deep capital reserves ensure we can handle large volume orders instantly — from $1K to multi-million dollar trades.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
+
+<!-- ======================================================
+     EXTRA FEATURES
+====================================================== -->
+<section class="py-20 px-4 relative overflow-hidden">
+  <div class="orb w-80 h-80 bg-cyan-400 bottom-0 left-1/2 opacity-8 -translate-x-1/2"></div>
+
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14" data-aos="fade-up">
+      <span class="badge mb-4">Platform Features</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold mt-4">
+        Everything You <span class="grad-text">Need</span>
+      </h2>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="glass-card p-6 text-center" data-aos="zoom-in" data-aos-delay="0">
+        <div class="text-3xl mb-3">⚡</div>
+        <h3 class="font-bold text-white mb-1">Lightning Fast</h3>
+        <p class="text-xs text-slate-400">Payments processed in minutes, not hours.</p>
+      </div>
+      <div class="glass-card p-6 text-center" data-aos="zoom-in" data-aos-delay="80">
+        <div class="text-3xl mb-3">🕐</div>
+        <h3 class="font-bold text-white mb-1">24/7 Support</h3>
+        <p class="text-xs text-slate-400">Our team is online around the clock for you.</p>
+      </div>
+      <div class="glass-card p-6 text-center" data-aos="zoom-in" data-aos-delay="160">
+        <div class="text-3xl mb-3">📈</div>
+        <h3 class="font-bold text-white mb-1">Competitive Rates</h3>
+        <p class="text-xs text-slate-400">Real-time market rates with minimal spread.</p>
+      </div>
+      <div class="glass-card p-6 text-center" data-aos="zoom-in" data-aos-delay="240">
+        <div class="text-3xl mb-3">🔒</div>
+        <h3 class="font-bold text-white mb-1">Privacy First</h3>
+        <p class="text-xs text-slate-400">Your data stays private. No leaks, no sharing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
+
+<!-- ======================================================
+     REGIONS GRID
+====================================================== -->
+<section id="regions" class="py-20 px-4">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14" data-aos="fade-up">
+      <span class="badge mb-4">Coverage</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold mt-4">
+        Regions We <span class="grad-text">Serve</span>
+      </h2>
+      <p class="text-slate-400 mt-3 max-w-xl mx-auto">Active in major markets across Asia and expanding globally.</p>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4" data-aos="fade-up" data-aos-delay="100">
+      <div class="region-tag"><span>🇮🇳</span> India</div>
+      <div class="region-tag"><span>🇲🇾</span> Malaysia</div>
+      <div class="region-tag"><span>🇸🇬</span> Singapore</div>
+      <div class="region-tag"><span>🇮🇩</span> Indonesia</div>
+      <div class="region-tag"><span>🇹🇭</span> Thailand</div>
+      <div class="region-tag"><span>🇭🇰</span> Hong Kong</div>
+      <div class="region-tag"><span>🇵🇭</span> Philippines</div>
+      <div class="region-tag"><span>🇻🇳</span> Vietnam</div>
+      <div class="region-tag" style="background: linear-gradient(135deg, rgba(0,229,255,0.08), rgba(0,191,165,0.05)); border-color: rgba(0,229,255,0.3);">
+        <span>🌐</span> <span class="grad-text font-bold">Global</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
+
+<!-- ======================================================
+     WARNING SECTION
+====================================================== -->
+<section class="py-16 px-4">
+  <div class="max-w-4xl mx-auto">
+    <div class="warn-card p-8 sm:p-10" data-aos="zoom-in">
+      <div class="flex items-start gap-4">
+        <div class="text-red-400 shrink-0 mt-1">
+          <svg class="w-8 h-8" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+        </div>
+        <div>
+          <h2 class="text-2xl font-extrabold text-red-400 mb-3">⚠️ Important Notice</h2>
+          <div class="space-y-3 text-slate-300 leading-relaxed">
+            <p><strong class="text-red-300">Verified Clients Only:</strong> CryptoSwap exclusively operates with KYC-verified individuals and entities. We do not engage with anonymous or unverified parties under any circumstances.</p>
+            <p><strong class="text-red-300">Zero Tolerance for Fraud:</strong> Any attempt at fraud, scamming, or misrepresentation will be reported immediately to relevant authorities and our legal team. All transactions are logged and monitored.</p>
+            <p class="text-sm text-slate-400">By engaging with CryptoSwap, you agree to our terms of service and confirm that your funds are of legitimate origin.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
+
+<!-- ======================================================
+     TELEGRAM SECTION
+====================================================== -->
+<section class="py-20 px-4">
+  <div class="max-w-3xl mx-auto" data-aos="zoom-in">
+    <div class="tg-section p-10 sm:p-14 text-center">
+      <div class="text-5xl mb-5">
+        <svg class="w-16 h-16 mx-auto" viewBox="0 0 24 24" fill="currentColor" style="color: #00e5ff;">
+          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/>
+        </svg>
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-3">Connect on Telegram</h2>
+      <p class="text-slate-400 mb-2 text-lg">Start your transaction in minutes</p>
+      <p class="grad-text text-2xl font-bold mb-8">@CryptoSwap2026_Bot</p>
+      <a href="https://t.me/CryptoSwap2026_Bot" target="_blank" rel="noopener noreferrer" class="btn-glow text-base">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+        Open Telegram Bot
+      </a>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
+
+<!-- ======================================================
+     FINAL CTA
+====================================================== -->
+<section class="py-24 px-4 relative overflow-hidden">
+  <div class="orb w-96 h-96 bg-cyan-400 top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10"></div>
+
+  <div class="max-w-3xl mx-auto text-center relative z-10">
+    <div data-aos="fade-up">
+      <h2 class="text-4xl sm:text-5xl font-extrabold text-white mb-4">
+        Ready to exchange<br />
+        your <span class="grad-text">USDT?</span>
+      </h2>
+      <p class="text-slate-400 text-lg mb-10">Join thousands of verified traders who trust CryptoSwap for safe, advance-payment-guaranteed USDT exchanges.</p>
+      <a href="https://t.me/CryptoSwap2026_Bot" target="_blank" rel="noopener noreferrer" class="btn-glow text-lg px-10 py-4">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+        Start Trading Now
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================
+     FOOTER
+====================================================== -->
+<footer class="border-t border-white/5 py-12 px-4">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid sm:grid-cols-3 gap-10 mb-10">
+      <!-- Brand -->
+      <div>
+        <a href="#" class="flex items-center gap-2 text-xl font-extrabold mb-4">
+          <span>⚡</span>
+          <span class="grad-text">CryptoSwap</span>
+        </a>
+        <p class="text-slate-500 text-sm leading-relaxed">
+          The most trusted OTC USDT exchange. Advance payment guaranteed. Verified clients only.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h4 class="text-slate-200 font-semibold mb-4">Quick Links</h4>
+        <ul class="space-y-2 text-sm text-slate-500">
+          <li><a href="#features"     class="hover:text-cyan-400 transition-colors">Features</a></li>
+          <li><a href="#services"     class="hover:text-cyan-400 transition-colors">Services</a></li>
+          <li><a href="#how-it-works" class="hover:text-cyan-400 transition-colors">How It Works</a></li>
+          <li><a href="#regions"      class="hover:text-cyan-400 transition-colors">Regions</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h4 class="text-slate-200 font-semibold mb-4">Contact</h4>
+        <div class="space-y-3">
+          <a href="https://t.me/CryptoSwap2026_Bot" target="_blank" rel="noopener noreferrer"
+             class="flex items-center gap-2 text-sm text-slate-400 hover:text-cyan-400 transition-colors">
+            <svg class="w-4 h-4 text-cyan-400 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+            @CryptoSwap2026_Bot
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Disclaimer + Copyright -->
+    <div class="border-t border-white/5 pt-8 space-y-3">
+      <p class="text-xs text-slate-600 leading-relaxed">
+        <strong class="text-slate-500">Disclaimer:</strong> CryptoSwap is an OTC peer-to-peer USDT exchange service. Cryptocurrency trading involves risk. Only verified clients are eligible to trade. All transactions are subject to KYC/AML compliance. CryptoSwap does not provide financial advice. Past performance is not indicative of future results.
+      </p>
+      <p class="text-xs text-slate-600">&copy; 2026 CryptoSwap. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ======================================================
+     AOS – Animate On Scroll
+====================================================== -->
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  // ── AOS init ──────────────────────────────────────────
+  AOS.init({
+    once: true,
+    duration: 650,
+    easing: 'ease-out-cubic',
+    offset: 60,
+  });
+
+  // ── Navbar scroll effect ──────────────────────────────
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // ── Mobile hamburger ──────────────────────────────────
+  const hamburger   = document.getElementById('hamburger');
+  const mobileMenu  = document.getElementById('mobile-menu');
+  const hamburgerLines = hamburger.querySelectorAll('.hamburger-line');
+  let menuOpen = false;
+
+  function openMobileMenu() {
+    menuOpen = true;
+    mobileMenu.classList.add('open');
+    // Animate to X
+    hamburgerLines[0].style.transform = 'translateY(8px) rotate(45deg)';
+    hamburgerLines[1].style.opacity   = '0';
+    hamburgerLines[2].style.transform = 'translateY(-8px) rotate(-45deg)';
+  }
+
+  function closeMobileMenu() {
+    menuOpen = false;
+    mobileMenu.classList.remove('open');
+    hamburgerLines[0].style.transform = '';
+    hamburgerLines[1].style.opacity   = '';
+    hamburgerLines[2].style.transform = '';
+  }
+
+  hamburger.addEventListener('click', () => {
+    menuOpen ? closeMobileMenu() : openMobileMenu();
+  });
+
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    if (menuOpen && !navbar.contains(e.target)) {
+      closeMobileMenu();
+    }
+  });
+</script>
+</body>
+</html>
