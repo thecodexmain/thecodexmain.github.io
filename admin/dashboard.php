@@ -43,13 +43,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $s = read_settings();
 
         // ── Text fields ──────────────────────────────────────────
-        $textFields = [
+        $textOnlyFields = [
             'headline', 'subheadline', 'btn_primary',
-            'btn_secondary', 'badge_text', 'download_link',
+            'btn_secondary', 'badge_text',
         ];
-        foreach ($textFields as $f) {
+        foreach ($textOnlyFields as $f) {
             if (isset($_POST[$f])) {
                 $s[$f] = mb_substr(trim($_POST[$f]), 0, 512);
+            }
+        }
+
+        // ── Download link – must be a valid URL or relative path ─
+        if (isset($_POST['download_link'])) {
+            $link = trim($_POST['download_link']);
+            // Allow relative paths, http, and https only
+            if ($link === '#' || $link === ''
+                || preg_match('#^https?://#i', $link)
+                || preg_match('#^[a-zA-Z0-9_./-]#', $link)) {
+                $s['download_link'] = mb_substr($link, 0, 512);
+            } else {
+                $errors[] = 'Download link must be a valid URL (http/https) or a relative path.';
             }
         }
 
@@ -129,9 +142,9 @@ function handle_upload(string $field, array $allowedMime, string $relPath): arra
         return ['ok' => false, 'error' => "Invalid file type ($mimeType)."];
     }
 
-    // Build safe filename
+    // Build safe filename (time + random to avoid collisions)
     $ext      = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    $safeName = $field . '_' . time() . '.' . $ext;
+    $safeName = $field . '_' . time() . '_' . bin2hex(random_bytes(4)) . '.' . $ext;
     $dest     = UPLOADS_DIR . $safeName;
 
     if (!is_dir(UPLOADS_DIR)) {
@@ -680,7 +693,7 @@ function v(string $key, array $s): string {
     </p>
     <div class="preview-wrap">
       <iframe src="../index.php" title="Live preview" loading="lazy"
-              sandbox="allow-scripts allow-same-origin"></iframe>
+              sandbox="allow-scripts"></iframe>
     </div>
   </div>
 </div><!-- /.main -->

@@ -13,6 +13,9 @@
 // ──────────────────────────────────────────────
 //  Admin credentials  (bcrypt hash)
 // ──────────────────────────────────────────────
+// IMPORTANT: Change this before going live!
+// Generate a new hash with:
+//   php -r "echo password_hash('YourStrongPassword', PASSWORD_DEFAULT);"
 // Default password: admin123  ← CHANGE THIS before going live
 define('ADMIN_USERNAME', 'admin');
 define('ADMIN_PASSWORD_HASH', '$2y$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW'); // admin123
@@ -28,8 +31,7 @@ define('CLICKS_FILE',   DATA_DIR . 'clicks.json');
 // ──────────────────────────────────────────────
 //  Session security
 // ──────────────────────────────────────────────
-define('SESSION_NAME',   'codex_admin');
-define('SESSION_SECRET', 'change_me_to_a_random_string_32chars');
+define('SESSION_NAME', 'codex_admin');
 
 // ──────────────────────────────────────────────
 //  Allowed upload MIME types
@@ -51,7 +53,10 @@ function read_settings(): array {
     }
     $fp = fopen(SETTINGS_FILE, 'r');
     if (!$fp) return default_settings();
-    flock($fp, LOCK_SH);
+    if (!flock($fp, LOCK_SH)) {
+        fclose($fp);
+        return default_settings();
+    }
     $data = stream_get_contents($fp);
     flock($fp, LOCK_UN);
     fclose($fp);
@@ -66,7 +71,10 @@ function write_settings(array $settings): bool {
     if (!is_dir(DATA_DIR)) mkdir(DATA_DIR, 0755, true);
     $fp = fopen(SETTINGS_FILE, 'c');
     if (!$fp) return false;
-    flock($fp, LOCK_EX);
+    if (!flock($fp, LOCK_EX)) {
+        fclose($fp);
+        return false;
+    }
     ftruncate($fp, 0);
     rewind($fp);
     fwrite($fp, json_encode($settings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
@@ -82,7 +90,10 @@ function log_click(): void {
     if (!is_dir(DATA_DIR)) mkdir(DATA_DIR, 0755, true);
     $fp = fopen(CLICKS_FILE, 'c+');
     if (!$fp) return;
-    flock($fp, LOCK_EX);
+    if (!flock($fp, LOCK_EX)) {
+        fclose($fp);
+        return;
+    }
     $data = stream_get_contents($fp);
     $clicks = json_decode($data, true);
     if (!is_array($clicks)) $clicks = [];
