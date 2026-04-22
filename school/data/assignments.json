@@ -1,0 +1,13 @@
+[
+  {
+    "id": "ASG001",
+    "title": "Chapter 1 Exercise",
+    "subject": "Mathematics",
+    "class": "10",
+    "section": "A",
+    "teacher_id": "TCH001",
+    "due_date": "2024-03-20",
+    "description": "Complete exercises 1 to 10 from Chapter 1",
+    "created_at": "2024-03-10"
+  }
+]

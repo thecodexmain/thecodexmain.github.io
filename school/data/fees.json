@@ -1,0 +1,24 @@
+[
+  {
+    "id": "FEE001",
+    "student_id": "STU001",
+    "student_name": "Alice Student",
+    "fee_type": "Tuition Fee",
+    "amount": "5000",
+    "due_date": "2024-04-10",
+    "paid_date": "2024-04-08",
+    "status": "paid",
+    "receipt_no": "RCP001"
+  },
+  {
+    "id": "FEE002",
+    "student_id": "STU001",
+    "student_name": "Alice Student",
+    "fee_type": "Library Fee",
+    "amount": "500",
+    "due_date": "2024-05-10",
+    "paid_date": "",
+    "status": "pending",
+    "receipt_no": ""
+  }
+]

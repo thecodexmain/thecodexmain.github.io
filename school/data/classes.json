@@ -1,0 +1,6 @@
+[
+  {"id": "1", "class": "1", "section": "A", "teacher_id": "TCH001", "capacity": 40},
+  {"id": "2", "class": "1", "section": "B", "teacher_id": "", "capacity": 40},
+  {"id": "3", "class": "2", "section": "A", "teacher_id": "", "capacity": 40},
+  {"id": "4", "class": "10", "section": "A", "teacher_id": "TCH001", "capacity": 40}
+]

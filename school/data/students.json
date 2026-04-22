@@ -1,0 +1,18 @@
+[
+  {
+    "id": "STU001",
+    "name": "Alice Student",
+    "email": "alice@email.com",
+    "phone": "+91-9876543211",
+    "class": "10",
+    "section": "A",
+    "roll_number": "1",
+    "dob": "2008-05-15",
+    "gender": "Female",
+    "address": "456, Student Lane",
+    "parent_name": "Bob Parent",
+    "parent_phone": "+91-9876543212",
+    "admission_date": "2020-04-01",
+    "status": "active"
+  }
+]

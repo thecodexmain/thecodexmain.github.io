@@ -1,0 +1,13 @@
+[
+  {
+    "id": "EXM001",
+    "name": "Mid-Term Examination",
+    "class": "10",
+    "section": "A",
+    "subject": "Mathematics",
+    "date": "2024-03-15",
+    "max_marks": "100",
+    "pass_marks": "35",
+    "status": "completed"
+  }
+]
