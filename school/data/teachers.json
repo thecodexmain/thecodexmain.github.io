@@ -1,0 +1,13 @@
+[
+  {
+    "id": "TCH001",
+    "name": "John Teacher",
+    "email": "john@amritpublic.edu",
+    "phone": "+91-9876543213",
+    "subject": "Mathematics",
+    "qualification": "M.Sc Mathematics",
+    "joining_date": "2020-06-01",
+    "salary": "35000",
+    "status": "active"
+  }
+]

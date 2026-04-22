@@ -1,0 +1,73 @@
+/* School Management System - Custom Styles */
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; }
+
+.wrapper { display: flex; width: 100%; }
+
+.sidebar { min-height: calc(100vh - 56px); background-color: #1a1a2e !important; transition: all 0.3s; }
+
+.sidebar .nav-link { color: rgba(255,255,255,0.8); padding: 10px 20px; border-radius: 0; transition: all 0.2s; font-size: 0.9rem; }
+.sidebar .nav-link:hover, .sidebar .nav-link.active { color: #fff !important; padding-left: 28px; }
+.sidebar .nav-link i { margin-right: 8px; width: 18px; text-align:center; }
+
+.main-content { flex: 1; padding: 20px; overflow-x: auto; min-height: calc(100vh - 56px); }
+
+.stat-card { border-radius: 10px; border: none; transition: transform 0.2s; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+.stat-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+.stat-card .stat-icon { font-size: 2.5rem; opacity: 0.25; }
+.stat-card .stat-value { font-size: 2rem; font-weight: 700; }
+
+.table th { background-color: #f1f3f5; font-weight: 600; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.5px; }
+.table td { vertical-align: middle; }
+
+.card-header { font-weight: 600; }
+.card { border: none; box-shadow: 0 2px 8px rgba(0,0,0,0.07); border-radius: 10px; }
+
+/* Login */
+.login-wrapper { min-height: 100vh; background: linear-gradient(135deg, var(--theme-color) 0%, #1a1a2e 100%); display: flex; align-items: center; justify-content: center; }
+.login-card { border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+
+/* Badges */
+.badge { font-size: 0.75rem; }
+
+/* Print */
+@media print {
+    .sidebar, .navbar, .btn, .no-print, nav { display: none !important; }
+    .main-content { padding: 0; }
+    .card { box-shadow: none; border: 1px solid #ddd; }
+    .wrapper { display: block; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar { min-width: 100%; min-height: auto; }
+    .wrapper { flex-direction: column; }
+}
+
+/* Status */
+.status-active  { background-color: #198754 !important; }
+.status-inactive{ background-color: #6c757d !important; }
+.status-pending { background-color: #ffc107 !important; color: #000 !important; }
+.status-paid    { background-color: #198754 !important; }
+.status-overdue { background-color: #dc3545 !important; }
+
+/* Timetable */
+.timetable-cell { min-height: 70px; border: 1px solid #dee2e6; padding: 6px; vertical-align: top; font-size: 0.82rem; background: #fff; }
+.timetable-cell.has-class { background-color: #e8f4fd; border-left: 3px solid var(--theme-color); }
+.timetable-header { background-color: #343a40; color: #fff; text-align: center; font-weight: 600; padding: 8px; }
+
+/* Notice priority */
+.priority-high   { border-left: 4px solid #dc3545 !important; }
+.priority-medium { border-left: 4px solid #ffc107 !important; }
+.priority-low    { border-left: 4px solid #198754 !important; }
+
+/* Attendance */
+.attendance-present { color: #198754; font-weight: bold; }
+.attendance-absent  { color: #dc3545; font-weight: bold; }
+.attendance-late    { color: #fd7e14; font-weight: bold; }
+
+/* Page header */
+.page-header { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid #e9ecef; }
+.page-header h2 { font-weight: 700; color: #212529; }
+
+/* Avatar */
+.avatar { width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; }

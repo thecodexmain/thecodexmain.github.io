@@ -1,0 +1,12 @@
+[
+  {
+    "id": "EVT001",
+    "title": "Annual Sports Day",
+    "description": "Annual sports day competition for all students",
+    "date": "2024-04-15",
+    "venue": "School Ground",
+    "category": "Sports",
+    "created_by": "admin",
+    "created_at": "2024-03-20"
+  }
+]

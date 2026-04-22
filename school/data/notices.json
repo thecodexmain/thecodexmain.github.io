@@ -1,0 +1,11 @@
+[
+  {
+    "id": "NOT001",
+    "title": "School Reopening Notice",
+    "content": "School will reopen on April 1st after summer break. All students must be present.",
+    "target": "all",
+    "created_by": "admin",
+    "created_at": "2024-03-25",
+    "priority": "high"
+  }
+]

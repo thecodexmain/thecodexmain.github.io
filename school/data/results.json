@@ -1,0 +1,10 @@
+[
+  {
+    "id": "RES001",
+    "exam_id": "EXM001",
+    "student_id": "STU001",
+    "marks_obtained": "85",
+    "grade": "A",
+    "remarks": "Excellent"
+  }
+]

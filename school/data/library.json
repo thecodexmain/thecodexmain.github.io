@@ -1,0 +1,12 @@
+[
+  {
+    "id": "LIB001",
+    "title": "Mathematics Class 10",
+    "author": "R.D. Sharma",
+    "isbn": "978-81-000-0001-1",
+    "category": "Textbook",
+    "quantity": "10",
+    "available": "8",
+    "added_date": "2024-01-01"
+  }
+]

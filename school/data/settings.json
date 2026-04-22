@@ -1,0 +1,25 @@
+{
+  "school_name": "Amrit Public School",
+  "tagline": "Excellence in Education",
+  "logo": "",
+  "email": "school@amritpublic.edu",
+  "phone": "+91-9876543210",
+  "address": "123, Education Street, Knowledge City - 400001",
+  "theme_color": "#0d6efd",
+  "modules": {
+    "students": true,
+    "teachers": true,
+    "classes": true,
+    "attendance": true,
+    "exams": true,
+    "fees": true,
+    "timetable": true,
+    "assignments": true,
+    "library": true,
+    "notices": true,
+    "messages": true,
+    "events": true,
+    "documents": true,
+    "reports": true
+  }
+}

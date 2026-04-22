@@ -1,0 +1,50 @@
+[
+    {
+        "id": "1",
+        "name": "Super Admin",
+        "username": "admin",
+        "password": "$2y$10$nIFi75SNuBxvqi8cv7xoPOngbVnqNqIS6SMnaq8hk14N3bD9OSKdi",
+        "role": "super_admin",
+        "email": "admin@amritpublic.edu",
+        "created_at": "2024-01-01"
+    },
+    {
+        "id": "2",
+        "name": "John Teacher",
+        "username": "teacher1",
+        "password": "$2y$10$ju31KBRkuKVGb3MuPSNIOu7r.YYqDR5tRZDLjH8a4RTE3SC8Ixtj6",
+        "role": "teacher",
+        "email": "teacher@amritpublic.edu",
+        "teacher_id": "TCH001",
+        "created_at": "2024-01-01"
+    },
+    {
+        "id": "3",
+        "name": "Alice Student",
+        "username": "student1",
+        "password": "$2y$10$iZlX8R7qgzUd15XK6eI1Xuxce588lHWJ2Ciejhg2x26WHuuYeKLbW",
+        "role": "student",
+        "email": "student@amritpublic.edu",
+        "student_id": "STU001",
+        "created_at": "2024-01-01"
+    },
+    {
+        "id": "4",
+        "name": "Bob Parent",
+        "username": "parent1",
+        "password": "$2y$10$DdjIGOM6CrpXZk82nnG4.eSXKiz9l2huSuoc1Gx1HgpSancGUT47y",
+        "role": "parent",
+        "email": "parent@amritpublic.edu",
+        "student_id": "STU001",
+        "created_at": "2024-01-01"
+    },
+    {
+        "id": "5",
+        "name": "Sam Accountant",
+        "username": "accountant1",
+        "password": "$2y$10$hET3WOCOrTdafF1HaPAJs.KG99JHZOBa6Tbw2VJ50PpgeZMKRwXxG",
+        "role": "accountant",
+        "email": "accountant@amritpublic.edu",
+        "created_at": "2024-01-01"
+    }
+]
