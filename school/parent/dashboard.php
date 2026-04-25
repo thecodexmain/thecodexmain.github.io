@@ -10,11 +10,13 @@ include __DIR__ . '/../includes/header.php';
 $studentId = $_SESSION['student_id'] ?? '';
 $student   = getStudentById($studentId);
 
-$fees       = array_values(array_filter(loadData('fees'),       fn($f) => $f['student_id'] === $studentId));
-$attendance = array_values(array_filter(loadData('attendance'), fn($a) => $a['student_id'] === $studentId));
-$results    = array_values(array_filter(loadData('results'),    fn($r) => $r['student_id'] === $studentId));
-$exams      = loadData('exams');
-$notices    = array_slice(array_reverse(loadData('notices')), 0, 5);
+$fees        = array_values(array_filter(loadData('fees'),       fn($f) => $f['student_id'] === $studentId));
+$attendance  = array_values(array_filter(loadData('attendance'), fn($a) => $a['student_id'] === $studentId));
+$results     = array_values(array_filter(loadData('results'),    fn($r) => $r['student_id'] === $studentId));
+$exams       = loadData('exams');
+$allNotices  = loadData('notices');
+$notices     = array_slice(array_reverse($allNotices), 0, 5);
+$noticeCount = count($allNotices);
 
 $paidFees    = array_filter($fees, fn($f) => $f['status'] === 'paid');
 $pendingFees = array_filter($fees, fn($f) => $f['status'] === 'pending');
@@ -115,7 +117,7 @@ $recentResults = array_slice($recentResults, 0, 5);
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
                         <div class="text-white-50 small fw-semibold">NOTICES</div>
-                        <div class="stat-value"><?php echo count(loadData('notices')); ?></div>
+                        <div class="stat-value"><?php echo $noticeCount; ?></div>
                         <small class="text-white-50">published</small>
                     </div>
                     <i class="bi bi-megaphone stat-icon"></i>

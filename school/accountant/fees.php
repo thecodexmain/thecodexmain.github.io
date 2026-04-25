@@ -12,7 +12,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'mark_paid') {
         if ($f['id'] === sanitize($_GET['id'])) {
             $f['status']     = 'paid';
             $f['paid_date']  = date('Y-m-d');
-            $f['receipt_no'] = 'RCP' . date('YmdHis');
+            $f['receipt_no'] = 'RCP' . date('Ymd') . strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 6));
             break;
         }
     }
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'due_date'     => $dueDate,
         'paid_date'    => $status === 'paid' ? date('Y-m-d') : '',
         'status'       => $status,
-        'receipt_no'   => $status === 'paid' ? 'RCP' . date('YmdHis') : ''
+        'receipt_no'   => $status === 'paid' ? 'RCP' . date('Ymd') . strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 6)) : ''
     ];
     saveData('fees', $fees);
     setFlash('success', 'Fee record added.');
