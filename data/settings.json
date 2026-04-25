@@ -1,0 +1,13 @@
+{
+  "headline": "Your App Title",
+  "subheadline": "Catchy subtitle here 🔥",
+  "video": "uploads/bg.mp4",
+  "fallback_image": "uploads/bg.jpg",
+  "download_link": "#",
+  "countdown": 10,
+  "slots": 24,
+  "animations": true,
+  "btn_primary": "Download Now",
+  "btn_secondary": "Learn More",
+  "badge_text": "Limited slots available!"
+}
