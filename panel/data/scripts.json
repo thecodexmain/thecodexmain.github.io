@@ -1,0 +1,55 @@
+{
+    "scripts": [
+        {
+            "id": "script_001",
+            "name": "Blog CMS",
+            "description": "A clean and modern blog content management system",
+            "version": "1.0.0",
+            "category": "Blog",
+            "demo_link": "https://demo.example.com/blog",
+            "thumbnail": null,
+            "file": null,
+            "size_mb": 0,
+            "min_plan": "basic",
+            "active": true,
+            "featured": true,
+            "downloads": 0,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        },
+        {
+            "id": "script_002",
+            "name": "E-Commerce Shop",
+            "description": "Full-featured online store with cart and checkout",
+            "version": "2.1.0",
+            "category": "Shop",
+            "demo_link": "https://demo.example.com/shop",
+            "thumbnail": null,
+            "file": null,
+            "size_mb": 0,
+            "min_plan": "pro",
+            "active": true,
+            "featured": true,
+            "downloads": 0,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        },
+        {
+            "id": "script_003",
+            "name": "URL Shortener Tool",
+            "description": "Link shortening tool with analytics dashboard",
+            "version": "1.5.0",
+            "category": "Tools",
+            "demo_link": "https://demo.example.com/shortener",
+            "thumbnail": null,
+            "file": null,
+            "size_mb": 0,
+            "min_plan": "basic",
+            "active": true,
+            "featured": false,
+            "downloads": 0,
+            "created_at": "2025-01-01T00:00:00Z",
+            "updated_at": "2025-01-01T00:00:00Z"
+        }
+    ]
+}

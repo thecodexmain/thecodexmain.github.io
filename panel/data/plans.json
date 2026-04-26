@@ -1,0 +1,88 @@
+{
+    "plans": [
+        {
+            "id": "basic",
+            "name": "Basic",
+            "price": 9.99,
+            "duration_days": 30,
+            "features": {
+                "max_sites": 1,
+                "max_scripts": 3,
+                "storage_mb": 512,
+                "custom_domain": false,
+                "file_manager": true,
+                "short_links": 10,
+                "api_access": false,
+                "backup": false,
+                "priority_support": false
+            },
+            "description": "Perfect for beginners",
+            "popular": false,
+            "active": true,
+            "created_at": "2025-01-01T00:00:00Z"
+        },
+        {
+            "id": "pro",
+            "name": "Pro",
+            "price": 24.99,
+            "duration_days": 30,
+            "features": {
+                "max_sites": 5,
+                "max_scripts": 15,
+                "storage_mb": 2048,
+                "custom_domain": true,
+                "file_manager": true,
+                "short_links": 100,
+                "api_access": true,
+                "backup": true,
+                "priority_support": false
+            },
+            "description": "Most popular choice",
+            "popular": true,
+            "active": true,
+            "created_at": "2025-01-01T00:00:00Z"
+        },
+        {
+            "id": "premium",
+            "name": "Premium",
+            "price": 49.99,
+            "duration_days": 30,
+            "features": {
+                "max_sites": -1,
+                "max_scripts": -1,
+                "storage_mb": 10240,
+                "custom_domain": true,
+                "file_manager": true,
+                "short_links": -1,
+                "api_access": true,
+                "backup": true,
+                "priority_support": true
+            },
+            "description": "Unlimited power for pros",
+            "popular": false,
+            "active": true,
+            "created_at": "2025-01-01T00:00:00Z"
+        },
+        {
+            "id": "basic_7",
+            "name": "Basic (7 Days)",
+            "price": 2.99,
+            "duration_days": 7,
+            "features": {
+                "max_sites": 1,
+                "max_scripts": 3,
+                "storage_mb": 512,
+                "custom_domain": false,
+                "file_manager": true,
+                "short_links": 5,
+                "api_access": false,
+                "backup": false,
+                "priority_support": false
+            },
+            "description": "Try us for a week",
+            "popular": false,
+            "active": true,
+            "created_at": "2025-01-01T00:00:00Z"
+        }
+    ]
+}
