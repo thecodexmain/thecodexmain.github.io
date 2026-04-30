@@ -192,6 +192,9 @@
     .badge.active   { background: rgba(63,185,80,.15);  color: var(--success); }
     .badge.expired  { background: rgba(248,81,73,.15);  color: var(--danger);  }
     .badge.revoked  { background: rgba(210,153,34,.15); color: var(--warn);    }
+    .badge.pending  { background: rgba(88,166,255,.15); color: var(--primary); }
+    .badge.rejected { background: rgba(248,81,73,.15);  color: var(--danger);  }
+    .badge.approved { background: rgba(63,185,80,.15);  color: var(--success); }
     .days-pill {
       display: inline-block;
       padding: 2px 8px;
@@ -307,6 +310,77 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             break;
 
+        case 'approve_request':
+            $device_id = sanitise_device_id($_POST['device_id'] ?? '');
+            $plan      = trim($_POST['plan']      ?? 'basic');
+            $days      = max(1, (int)($_POST['days'] ?? 30));
+
+            if ($device_id === '') {
+                $flash = ['type' => 'err', 'msg' => 'Device ID is required.'];
+                break;
+            }
+
+            // Find pending request
+            $rchk = $db->prepare("SELECT * FROM requests WHERE device_id = :d COLLATE NOCASE AND status = 'pending'");
+            $rchk->execute([':d' => $device_id]);
+            $req = $rchk->fetch();
+
+            if (!$req) {
+                $flash = ['type' => 'err', 'msg' => "No pending request found for <strong>" . htmlspecialchars($device_id) . "</strong>."];
+                break;
+            }
+
+            // Guard against duplicate key
+            $ck = $db->prepare("SELECT id FROM keys WHERE device_id = :d COLLATE NOCASE");
+            $ck->execute([':d' => $device_id]);
+            if ($ck->fetch()) {
+                $flash = ['type' => 'err', 'msg' => "A key for <strong>" . htmlspecialchars($device_id) . "</strong> already exists."];
+                break;
+            }
+
+            $api_key    = generate_api_key();
+            $expires_at = (new DateTime("+{$days} days"))->format('Y-m-d H:i:s');
+
+            $ins = $db->prepare("
+                INSERT INTO keys (device_id, api_key, plan, days, expires_at)
+                VALUES (:device_id, :api_key, :plan, :days, :expires_at)
+            ");
+            $ins->execute([
+                ':device_id'  => $device_id,
+                ':api_key'    => $api_key,
+                ':plan'       => $plan,
+                ':days'       => $days,
+                ':expires_at' => $expires_at,
+            ]);
+
+            $db->prepare("UPDATE requests SET status = 'approved' WHERE device_id = :d COLLATE NOCASE")
+               ->execute([':d' => $device_id]);
+
+            $flash = ['type' => 'ok', 'msg' => "✅ Request approved for <strong>" . htmlspecialchars($device_id) . "</strong>. Key: <code>" . htmlspecialchars($api_key) . "</code>"];
+            break;
+
+        case 'reject_request':
+            $device_id = sanitise_device_id($_POST['device_id'] ?? '');
+            if ($device_id !== '') {
+                $upd = $db->prepare("UPDATE requests SET status = 'rejected' WHERE device_id = :d COLLATE NOCASE AND status = 'pending'");
+                $upd->execute([':d' => $device_id]);
+                if ($upd->rowCount() > 0) {
+                    $flash = ['type' => 'ok', 'msg' => "Request for <strong>" . htmlspecialchars($device_id) . "</strong> rejected."];
+                } else {
+                    $flash = ['type' => 'err', 'msg' => "No pending request found for <strong>" . htmlspecialchars($device_id) . "</strong>."];
+                }
+            }
+            break;
+
+        case 'delete_request':
+            $device_id = sanitise_device_id($_POST['device_id'] ?? '');
+            if ($device_id !== '') {
+                $db->prepare("DELETE FROM requests WHERE device_id = :d")
+                   ->execute([':d' => $device_id]);
+                $flash = ['type' => 'ok', 'msg' => "Request for <strong>" . htmlspecialchars($device_id) . "</strong> deleted."];
+            }
+            break;
+
         case 'toggle_reg':
             $val = ($_POST['reg_open'] ?? '0') === '1' ? '1' : '0';
             set_setting('registrations_open', $val);
@@ -340,9 +414,10 @@ if (isset($_GET['logout'])) {
 }
 
 // ── Fetch all keys ────────────────────────────────────────────
-$all_keys  = $db->query("SELECT * FROM keys ORDER BY created_at DESC")->fetchAll();
-$reg_open  = get_setting('registrations_open', '1') === '1';
-$now_dt    = new DateTime('now');
+$all_keys      = $db->query("SELECT * FROM keys ORDER BY created_at DESC")->fetchAll();
+$pending_reqs  = get_pending_requests();
+$reg_open      = get_setting('registrations_open', '1') === '1';
+$now_dt        = new DateTime('now');
 
 // Enrich rows
 $count_active  = 0;
@@ -402,6 +477,10 @@ unset($r);
       <div class="lbl">Revoked</div>
     </div>
     <div class="stat-card">
+      <div class="val" style="color:<?= count($pending_reqs) > 0 ? 'var(--primary)' : 'var(--muted)' ?>"><?= count($pending_reqs) ?></div>
+      <div class="lbl">Pending Requests</div>
+    </div>
+    <div class="stat-card">
       <div class="val" style="color:<?= $reg_open ? 'var(--success)' : 'var(--danger)' ?>"><?= $reg_open ? 'Open' : 'Closed' ?></div>
       <div class="lbl">Registrations</div>
     </div>
@@ -425,6 +504,80 @@ unset($r);
       </label>
     </form>
   </div>
+
+  <!-- ── Pending Requests ─────────────────────────────────── -->
+  <div class="section-header" style="margin-top:28px;">
+    <h2>⏳ Pending Requests <?php if (count($pending_reqs) > 0): ?><span class="badge pending" style="font-size:.75rem;vertical-align:middle;margin-left:6px;"><?= count($pending_reqs) ?></span><?php endif; ?></h2>
+  </div>
+
+  <?php if (empty($pending_reqs)): ?>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;margin-bottom:28px;text-align:center;color:var(--muted);font-size:.9rem;">
+    No pending requests. Users can submit requests via the public page or API.
+  </div>
+  <?php else: ?>
+  <div class="table-wrap" style="margin-bottom:28px;">
+    <table id="reqTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Device ID</th>
+          <th>Requested Plan</th>
+          <th>Note</th>
+          <th>Requested At</th>
+          <th>Approve With</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($pending_reqs as $i => $req): ?>
+        <tr>
+          <td style="color:var(--muted);font-size:.8rem;"><?= $i + 1 ?></td>
+          <td class="mono"><?= htmlspecialchars($req['device_id']) ?></td>
+          <td><?= htmlspecialchars(ucfirst($req['plan'])) ?></td>
+          <td style="font-size:.82rem;color:var(--muted);max-width:200px;"><?= htmlspecialchars($req['note'] ?: '—') ?></td>
+          <td style="font-size:.8rem;color:var(--muted);"><?= htmlspecialchars($req['requested_at']) ?></td>
+          <td>
+            <!-- Inline approve form with plan/days override -->
+            <form method="POST" action="" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;" id="apf-<?= $i ?>">
+              <input type="hidden" name="action" value="approve_request"/>
+              <input type="hidden" name="device_id" value="<?= htmlspecialchars($req['device_id']) ?>"/>
+              <select name="plan" style="padding:4px 8px;border-radius:4px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.78rem;">
+                <?php foreach (['basic','standard','premium','lifetime'] as $p): ?>
+                <option value="<?= $p ?>" <?= $req['plan'] === $p ? 'selected' : '' ?>><?= ucfirst($p) ?></option>
+                <?php endforeach; ?>
+              </select>
+              <input type="number" name="days" value="30" min="1" max="36500"
+                     style="width:64px;padding:4px 8px;border-radius:4px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.78rem;"
+                     title="Days"/>
+              <button type="submit" class="btn btn-success"
+                      style="padding:5px 12px;font-size:.75rem;"
+                      onclick="return confirm('Approve request for ' + <?= json_encode($req['device_id']) ?> + '?')">
+                ✅ Approve
+              </button>
+            </form>
+          </td>
+          <td>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <form method="POST" action=""
+                    onsubmit="return confirm('Reject request for ' + <?= json_encode($req['device_id']) ?> + '?')">
+                <input type="hidden" name="action" value="reject_request"/>
+                <input type="hidden" name="device_id" value="<?= htmlspecialchars($req['device_id']) ?>"/>
+                <button type="submit" class="btn btn-warn" style="padding:5px 11px;font-size:.75rem;">❌ Reject</button>
+              </form>
+              <form method="POST" action=""
+                    onsubmit="return confirm('Permanently delete this request for ' + <?= json_encode($req['device_id']) ?> + '?')">
+                <input type="hidden" name="action" value="delete_request"/>
+                <input type="hidden" name="device_id" value="<?= htmlspecialchars($req['device_id']) ?>"/>
+                <button type="submit" class="btn btn-danger" style="padding:5px 11px;font-size:.75rem;">🗑 Delete</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
+  <?php endif; ?>
 
   <!-- Generate key form -->
   <div class="gen-card">

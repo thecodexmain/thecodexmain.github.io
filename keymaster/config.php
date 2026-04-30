@@ -63,6 +63,18 @@ function get_db(): PDO
         );
     ");
 
+    // Pending registration requests table
+    $db->exec("
+        CREATE TABLE IF NOT EXISTS requests (
+            id           INTEGER PRIMARY KEY AUTOINCREMENT,
+            device_id    TEXT    UNIQUE NOT NULL,
+            plan         TEXT    NOT NULL DEFAULT 'basic',
+            note         TEXT    NOT NULL DEFAULT '',
+            requested_at TEXT    NOT NULL DEFAULT (datetime('now')),
+            status       TEXT    NOT NULL DEFAULT 'pending'
+        );
+    ");
+
     // Default settings
     $defaults = [
         'registrations_open' => '1',
@@ -173,4 +185,20 @@ function json_out(array $data, int $code = 200): never
 function sanitise_device_id(string $raw): string
 {
     return preg_replace('/[^A-Za-z0-9_\-]/', '', trim($raw));
+}
+
+/** Fetch all pending registration requests. */
+function get_pending_requests(): array
+{
+    $db  = get_db();
+    $stm = $db->query("SELECT * FROM requests WHERE status = 'pending' ORDER BY requested_at ASC");
+    return $stm->fetchAll();
+}
+
+/** Count pending requests. */
+function count_pending_requests(): int
+{
+    $db  = get_db();
+    $stm = $db->query("SELECT COUNT(*) FROM requests WHERE status = 'pending'");
+    return (int)$stm->fetchColumn();
 }
