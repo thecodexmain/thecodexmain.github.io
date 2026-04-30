@@ -1,0 +1,5 @@
+# Deny all direct access to the database file
+<Files "*.sqlite">
+    Order Deny,Allow
+    Deny from all
+</Files>
