@@ -93,6 +93,11 @@
       box-shadow: 0 12px 35px rgba(229, 9, 20, 0.35);
       overflow: hidden;
     }
+    .logo-mark.has-dp {
+      background-image: var(--logo-dp), linear-gradient(135deg, var(--red) 0%, #ff3d45 50%, var(--red2) 100%);
+      background-size: cover;
+      background-position: center;
+    }
     .logo-mark::before {
       content: '';
       position: absolute;
@@ -102,7 +107,7 @@
       opacity: 0.85;
     }
     .logo-text { font-size: 18px; }
-    .logo-text span { color: var(--red); }
+    .logo-text .flix { color: var(--red); }
 
     .top-actions {
       display: flex;
@@ -649,7 +654,7 @@
       <div class="topbar-inner">
         <a class="logo" href="#">
           <span class="logo-mark" aria-hidden="true"></span>
-          <span class="logo-text">Stream<span>Flix</span></span>
+          <span class="logo-text"><span id="brandPrefix">Stream</span><span class="flix">FLIX</span></span>
         </a>
 
         <div class="top-actions">
@@ -685,7 +690,7 @@
               <path d="M7 11l5 5 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M5 20h14" stroke="white" stroke-width="2" stroke-linecap="round"/>
             </svg>
-            <span>Download Netflix App</span>
+            <span>Download App</span>
             <svg class="mini" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M8 6h5.2c2.7 0 4.8 2.1 4.8 4.8 0 2.6-2.1 4.7-4.8 4.7H8V6Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
               <path d="M8 6v12" stroke="white" stroke-width="2" stroke-linecap="round"/>
@@ -818,7 +823,7 @@
               <span>Can I change the demo video?</span>
               <span class="plus" aria-hidden="true"></span>
             </summary>
-            <div class="faq-body">Yes. Open the admin panel and unlock it using the key <strong>ADMIN123</strong>, then upload a new demo video file.</div>
+            <div class="faq-body">Yes. The demo video can be updated by the site administrator.</div>
           </details>
         </div>
       </div>
@@ -839,47 +844,6 @@
           <div class="admin-body">
             <video id="demoVideo" controls playsinline style="width: 100%; border-radius: 14px; background: #000; border: 1px solid rgba(255,255,255,0.12);"></video>
             <div class="admin-note">If no video is uploaded, this section stays empty. Upload a video from the admin panel below.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section admin" id="admin">
-      <div class="container">
-        <div class="section-title">
-          <h2>Admin Panel</h2>
-          <p>Key required</p>
-        </div>
-
-        <div class="admin-panel" style="margin-top: 14px;">
-          <div class="admin-head">
-            <h3>Upload APK &amp; Demo Video</h3>
-            <span class="pill" id="adminLockState">Locked</span>
-          </div>
-          <div class="admin-body">
-            <div class="row">
-              <label for="adminKey" class="admin-note">Enter admin key to unlock uploads:</label>
-              <input type="password" id="adminKey" placeholder="ADMIN KEY" autocomplete="off" />
-              <div class="admin-actions">
-                <button class="btn btn-primary" id="unlockAdmin" type="button">Unlock</button>
-                <button class="btn" id="lockAdmin" type="button">Lock</button>
-              </div>
-              <div class="admin-note" id="adminMsg" aria-live="polite"></div>
-            </div>
-
-            <div class="row" id="uploadControls" style="display:none;">
-              <div class="admin-note">Uploads are stored in your browser (localStorage). For GitHub Pages this is a client-side demo, not a server upload.</div>
-              <label class="admin-note" for="apkFile">Upload APK:</label>
-              <input type="file" id="apkFile" accept=".apk,application/vnd.android.package-archive" />
-
-              <label class="admin-note" for="demoFile">Upload demo video:</label>
-              <input type="file" id="demoFile" accept="video/*" />
-
-              <div class="admin-actions">
-                <button class="btn btn-primary" id="saveUploads" type="button">Save</button>
-                <button class="btn" id="clearUploads" type="button">Clear Saved</button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -910,6 +874,8 @@
       apkDataUrl: 'streamflix_admin_apk_dataurl',
       demoName: 'streamflix_admin_demo_name',
       demoDataUrl: 'streamflix_admin_demo_dataurl',
+      brandPrefix: 'streamflix_admin_brand_prefix',
+      dpDataUrl: 'streamflix_admin_dp_dataurl',
     };
 
     function $(id) { return document.getElementById(id); }
@@ -989,16 +955,46 @@
       ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
     }
 
+    const serverSettings = {
+      prefix: null,
+      dp: null,
+      apk: null,
+      demo: null,
+    };
+
+    async function tryLoadServerSettings() {
+      try {
+        const res = await fetch('admin_data/settings.json', { cache: 'no-cache' });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data && typeof data === 'object') {
+          serverSettings.prefix = typeof data.prefix === 'string' ? data.prefix : null;
+          serverSettings.dp = typeof data.dp === 'string' ? data.dp : null;
+          serverSettings.apk = typeof data.apk === 'string' ? data.apk : null;
+          serverSettings.demo = typeof data.demo === 'string' ? data.demo : null;
+        }
+      } catch {
+        // ignore
+      }
+    }
+
+    function getBrandPrefix() {
+      return serverSettings.prefix || localStorage.getItem(STORAGE_KEYS.brandPrefix) || 'Stream';
+    }
+
     function getSavedApk() {
+      if (serverSettings.apk) {
+        return { name: 'app.apk', url: serverSettings.apk, isUrl: true };
+      }
       const name = localStorage.getItem(STORAGE_KEYS.apkName);
       const dataUrl = localStorage.getItem(STORAGE_KEYS.apkDataUrl);
       if (!name || !dataUrl) return null;
-      return { name, dataUrl };
+      return { name, url: dataUrl, isUrl: false };
     }
 
-    function downloadDataUrl(filename, dataUrl) {
+    function downloadUrl(filename, url) {
       const a = document.createElement('a');
-      a.href = dataUrl;
+      a.href = url;
       a.download = filename;
       a.rel = 'noopener';
       document.body.appendChild(a);
@@ -1013,99 +1009,37 @@
         alert('APK not uploaded yet. Please upload from Admin Panel.');
         return;
       }
-      downloadDataUrl(apk.name, apk.dataUrl);
+      downloadUrl(apk.name, apk.url);
     }
 
     $('downloadBtn').addEventListener('click', handleDownload);
     $('stickyDownload').addEventListener('click', handleDownload);
 
-    // Admin panel (client-side)
-    const ADMIN_KEY = 'ADMIN123';
-    let unlocked = false;
-
-    function setLockState(next) {
-      unlocked = next;
-      $('adminLockState').textContent = unlocked ? 'Unlocked' : 'Locked';
-      $('uploadControls').style.display = unlocked ? 'grid' : 'none';
-    }
-
-    $('unlockAdmin').addEventListener('click', () => {
-      const key = $('adminKey').value || '';
-      if (key === ADMIN_KEY) {
-        setLockState(true);
-        $('adminMsg').textContent = 'Admin unlocked. You can now upload APK and demo video.';
-      } else {
-        setLockState(false);
-        $('adminMsg').textContent = 'Invalid key.';
-      }
-    });
-    $('lockAdmin').addEventListener('click', () => {
-      setLockState(false);
-      $('adminKey').value = '';
-      $('adminMsg').textContent = 'Locked.';
-    });
-
-    function fileToDataUrl(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(String(reader.result));
-        reader.onerror = () => reject(new Error('Failed to read file'));
-        reader.readAsDataURL(file);
-      });
-    }
-
-    async function saveUploads() {
-      const apkFile = $('apkFile').files && $('apkFile').files[0];
-      const demoFile = $('demoFile').files && $('demoFile').files[0];
-
-      if (!apkFile && !demoFile) {
-        $('adminMsg').textContent = 'Select an APK and/or a demo video first.';
-        return;
-      }
-
-      try {
-        if (apkFile) {
-          const apkDataUrl = await fileToDataUrl(apkFile);
-          localStorage.setItem(STORAGE_KEYS.apkName, apkFile.name);
-          localStorage.setItem(STORAGE_KEYS.apkDataUrl, apkDataUrl);
-        }
-        if (demoFile) {
-          const demoDataUrl = await fileToDataUrl(demoFile);
-          localStorage.setItem(STORAGE_KEYS.demoName, demoFile.name);
-          localStorage.setItem(STORAGE_KEYS.demoDataUrl, demoDataUrl);
-        }
-
-        $('adminMsg').textContent = 'Saved successfully.';
-        refreshDynamicContent();
-      } catch (e) {
-        $('adminMsg').textContent = 'Save failed. File might be too large for browser storage.';
-      }
-    }
-
-    function clearUploads() {
-      for (const k of Object.values(STORAGE_KEYS)) localStorage.removeItem(k);
-      $('apkFile').value = '';
-      $('demoFile').value = '';
-      $('adminMsg').textContent = 'Cleared.';
-      refreshDynamicContent();
-    }
-
-    $('saveUploads').addEventListener('click', () => { if (unlocked) saveUploads(); });
-    $('clearUploads').addEventListener('click', () => { if (unlocked) clearUploads(); });
-
     function refreshDynamicContent() {
+      $('brandPrefix').textContent = getBrandPrefix();
+
       const apk = getSavedApk();
       $('apkStatus').textContent = apk ? `Ready: ${apk.name}` : 'APK not uploaded yet';
 
-      const demoName = localStorage.getItem(STORAGE_KEYS.demoName);
-      const demoDataUrl = localStorage.getItem(STORAGE_KEYS.demoDataUrl);
-      if (demoName && demoDataUrl) {
+      const demoName = serverSettings.demo ? 'Installation demo' : localStorage.getItem(STORAGE_KEYS.demoName);
+      const demoUrl = serverSettings.demo || localStorage.getItem(STORAGE_KEYS.demoDataUrl);
+      if (demoName && demoUrl) {
         $('demoStatus').textContent = `Playing: ${demoName}`;
-        $('demoVideo').src = demoDataUrl;
+        $('demoVideo').src = demoUrl;
       } else {
         $('demoStatus').textContent = 'No custom video';
         $('demoVideo').removeAttribute('src');
         $('demoVideo').load();
+      }
+
+      // Optional DP for the logo mark
+      const dpUrl = serverSettings.dp || localStorage.getItem(STORAGE_KEYS.dpDataUrl);
+      const logoMark = document.querySelector('.logo-mark');
+      if (dpUrl && logoMark) {
+        document.documentElement.style.setProperty('--logo-dp', `url('${dpUrl.replace(/'/g, "%27")}')`);
+        logoMark.classList.add('has-dp');
+      } else if (logoMark) {
+        logoMark.classList.remove('has-dp');
       }
 
       // end skeleton shimmer once loaded (simple transition)
@@ -1119,9 +1053,10 @@
       alert('Sign In (demo)');
     });
 
-    setLockState(false);
-    refreshDynamicContent();
+    (async () => {
+      await tryLoadServerSettings();
+      refreshDynamicContent();
+    })();
   </script>
 </body>
 </html>
-
