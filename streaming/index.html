@@ -895,7 +895,6 @@
     <a href="#">Privacy</a>
     <a href="#">Terms of Use</a>
     <a href="#">Contact Us</a>
-    <a href="admin.html">Admin</a>
   </div>
   <p class="footer-copy">© 2025 StreamX. All rights reserved. StreamX is an independent streaming service concept and is not affiliated with any other streaming platform.</p>
 </footer>
@@ -909,9 +908,6 @@
 
 <!-- Scroll-to-top -->
 <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">▲</button>
-
-<!-- Admin link -->
-<a href="admin.html" class="admin-link" title="Admin Panel">⚙</a>
 
 <script>
 // ===== CONFIG (from localStorage / defaults) =====
@@ -1117,9 +1113,7 @@ function handleDownload(btn, event) {
     a.download = 'StreamX.apk';
     a.click();
   } else {
-    // Fallback: show message
-    showToast('⚙️ APK not configured yet. Redirecting…');
-    setTimeout(() => { window.location.href = 'admin.html'; }, 2000);
+    showToast('⏳ App coming soon. Please check back later.');
   }
 }
 

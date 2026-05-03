@@ -670,7 +670,7 @@ function updateStats(cfg) {
   document.getElementById('stat-video').textContent = cfg.demoVideoUrl ? '✅' : '–';
   if (cfg.lastUpdated) {
     const d = new Date(cfg.lastUpdated);
-    document.getElementById('stat-updated').textContent = d.toLocaleDateString('en-IN', {day:'numeric',month:'short'});
+    document.getElementById('stat-updated').textContent = d.toLocaleDateString('en-US', {day:'numeric',month:'short'});
   }
 }
 
