@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>StreamX – Unlimited Movies & TV Shows</title>
+  <meta name="description" content="Watch unlimited movies, TV shows and more. Stream anywhere, cancel anytime." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #e50914;
+      --red-dark: #b00710;
+      --red-glow: rgba(229,9,20,0.6);
+      --black: #000000;
+      --dark: #141414;
+      --dark2: #1a1a1a;
+      --text: #e5e5e5;
+      --text-muted: #a3a3a3;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; outline: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ===== SKELETON LOADER ===== */
+    #skeleton-overlay {
+      position: fixed; inset: 0; background: #000; z-index: 9999;
+      display: flex; flex-direction: column; gap: 16px; padding: 20px;
+      transition: opacity 0.6s ease;
+    }
+    .skel {
+      background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 8px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    #skeleton-overlay.hidden { opacity: 0; pointer-events: none; }
+
+    /* ===== PARTICLES CANVAS ===== */
+    #particles-canvas {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    }
+
+    /* ===== HERO SECTION ===== */
+    #hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Cinematic background collage */
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 2px;
+      animation: bgZoom 20s ease-in-out infinite alternate;
+      transform-origin: center center;
+      filter: brightness(0.55) saturate(1.2);
+    }
+    @keyframes bgZoom {
+      0%   { transform: scale(1); }
+      100% { transform: scale(1.12); }
+    }
+    .hero-bg-cell {
+      background-size: cover;
+      background-position: center;
+      filter: blur(1px);
+    }
+    /* Unique gradient "movie poster" cells */
+    .hbc-1 { background: linear-gradient(135deg, #1a0a0a 0%, #3d0000 40%, #8b0000 70%, #1a0505 100%); }
+    .hbc-2 { background: linear-gradient(160deg, #0a0a2e 0%, #1a1a5e 50%, #2d2d8a 80%, #0d0d3d 100%); }
+    .hbc-3 { background: linear-gradient(120deg, #0a1a0a 0%, #1a3d1a 50%, #2d6b2d 70%, #0a1a0a 100%); }
+    .hbc-4 { background: linear-gradient(200deg, #1a0f00 0%, #4d2c00 50%, #8b4f00 70%, #1a0d00 100%); }
+    .hbc-5 { background: linear-gradient(180deg, #1a001a 0%, #4d004d 40%, #8b008b 70%, #1a001a 100%); }
+    .hbc-6 { background: linear-gradient(150deg, #001a1a 0%, #004d4d 50%, #008b8b 70%, #001a1a 100%); }
+    .hbc-7 { background: linear-gradient(110deg, #1a1a00 0%, #4d4d00 50%, #8b8b00 70%, #1a1a00 100%); }
+    .hbc-8 { background: linear-gradient(170deg, #0f001a 0%, #2e0050 50%, #6600b3 70%, #0f001a 100%); }
+    .hbc-9 { background: linear-gradient(140deg, #1a0000 0%, #5c0000 50%, #a00000 70%, #1a0000 100%); }
+
+    /* Add fake "movie poster" shapes inside each cell */
+    .hero-bg-cell::before {
+      content: '';
+      display: block; width: 100%; height: 100%;
+      background: radial-gradient(ellipse 60% 80% at 50% 30%, rgba(255,255,255,0.07) 0%, transparent 70%);
+    }
+
+    /* Gradient overlays */
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 2;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 30%, transparent 55%, rgba(0,0,0,0.85) 80%, #000 100%),
+        linear-gradient(to right, rgba(0,0,0,0.5) 0%, transparent 60%);
+    }
+    .hero-gradient-anim {
+      position: absolute; inset: 0; z-index: 2;
+      background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(100,0,0,0.25) 50%, rgba(0,0,0,0.6) 100%);
+      animation: gradShift 8s ease-in-out infinite alternate;
+    }
+    @keyframes gradShift {
+      0%   { opacity: 0.6; }
+      50%  { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+    /* Vignette */
+    .hero-vignette {
+      position: absolute; inset: 0; z-index: 3;
+      background: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(0,0,0,0.7) 100%);
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: relative; z-index: 10;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 20px;
+      animation: fadeDown 0.8s ease forwards;
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Logo */
+    .logo {
+      display: flex; align-items: center; gap: 6px;
+    }
+    .logo-icon {
+      width: 44px; height: 44px;
+      background: var(--red);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      color: #fff;
+      letter-spacing: -1px;
+      box-shadow: 0 0 18px var(--red-glow);
+      position: relative;
+      overflow: hidden;
+    }
+    .logo-icon::after {
+      content: '';
+      position: absolute; top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.15) 50%, transparent 60%);
+      animation: logoShine 3s ease-in-out infinite;
+    }
+    @keyframes logoShine {
+      0%, 100% { transform: translateX(-100%) rotate(30deg); }
+      50% { transform: translateX(100%) rotate(30deg); }
+    }
+    .logo-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 2px;
+      color: #fff;
+    }
+    .logo-text span { color: var(--red); }
+
+    /* Navbar right */
+    .nav-right {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .lang-select {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+    }
+    .lang-select option { background: #141414; color: #fff; }
+    .signin-btn {
+      background: var(--red);
+      color: #fff;
+      padding: 7px 16px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .signin-btn:hover { background: var(--red-dark); }
+
+    /* ===== HERO CONTENT ===== */
+    .hero-content {
+      position: relative; z-index: 10;
+      flex: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 20px 24px 80px;
+      gap: 16px;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(229,9,20,0.15);
+      border: 1px solid rgba(229,9,20,0.4);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #ff6b6b;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+    .badge-dot {
+      width: 6px; height: 6px;
+      background: var(--red);
+      border-radius: 50%;
+      animation: blink 1.2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .hero-title {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(28px, 8vw, 48px);
+      font-weight: 900;
+      line-height: 1.1;
+      color: #fff;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+    .hero-title span { color: var(--red); }
+
+    .hero-sub {
+      font-size: clamp(14px, 4vw, 18px);
+      font-weight: 400;
+      color: var(--text-muted);
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== CTA BUTTON ===== */
+    .cta-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      animation: fadeUp 0.8s 0.5s ease both;
+      width: 100%; max-width: 340px;
+    }
+    .cta-btn {
+      width: 100%;
+      position: relative;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      background: var(--red);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 16px 28px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(229,9,20,0.5), 0 4px 15px rgba(229,9,20,0.3);
+      animation: glowPulse 2.5s ease-in-out infinite;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .cta-btn:active { transform: scale(0.96); }
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 25px rgba(229,9,20,0.5), 0 4px 15px rgba(229,9,20,0.3); }
+      50%       { box-shadow: 0 0 45px rgba(229,9,20,0.8), 0 8px 25px rgba(229,9,20,0.5); }
+    }
+    /* Ripple */
+    .cta-btn .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      transform: scale(0);
+      animation: rippleAnim 0.6s linear;
+      pointer-events: none;
+    }
+    @keyframes rippleAnim {
+      to { transform: scale(4); opacity: 0; }
+    }
+    /* Shine sweep */
+    .cta-btn::before {
+      content: '';
+      position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.2), transparent);
+      animation: btnShine 3s ease-in-out infinite;
+    }
+    @keyframes btnShine {
+      0%, 100% { left: -100%; }
+      50% { left: 120%; }
+    }
+    /* Glow under button */
+    .cta-glow-under {
+      width: 80%; height: 12px;
+      background: var(--red);
+      filter: blur(12px);
+      opacity: 0.5;
+      border-radius: 50%;
+      animation: glowPulse 2.5s ease-in-out infinite;
+    }
+    .cta-icon {
+      font-size: 20px;
+      display: flex; align-items: center;
+    }
+    .cta-platform-text {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== SCROLL INDICATOR ===== */
+    .scroll-indicator {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      z-index: 10;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      animation: fadeUp 1s 1s ease both;
+    }
+    .scroll-text { font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,0.4); text-transform: uppercase; }
+    .scroll-arrow {
+      width: 20px; height: 20px;
+      border-right: 2px solid rgba(255,255,255,0.3);
+      border-bottom: 2px solid rgba(255,255,255,0.3);
+      transform: rotate(45deg);
+      animation: scrollBounce 1.5s ease-in-out infinite;
+    }
+    @keyframes scrollBounce {
+      0%,100% { transform: rotate(45deg) translateY(0); opacity: 0.3; }
+      50%      { transform: rotate(45deg) translateY(6px); opacity: 1; }
+    }
+
+    /* ===== SECTION COMMON ===== */
+    .section { padding: 48px 0; }
+    .section-title {
+      font-size: 20px; font-weight: 800;
+      padding: 0 20px; margin-bottom: 20px;
+      color: #fff;
+    }
+    .section-title span { color: var(--red); }
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(229,9,20,0.3), transparent);
+      margin: 0 20px 40px;
+    }
+
+    /* ===== TRENDING NOW ===== */
+    #trending { background: var(--black); }
+    .trending-scroll {
+      display: flex; gap: 12px;
+      overflow-x: auto; overflow-y: hidden;
+      padding: 8px 20px 20px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .trending-scroll::-webkit-scrollbar { display: none; }
+    .trending-card {
+      flex-shrink: 0;
+      width: 130px;
+      scroll-snap-align: start;
+      position: relative;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.25s;
+    }
+    .trending-card:active { transform: scale(0.95); }
+    .trending-poster {
+      width: 100%; aspect-ratio: 2/3;
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+    .trending-poster::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+    }
+    /* Poster gradients – each unique */
+    .tp-1 { background: linear-gradient(160deg,#1a0000,#8b0000,#ff4500); }
+    .tp-2 { background: linear-gradient(160deg,#0a0028,#1a0070,#4b0082); }
+    .tp-3 { background: linear-gradient(160deg,#001a00,#006400,#32cd32); }
+    .tp-4 { background: linear-gradient(160deg,#1a1a00,#8b6914,#ffd700); }
+    .tp-5 { background: linear-gradient(160deg,#00001a,#00008b,#1e90ff); }
+    .tp-6 { background: linear-gradient(160deg,#1a0015,#8b005d,#ff1493); }
+    .tp-7 { background: linear-gradient(160deg,#0d0d0d,#333,#666); }
+    .tp-8 { background: linear-gradient(160deg,#1a0800,#8b3a00,#ff8c00); }
+    .trending-poster-inner {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .poster-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px; color: rgba(255,255,255,0.8);
+      text-align: center; padding: 10px;
+      position: absolute; bottom: 10px; left: 0; right: 0; z-index: 1;
+    }
+    .rank-num {
+      position: absolute;
+      bottom: -6px; left: -6px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 80px;
+      line-height: 1;
+      color: #fff;
+      -webkit-text-stroke: 2px rgba(255,255,255,0.3);
+      text-stroke: 2px rgba(255,255,255,0.3);
+      paint-order: stroke fill;
+      opacity: 0.9;
+      z-index: 2;
+    }
+    .trending-label {
+      font-size: 11px; font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 44px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      text-align: center;
+    }
+
+    /* ===== FEATURES ===== */
+    #features { background: #0a0a0a; padding: 48px 20px; }
+    .features-grid {
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .feature-card {
+      position: relative;
+      border-radius: 12px;
+      padding: 24px;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.07);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: default;
+    }
+    .feature-card:active { transform: scale(0.98); }
+    .fc-1 {
+      background: linear-gradient(135deg, rgba(10,10,60,0.9) 0%, rgba(30,30,100,0.8) 50%, rgba(50,0,30,0.6) 100%);
+      box-shadow: 0 8px 32px rgba(30,0,100,0.3);
+    }
+    .fc-2 {
+      background: linear-gradient(135deg, rgba(60,0,0,0.9) 0%, rgba(120,0,0,0.7) 50%, rgba(60,0,40,0.6) 100%);
+      box-shadow: 0 8px 32px rgba(120,0,0,0.3);
+    }
+    .fc-3 {
+      background: linear-gradient(135deg, rgba(0,20,60,0.9) 0%, rgba(0,40,120,0.7) 50%, rgba(0,20,80,0.6) 100%);
+      box-shadow: 0 8px 32px rgba(0,40,120,0.3);
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .fc-icon {
+      font-size: 36px;
+      margin-bottom: 14px;
+      display: block;
+      filter: drop-shadow(0 0 12px currentColor);
+    }
+    .fc-1 .fc-icon { color: #818cf8; text-shadow: 0 0 20px #818cf8; }
+    .fc-2 .fc-icon { color: #f87171; text-shadow: 0 0 20px #f87171; }
+    .fc-3 .fc-icon { color: #60a5fa; text-shadow: 0 0 20px #60a5fa; }
+    .fc-title {
+      font-size: 18px; font-weight: 800;
+      color: #fff; margin-bottom: 8px;
+    }
+    .fc-desc {
+      font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6;
+    }
+    .fc-badge {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .fc-1 .fc-badge { background: rgba(129,140,248,0.2); color: #818cf8; border: 1px solid rgba(129,140,248,0.3); }
+    .fc-2 .fc-badge { background: rgba(248,113,113,0.2); color: #f87171; border: 1px solid rgba(248,113,113,0.3); }
+    .fc-3 .fc-badge { background: rgba(96,165,250,0.2); color: #60a5fa; border: 1px solid rgba(96,165,250,0.3); }
+
+    /* ===== FAQ ===== */
+    #faq { background: var(--black); padding: 48px 20px; }
+    .faq-list { display: flex; flex-direction: column; gap: 8px; }
+    .faq-item {
+      background: var(--dark2);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: border-color 0.3s;
+    }
+    .faq-item.open { border-color: rgba(229,9,20,0.3); }
+    .faq-question {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 20px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .faq-q-text {
+      font-size: 15px; font-weight: 600; color: #fff;
+      flex: 1; padding-right: 16px;
+    }
+    .faq-icon {
+      width: 28px; height: 28px;
+      background: rgba(229,9,20,0.15);
+      border: 1px solid rgba(229,9,20,0.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 18px; color: var(--red); font-weight: 300;
+      transition: transform 0.3s, background 0.3s;
+    }
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+      background: rgba(229,9,20,0.3);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+    }
+    .faq-item.open .faq-answer { max-height: 400px; }
+    .faq-answer-inner {
+      padding: 0 20px 18px;
+      font-size: 14px; color: rgba(255,255,255,0.6);
+      line-height: 1.7;
+    }
+
+    /* ===== DEMO VIDEO SECTION ===== */
+    #demo { background: #0a0a0a; padding: 48px 20px; }
+    .demo-container {
+      background: linear-gradient(135deg, rgba(229,9,20,0.08) 0%, rgba(0,0,0,0.9) 100%);
+      border: 1px solid rgba(229,9,20,0.2);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .demo-video-wrap {
+      position: relative;
+      aspect-ratio: 16/9;
+      background: #0d0d0d;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #demo-video-player {
+      width: 100%; height: 100%;
+      border: none;
+      display: none;
+    }
+    .demo-play-placeholder {
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      color: rgba(255,255,255,0.5);
+    }
+    .demo-play-btn-big {
+      width: 64px; height: 64px;
+      background: var(--red);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 0 30px rgba(229,9,20,0.6);
+      animation: glowPulse 2.5s ease-in-out infinite;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .demo-play-btn-big:active { transform: scale(0.92); }
+    .demo-info { padding: 20px; }
+    .demo-info h3 { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .demo-info p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+    /* ===== DOWNLOAD SECTION ===== */
+    #download { background: var(--black); padding: 48px 20px; text-align: center; }
+    .download-title {
+      font-size: 24px; font-weight: 900; color: #fff; margin-bottom: 8px;
+    }
+    .download-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 32px; }
+    .download-platforms {
+      display: flex; justify-content: center; gap: 12px;
+      flex-wrap: wrap; margin-bottom: 32px;
+    }
+    .platform-pill {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      font-size: 12px; font-weight: 500;
+    }
+    .download-cta-large {
+      width: 100%; max-width: 340px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      background: var(--red);
+      color: #fff; font-size: 17px; font-weight: 700;
+      padding: 18px 32px;
+      border-radius: 6px;
+      margin: 0 auto;
+      position: relative; overflow: hidden;
+      box-shadow: 0 0 40px rgba(229,9,20,0.5);
+      animation: glowPulse 2.5s ease-in-out infinite;
+      transition: transform 0.15s;
+    }
+    .download-cta-large:active { transform: scale(0.96); }
+    .download-cta-large::before {
+      content: '';
+      position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.2), transparent);
+      animation: btnShine 3s ease-in-out infinite;
+    }
+    .download-glow-under {
+      width: 60%; height: 14px;
+      background: var(--red); filter: blur(14px);
+      opacity: 0.45; border-radius: 50%;
+      margin: 0 auto;
+      animation: glowPulse 2.5s ease-in-out infinite;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--dark);
+      padding: 32px 20px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .footer-logo { font-family: 'Bebas Neue',sans-serif; font-size: 28px; letter-spacing: 3px; color: var(--red); margin-bottom: 12px; }
+    .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 24px; margin-bottom: 20px; }
+    .footer-links a { font-size: 12px; color: var(--text-muted); }
+    .footer-links a:hover { color: #fff; }
+    .footer-copy { font-size: 11px; color: rgba(255,255,255,0.25); }
+
+    /* ===== STICKY BOTTOM BAR ===== */
+    #sticky-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      padding: 12px 20px;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(229,9,20,0.2);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 -4px 30px rgba(0,0,0,0.5);
+      transform: translateY(100%);
+      transition: transform 0.4s ease;
+    }
+    #sticky-bar.visible { transform: translateY(0); }
+    .sticky-cta {
+      width: 100%; max-width: 340px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      background: var(--red);
+      color: #fff; font-size: 15px; font-weight: 700;
+      padding: 14px 20px;
+      border-radius: 6px;
+      position: relative; overflow: hidden;
+      box-shadow: 0 0 25px rgba(229,9,20,0.5);
+      animation: glowPulse 2.5s ease-in-out infinite;
+      transition: transform 0.15s;
+    }
+    .sticky-cta:active { transform: scale(0.96); }
+
+    /* ===== ADMIN LINK ===== */
+    .admin-link {
+      position: fixed; bottom: 80px; right: 16px; z-index: 99;
+      width: 42px; height: 42px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .admin-link:hover { background: rgba(229,9,20,0.2); }
+
+    /* ===== PAGE TRANSITION ===== */
+    #page-transition {
+      position: fixed; inset: 0; z-index: 9998;
+      background: var(--black);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    #page-transition.active { opacity: 1; pointer-events: all; }
+
+    /* ===== RESPONSIVE TABLET ===== */
+    @media (min-width: 640px) {
+      .hero-title { font-size: 52px; }
+      .features-grid { flex-direction: row; flex-wrap: wrap; }
+      .feature-card { flex: 1; min-width: 260px; }
+      .trending-card { width: 150px; }
+    }
+    @media (min-width: 1024px) {
+      .hero-title { font-size: 64px; }
+      .features-grid { flex-wrap: nowrap; }
+    }
+
+    /* ===== SCROLL TO TOP ===== */
+    #scroll-top {
+      position: fixed; bottom: 80px; left: 16px; z-index: 99;
+      width: 42px; height: 42px;
+      background: rgba(229,9,20,0.15);
+      border: 1px solid rgba(229,9,20,0.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    #scroll-top.visible { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<!-- Page transition overlay -->
+<div id="page-transition"></div>
+
+<!-- Particles -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- Skeleton Loader -->
+<div id="skeleton-overlay">
+  <div class="skel" style="height:56px;width:200px;border-radius:8px;"></div>
+  <div class="skel" style="height:180px;border-radius:12px;"></div>
+  <div class="skel" style="height:24px;width:70%;"></div>
+  <div class="skel" style="height:18px;width:50%;"></div>
+  <div class="skel" style="height:56px;border-radius:8px;margin-top:8px;"></div>
+  <div class="skel" style="height:120px;border-radius:12px;margin-top:16px;"></div>
+  <div class="skel" style="height:120px;border-radius:12px;"></div>
+  <div class="skel" style="height:120px;border-radius:12px;"></div>
+</div>
+
+<!-- ===== HERO ===== -->
+<section id="hero">
+  <!-- Cinematic BG -->
+  <div class="hero-bg">
+    <div class="hero-bg-cell hbc-1"><div class="trending-poster-inner"></div></div>
+    <div class="hero-bg-cell hbc-2"><div class="trending-poster-inner"></div></div>
+    <div class="hero-bg-cell hbc-3"><div class="trending-poster-inner"></div></div>
+    <div class="hero-bg-cell hbc-4"><div class="trending-poster-inner"></div></div>
+    <div class="hero-bg-cell hbc-5"><div class="trending-poster-inner"></div></div>
+    <div class="hero-bg-cell hbc-6"><div class="trending-poster-inner"></div></div>
+    <div class="hero-bg-cell hbc-7"><div class="trending-poster-inner"></div></div>
+    <div class="hero-bg-cell hbc-8"><div class="trending-poster-inner"></div></div>
+    <div class="hero-bg-cell hbc-9"><div class="trending-poster-inner"></div></div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-gradient-anim"></div>
+  <div class="hero-vignette"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <div class="logo-icon">SX</div>
+      <span class="logo-text">STREAM<span>X</span></span>
+    </div>
+    <div class="nav-right">
+      <select class="lang-select">
+        <option>🌐 EN</option>
+        <option>हिन्दी</option>
+        <option>தமிழ்</option>
+        <option>తెలుగు</option>
+        <option>বাংলা</option>
+      </select>
+      <button class="signin-btn">Sign In</button>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <div class="hero-content">
+    <div class="hero-badge"><span class="badge-dot"></span>Now Streaming</div>
+    <h1 class="hero-title">
+      Unlimited movies,<br><span>TV shows</span> and more
+    </h1>
+    <p class="hero-sub">Watch anywhere. Cancel anytime.</p>
+
+    <div class="cta-wrap">
+      <button class="cta-btn" id="hero-cta" onclick="handleDownload(this, event)">
+        <span class="cta-icon">⬇</span>
+        <span>Download StreamX App</span>
+        <span style="font-size:18px;">▶</span>
+      </button>
+      <div class="cta-glow-under"></div>
+      <p class="cta-platform-text">Available on Android, iOS &amp; Smart TVs</p>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span class="scroll-text">Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ===== TRENDING NOW ===== -->
+<section class="section" id="trending">
+  <h2 class="section-title">🔥 Trending <span>Now</span></h2>
+  <div class="trending-scroll" id="trending-scroll">
+    <!-- Cards generated by JS -->
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== FEATURES ===== -->
+<section id="features">
+  <h2 class="section-title">Why <span>StreamX?</span></h2>
+  <div class="features-grid">
+
+    <div class="feature-card fc-1">
+      <span class="fc-icon">📺</span>
+      <h3 class="fc-title">Enjoy on your TV</h3>
+      <p class="fc-desc">Watch on Smart TVs, PlayStation, Xbox, Chromecast, Apple TV, Blu-ray players, and more.</p>
+      <span class="fc-badge">4K Ultra HD</span>
+    </div>
+
+    <div class="feature-card fc-2">
+      <span class="fc-icon">⬇️</span>
+      <h3 class="fc-title">Download &amp; Watch Offline</h3>
+      <p class="fc-desc">Save your favourites easily and always have something to watch — even without internet.</p>
+      <span class="fc-badge">Offline Mode</span>
+    </div>
+
+    <div class="feature-card fc-3">
+      <span class="fc-icon">📱</span>
+      <h3 class="fc-title">Watch Everywhere</h3>
+      <p class="fc-desc">Stream unlimited movies and TV shows on your phone, tablet, laptop, and TV without paying more.</p>
+      <span class="fc-badge">Multi-Device</span>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== DEMO VIDEO ===== -->
+<section id="demo">
+  <h2 class="section-title">🎬 How to <span>Install</span></h2>
+  <div class="demo-container">
+    <div class="demo-video-wrap">
+      <iframe id="demo-video-player" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+      <div class="demo-play-placeholder" id="demo-placeholder">
+        <div class="demo-play-btn-big" onclick="playDemoVideo()">▶</div>
+        <span style="font-size:13px;">Watch installation guide</span>
+      </div>
+    </div>
+    <div class="demo-info">
+      <h3 id="demo-title-text">How to Install StreamX App</h3>
+      <p id="demo-desc-text">Watch this quick guide to install the StreamX app on your Android device in under 2 minutes.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== FAQ ===== -->
+<section id="faq">
+  <h2 class="section-title">❓ Frequently Asked <span>Questions</span></h2>
+  <div class="faq-list" id="faq-list"></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== DOWNLOAD ===== -->
+<section id="download">
+  <h2 class="download-title">Ready to watch?</h2>
+  <p class="download-sub">Download the app and start streaming today.</p>
+  <div class="download-platforms">
+    <div class="platform-pill">🤖 Android</div>
+    <div class="platform-pill">🍎 iOS</div>
+    <div class="platform-pill">📺 Smart TV</div>
+    <div class="platform-pill">💻 Web</div>
+  </div>
+  <button class="download-cta-large" onclick="handleDownload(this, event)">
+    <span>⬇</span> Download App
+  </button>
+  <div style="height:12px;"></div>
+  <div class="download-glow-under"></div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-logo">STREAMX</div>
+  <div class="footer-links">
+    <a href="#">FAQ</a>
+    <a href="#">Help Centre</a>
+    <a href="#">Account</a>
+    <a href="#">Privacy</a>
+    <a href="#">Terms of Use</a>
+    <a href="#">Contact Us</a>
+    <a href="admin.html">Admin</a>
+  </div>
+  <p class="footer-copy">© 2025 StreamX. All rights reserved. StreamX is an independent streaming service concept and is not affiliated with any other streaming platform.</p>
+</footer>
+
+<!-- Sticky bottom bar -->
+<div id="sticky-bar">
+  <button class="sticky-cta" onclick="handleDownload(this, event)">
+    <span>⬇</span> Download App
+  </button>
+</div>
+
+<!-- Scroll-to-top -->
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">▲</button>
+
+<!-- Admin link -->
+<a href="admin.html" class="admin-link" title="Admin Panel">⚙</a>
+
+<script>
+// ===== CONFIG (from localStorage / defaults) =====
+function getConfig() {
+  try {
+    const c = JSON.parse(localStorage.getItem('streamx_config') || '{}');
+    return {
+      apkUrl: c.apkUrl || '',
+      demoVideoUrl: c.demoVideoUrl || '',
+      demoTitle: c.demoTitle || 'How to Install StreamX App',
+      demoDesc: c.demoDesc || 'Watch this quick guide to install the StreamX app on your Android device in under 2 minutes.',
+    };
+  } catch(e){ return { apkUrl:'', demoVideoUrl:'', demoTitle:'', demoDesc:'' }; }
+}
+
+const CONFIG = getConfig();
+
+// ===== SKELETON LOADER =====
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const sk = document.getElementById('skeleton-overlay');
+    sk.classList.add('hidden');
+    setTimeout(() => { sk.style.display='none'; }, 700);
+  }, 1200);
+});
+
+// ===== PARTICLES =====
+(function() {
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function createParticle() {
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 2 + 0.5,
+      dx: (Math.random() - 0.5) * 0.4,
+      dy: (Math.random() - 0.5) * 0.4,
+      alpha: Math.random() * 0.5 + 0.1,
+      color: Math.random() > 0.5 ? `rgba(229,9,20,` : `rgba(255,255,255,`,
+    };
+  }
+
+  for (let i = 0; i < 60; i++) particles.push(createParticle());
+
+  // Light flares
+  const flares = Array.from({length: 4}, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H * 0.6,
+    r: Math.random() * 80 + 40,
+    alpha: Math.random() * 0.12 + 0.04,
+    dx: (Math.random() - 0.5) * 0.2,
+    dy: (Math.random() - 0.5) * 0.1,
+  }));
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Flares
+    flares.forEach(f => {
+      const g = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r);
+      g.addColorStop(0, `rgba(229,9,20,${f.alpha})`);
+      g.addColorStop(1, 'transparent');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+      ctx.fill();
+      f.x += f.dx; f.y += f.dy;
+      if (f.x < -f.r) f.x = W + f.r;
+      if (f.x > W + f.r) f.x = -f.r;
+      if (f.y < -f.r) f.y = H + f.r;
+      if (f.y > H + f.r) f.y = -f.r;
+    });
+
+    // Particles
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + p.alpha + ')';
+      ctx.fill();
+      p.x += p.dx; p.y += p.dy;
+      if (p.x < 0 || p.x > W) p.dx *= -1;
+      if (p.y < 0 || p.y > H) p.dy *= -1;
+    });
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ===== TRENDING CARDS =====
+const trendingData = [
+  { title: 'Shadow Fire', genre: 'Action', cls: 'tp-1' },
+  { title: 'Dark Matter', genre: 'Sci-Fi', cls: 'tp-2' },
+  { title: 'Emerald', genre: 'Thriller', cls: 'tp-3' },
+  { title: 'Golden Hour', genre: 'Drama', cls: 'tp-4' },
+  { title: 'Deep Blue', genre: 'Mystery', cls: 'tp-5' },
+  { title: 'Crimson Kiss', genre: 'Romance', cls: 'tp-6' },
+  { title: 'Obsidian', genre: 'Crime', cls: 'tp-7' },
+  { title: 'Amber Dusk', genre: 'Adventure', cls: 'tp-8' },
+];
+const scroll = document.getElementById('trending-scroll');
+trendingData.forEach((item, i) => {
+  scroll.innerHTML += `
+    <div class="trending-card">
+      <div class="trending-poster ${item.cls}">
+        <div class="trending-poster-inner"></div>
+        <div class="poster-title">${item.title}</div>
+      </div>
+      <span class="rank-num">${i+1}</span>
+      <div class="trending-label">${item.genre}</div>
+    </div>`;
+});
+
+// ===== FAQ =====
+const faqs = [
+  { q: 'What is StreamX?', a: 'StreamX is a premium streaming service offering unlimited access to thousands of movies, TV shows, documentaries, and original series. Watch anywhere on your phone, tablet, laptop, or TV.' },
+  { q: 'How much does StreamX cost?', a: 'StreamX offers flexible plans starting from just ₹149/month. Choose from Mobile, Basic, Standard, and Premium plans based on your needs.' },
+  { q: 'Where can I watch?', a: 'You can watch StreamX on any internet-connected device — smartphones, tablets, Smart TVs, laptops, and more. Download the app from our website or your device\'s app store.' },
+  { q: 'How do I cancel?', a: 'StreamX is flexible — no contracts, no commitment. You can cancel your membership at any time from your account settings, and you will continue to have access until the end of your billing period.' },
+  { q: 'Can I download shows to watch offline?', a: 'Yes! With StreamX you can download your favourite series and movies to watch on the go, even when you don\'t have an internet connection. Available on Mobile and above plans.' },
+  { q: 'Is the APK safe to install?', a: 'Absolutely. The StreamX APK is thoroughly tested and verified. Enable "Install from Unknown Sources" in your Android settings, then run the downloaded APK to install.' },
+];
+const faqList = document.getElementById('faq-list');
+faqs.forEach((item, i) => {
+  const el = document.createElement('div');
+  el.className = 'faq-item';
+  el.innerHTML = `
+    <div class="faq-question" onclick="toggleFaq(this)">
+      <span class="faq-q-text">${item.q}</span>
+      <span class="faq-icon">+</span>
+    </div>
+    <div class="faq-answer">
+      <div class="faq-answer-inner">${item.a}</div>
+    </div>`;
+  faqList.appendChild(el);
+});
+function toggleFaq(el) {
+  const item = el.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(x => x.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// ===== DEMO VIDEO =====
+function playDemoVideo() {
+  const cfg = getConfig();
+  const url = cfg.demoVideoUrl;
+  if (!url) {
+    alert('No demo video configured yet. Please check back later or contact admin.');
+    return;
+  }
+  const player = document.getElementById('demo-video-player');
+  const placeholder = document.getElementById('demo-placeholder');
+  // Support YouTube and direct video URLs
+  if (url.includes('youtube.com') || url.includes('youtu.be')) {
+    let videoId = '';
+    try {
+      const u = new URL(url);
+      videoId = u.searchParams.get('v') || u.pathname.split('/').pop();
+    } catch(e) { videoId = url.split('/').pop(); }
+    player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    player.style.display = 'block';
+    placeholder.style.display = 'none';
+  } else {
+    // Treat as direct video URL - use video element instead
+    player.src = url;
+    player.style.display = 'block';
+    placeholder.style.display = 'none';
+  }
+}
+// Load demo info from config
+(function() {
+  const cfg = getConfig();
+  if (cfg.demoTitle) document.getElementById('demo-title-text').textContent = cfg.demoTitle;
+  if (cfg.demoDesc) document.getElementById('demo-desc-text').textContent = cfg.demoDesc;
+})();
+
+// ===== DOWNLOAD HANDLER =====
+function handleDownload(btn, event) {
+  // Ripple
+  const rect = btn.getBoundingClientRect();
+  const ripple = document.createElement('span');
+  ripple.className = 'ripple';
+  const size = Math.max(rect.width, rect.height) * 1.5;
+  ripple.style.cssText = `width:${size}px;height:${size}px;left:${event.clientX - rect.left - size/2}px;top:${event.clientY - rect.top - size/2}px;`;
+  btn.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 600);
+
+  // Trigger download
+  const cfg = getConfig();
+  if (cfg.apkUrl) {
+    const a = document.createElement('a');
+    a.href = cfg.apkUrl;
+    a.download = 'StreamX.apk';
+    a.click();
+  } else {
+    // Fallback: show message
+    showToast('⚙️ APK not configured yet. Redirecting…');
+    setTimeout(() => { window.location.href = 'admin.html'; }, 2000);
+  }
+}
+
+// ===== TOAST =====
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:rgba(30,30,30,0.95);color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;z-index:9000;border:1px solid rgba(229,9,20,0.3);backdrop-filter:blur(8px);transition:opacity 0.3s;';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.style.opacity = '0'; }, 3000);
+}
+
+// ===== STICKY BAR SHOW ON SCROLL =====
+window.addEventListener('scroll', () => {
+  const bar = document.getElementById('sticky-bar');
+  const scrollTop = document.getElementById('scroll-top');
+  if (window.scrollY > 300) {
+    bar.classList.add('visible');
+    scrollTop.classList.add('visible');
+  } else {
+    bar.classList.remove('visible');
+    scrollTop.classList.remove('visible');
+  }
+});
+
+// ===== PAGE TRANSITION =====
+document.querySelectorAll('a[href]:not([href^="#"]):not([href^="javascript"]):not([target])').forEach(link => {
+  link.addEventListener('click', e => {
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('#')) return;
+    e.preventDefault();
+    const overlay = document.getElementById('page-transition');
+    overlay.classList.add('active');
+    setTimeout(() => { window.location.href = href; }, 400);
+  });
+});
+
+// ===== INTERSECTION OBSERVER (fade-in sections) =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.feature-card, .demo-container, .faq-item').forEach(el => {
+  el.style.cssText += 'opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>

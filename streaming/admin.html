@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>StreamX Admin Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #e50914;
+      --red-dark: #b00710;
+      --red-glow: rgba(229,9,20,0.6);
+      --black: #000;
+      --dark: #141414;
+      --dark2: #1c1c1c;
+      --dark3: #242424;
+      --text: #e5e5e5;
+      --text-muted: #a3a3a3;
+      --green: #22c55e;
+      --border: rgba(255,255,255,0.08);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; outline: none; }
+    input, textarea, select {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark3);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 14px;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus, textarea:focus { border-color: rgba(229,9,20,0.5); box-shadow: 0 0 0 3px rgba(229,9,20,0.1); }
+    input[type="file"] { padding: 10px; cursor: pointer; }
+
+    /* ===== LOGIN SCREEN ===== */
+    #login-screen {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(229,9,20,0.12) 0%, transparent 60%),
+                  var(--black);
+    }
+    .login-card {
+      width: 100%; max-width: 380px;
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 28px;
+      text-align: center;
+    }
+    .login-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      letter-spacing: 3px;
+      color: var(--red);
+      margin-bottom: 6px;
+    }
+    .login-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+    .login-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-align: left;
+      display: block;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .login-field { margin-bottom: 20px; }
+    .pass-wrap { position: relative; }
+    .pass-wrap input { padding-right: 44px; }
+    .pass-toggle {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none;
+      color: var(--text-muted);
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .login-btn {
+      width: 100%;
+      background: var(--red);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px;
+      border-radius: 8px;
+      margin-top: 4px;
+      transition: background 0.2s, transform 0.15s;
+      position: relative; overflow: hidden;
+    }
+    .login-btn:active { transform: scale(0.97); background: var(--red-dark); }
+    .login-btn::before {
+      content: '';
+      position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.15), transparent);
+      animation: shine 3s ease-in-out infinite;
+    }
+    @keyframes shine {
+      0%,100%{ left:-100%; } 50%{ left:120%; }
+    }
+    .login-error {
+      color: #f87171;
+      font-size: 12px;
+      margin-top: 10px;
+      display: none;
+    }
+    .login-error.visible { display: block; }
+    .back-link {
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .back-link a { color: var(--red); }
+
+    /* ===== ADMIN PANEL ===== */
+    #admin-panel { display: none; }
+    .admin-header {
+      background: var(--dark);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .admin-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; }
+    .admin-logo span { color: var(--red); }
+    .admin-badge {
+      background: rgba(229,9,20,0.15);
+      border: 1px solid rgba(229,9,20,0.3);
+      color: #f87171;
+      font-size: 10px; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .logout-btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px; font-weight: 600;
+      padding: 7px 14px; border-radius: 6px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .logout-btn:hover { background: rgba(229,9,20,0.15); color: var(--red); }
+
+    .admin-content { padding: 24px 20px 80px; max-width: 720px; margin: 0 auto; }
+
+    /* Stats bar */
+    .stats-bar {
+      display: flex; gap: 12px;
+      margin-bottom: 28px;
+      overflow-x: auto;
+    }
+    .stat-card {
+      flex-shrink: 0;
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      min-width: 110px;
+      text-align: center;
+    }
+    .stat-val { font-size: 22px; font-weight: 800; color: var(--red); }
+    .stat-label { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+    /* Sections */
+    .admin-section {
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .admin-section::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(to right, var(--red), transparent);
+    }
+    .admin-section-title {
+      font-size: 15px; font-weight: 700; color: #fff;
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 18px;
+    }
+    .section-icon { font-size: 18px; }
+    .field-group { margin-bottom: 16px; }
+    .field-label {
+      font-size: 11px; font-weight: 600;
+      color: var(--text-muted);
+      display: flex; align-items: center; gap: 6px;
+      margin-bottom: 7px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .field-hint {
+      font-size: 11px; color: rgba(255,255,255,0.3);
+      margin-top: 5px; line-height: 1.5;
+    }
+
+    /* Upload zone */
+    .upload-zone {
+      border: 2px dashed rgba(229,9,20,0.25);
+      border-radius: 10px;
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+    .upload-zone:hover, .upload-zone.drag { border-color: rgba(229,9,20,0.6); background: rgba(229,9,20,0.05); }
+    .upload-zone input[type="file"] {
+      position: absolute; inset: 0; opacity: 0;
+      cursor: pointer; width: 100%; height: 100%;
+    }
+    .upload-icon { font-size: 32px; margin-bottom: 8px; }
+    .upload-text { font-size: 13px; color: var(--text-muted); }
+    .upload-text strong { color: var(--red); }
+    .upload-hint { font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 4px; }
+    .upload-progress {
+      margin-top: 12px;
+      height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px;
+      display: none;
+    }
+    .upload-progress-bar {
+      height: 100%; background: var(--red); border-radius: 2px;
+      transition: width 0.3s ease; width: 0%;
+    }
+    .file-info {
+      margin-top: 12px;
+      display: none;
+      background: rgba(34,197,94,0.08);
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--green);
+      text-align: left;
+    }
+
+    /* Current value display */
+    .current-val {
+      font-size: 11px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--text-muted);
+      word-break: break-all;
+      margin-bottom: 10px;
+    }
+    .current-val strong { color: var(--green); }
+
+    /* Save button */
+    .save-btn {
+      width: 100%;
+      background: var(--red);
+      color: #fff;
+      font-size: 14px; font-weight: 700;
+      padding: 13px;
+      border-radius: 8px;
+      transition: background 0.2s, transform 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      position: relative; overflow: hidden;
+    }
+    .save-btn:active { transform: scale(0.97); }
+    .save-btn:hover { background: var(--red-dark); }
+    .save-btn::before {
+      content: '';
+      position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.15), transparent);
+      animation: shine 3s ease-in-out infinite;
+    }
+    .secondary-btn {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 13px; font-weight: 600;
+      padding: 12px;
+      border-radius: 8px;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+    .secondary-btn:hover { background: rgba(255,255,255,0.1); }
+
+    /* Toast */
+    #toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: rgba(20,20,20,0.95);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      z-index: 9999;
+      border: 1px solid rgba(34,197,94,0.3);
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      transition: opacity 0.3s;
+      white-space: nowrap;
+    }
+    #toast.visible { opacity: 1; }
+    #toast.error { border-color: rgba(229,9,20,0.4); color: #f87171; }
+
+    /* Preview panel */
+    .preview-wrap {
+      margin-top: 16px;
+      border-radius: 10px;
+      overflow: hidden;
+      display: none;
+    }
+    .preview-wrap.visible { display: block; }
+    .preview-wrap iframe {
+      width: 100%; aspect-ratio: 16/9; border: none;
+    }
+    .preview-wrap video {
+      width: 100%; border-radius: 10px;
+      background: #000;
+    }
+
+    /* Info card */
+    .info-card {
+      background: rgba(229,9,20,0.06);
+      border: 1px solid rgba(229,9,20,0.2);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+    .info-card strong { color: #f87171; }
+
+    /* Current APK display */
+    .apk-current {
+      display: none;
+      align-items: center; gap: 10px;
+      background: rgba(34,197,94,0.06);
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      font-size: 13px;
+    }
+    .apk-current.visible { display: flex; }
+    .apk-icon { font-size: 24px; }
+    .apk-name { font-weight: 600; color: var(--green); }
+    .apk-size { font-size: 11px; color: var(--text-muted); }
+    .apk-remove {
+      margin-left: auto;
+      background: rgba(229,9,20,0.15);
+      border: 1px solid rgba(229,9,20,0.3);
+      color: #f87171;
+      font-size: 11px; padding: 4px 10px; border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* View page link */
+    .view-page-btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px; font-weight: 600;
+      padding: 10px;
+      border-radius: 8px;
+      transition: all 0.2s;
+      margin-top: 20px;
+      text-decoration: none;
+    }
+    .view-page-btn:hover { background: rgba(255,255,255,0.09); color: #fff; }
+  </style>
+</head>
+<body>
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">STREAM<span style="color:#fff">X</span></div>
+    <p class="login-subtitle">Admin Panel — Authorised Access Only</p>
+
+    <div class="login-field">
+      <label class="login-label" for="admin-key">Admin Key</label>
+      <div class="pass-wrap">
+        <input type="password" id="admin-key" placeholder="Enter admin key" autocomplete="off" />
+        <button class="pass-toggle" onclick="togglePass()" id="pass-eye">👁</button>
+      </div>
+    </div>
+
+    <button class="login-btn" onclick="doLogin()">
+      🔐 Access Admin Panel
+    </button>
+    <p class="login-error" id="login-error">❌ Invalid admin key. Please try again.</p>
+
+    <p class="back-link"><a href="index.html">← Back to StreamX</a></p>
+  </div>
+</div>
+
+<!-- ===== ADMIN PANEL ===== -->
+<div id="admin-panel">
+  <!-- Header -->
+  <div class="admin-header">
+    <div>
+      <div class="admin-logo">STREAM<span>X</span></div>
+    </div>
+    <div class="admin-badge">ADMIN</div>
+    <button class="logout-btn" onclick="doLogout()">Logout</button>
+  </div>
+
+  <div class="admin-content">
+
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-val" id="stat-apk">–</div>
+        <div class="stat-label">APK Status</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" id="stat-video">–</div>
+        <div class="stat-label">Video Status</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" id="stat-updated">–</div>
+        <div class="stat-label">Last Updated</div>
+      </div>
+    </div>
+
+    <!-- APK Upload Section -->
+    <div class="admin-section">
+      <div class="admin-section-title">
+        <span class="section-icon">📦</span>
+        APK Management
+      </div>
+
+      <div class="info-card">
+        <strong>Note:</strong> Since this is a static site hosted on GitHub Pages, you cannot store binary files via this panel. Provide a <strong>direct download URL</strong> to your APK (e.g., GitHub Releases, Google Drive direct link, or any CDN). Users will be redirected to that URL when they tap "Download App".
+      </div>
+
+      <!-- Current APK -->
+      <div class="apk-current" id="apk-current-display">
+        <span class="apk-icon">📱</span>
+        <div>
+          <div class="apk-name" id="apk-name-display">StreamX.apk</div>
+          <div class="apk-size" id="apk-url-display"></div>
+        </div>
+        <button class="apk-remove" onclick="removeApk()">Remove</button>
+      </div>
+
+      <!-- URL input -->
+      <div class="field-group">
+        <label class="field-label">APK Download URL</label>
+        <input type="url" id="apk-url-input" placeholder="https://example.com/StreamX.apk" />
+        <div class="field-hint">Paste the direct download link to your APK file. Supports GitHub Releases, Google Drive (direct), Dropbox, or any CDN URL.</div>
+      </div>
+
+      <!-- APK name -->
+      <div class="field-group">
+        <label class="field-label">APK Display Name</label>
+        <input type="text" id="apk-display-name" placeholder="StreamX v1.0.apk" value="StreamX.apk" />
+        <div class="field-hint">This name is shown to users. Does not affect the actual file.</div>
+      </div>
+
+      <!-- APK version -->
+      <div class="field-group">
+        <label class="field-label">Version</label>
+        <input type="text" id="apk-version" placeholder="v1.0.0" />
+      </div>
+
+      <button class="save-btn" onclick="saveApkConfig()">💾 Save APK Settings</button>
+      <button class="secondary-btn" onclick="testApkUrl()">🔗 Test APK URL</button>
+    </div>
+
+    <!-- Demo Video Section -->
+    <div class="admin-section">
+      <div class="admin-section-title">
+        <span class="section-icon">🎬</span>
+        Installation Demo Video
+      </div>
+
+      <div class="info-card">
+        <strong>Supported:</strong> YouTube URLs (youtube.com/watch?v=..., youtu.be/...) or direct video URLs (MP4, WebM). The video will be embedded in the "How to Install" section on the main page.
+      </div>
+
+      <!-- Current video -->
+      <div class="field-group">
+        <label class="field-label">Current Video URL</label>
+        <div class="current-val" id="current-video-display"><em>Not set</em></div>
+      </div>
+
+      <!-- Video URL -->
+      <div class="field-group">
+        <label class="field-label">New Video URL</label>
+        <input type="url" id="video-url-input" placeholder="https://youtube.com/watch?v=... or direct MP4 URL" />
+        <div class="field-hint">Supports YouTube and direct video URLs. For YouTube, paste the full watch URL.</div>
+      </div>
+
+      <!-- Video title -->
+      <div class="field-group">
+        <label class="field-label">Video Title</label>
+        <input type="text" id="video-title-input" placeholder="How to Install StreamX App" />
+      </div>
+
+      <!-- Video description -->
+      <div class="field-group">
+        <label class="field-label">Video Description</label>
+        <textarea id="video-desc-input" rows="3" placeholder="Brief description shown under the video player…"></textarea>
+      </div>
+
+      <button class="save-btn" onclick="saveVideoConfig()">💾 Save Video Settings</button>
+      <button class="secondary-btn" onclick="previewVideo()">▶ Preview Video</button>
+
+      <div class="preview-wrap" id="video-preview">
+        <iframe id="preview-iframe" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+      </div>
+    </div>
+
+    <!-- App Info Section -->
+    <div class="admin-section">
+      <div class="admin-section-title">
+        <span class="section-icon">⚙️</span>
+        App Info &amp; Branding
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">App Name</label>
+        <input type="text" id="app-name-input" placeholder="StreamX" />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Tagline</label>
+        <input type="text" id="app-tagline-input" placeholder="Watch anywhere. Cancel anytime." />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Available Platforms (comma separated)</label>
+        <input type="text" id="platforms-input" placeholder="Android, iOS, Smart TVs" />
+      </div>
+
+      <button class="save-btn" onclick="saveAppInfo()">💾 Save App Info</button>
+    </div>
+
+    <!-- Export / Reset -->
+    <div class="admin-section">
+      <div class="admin-section-title">
+        <span class="section-icon">🛠️</span>
+        Tools
+      </div>
+      <button class="secondary-btn" onclick="exportConfig()">📤 Export Config (JSON)</button>
+      <button class="secondary-btn" onclick="importConfig()">📥 Import Config (JSON)</button>
+      <button class="secondary-btn" onclick="resetConfig()" style="color:#f87171;border-color:rgba(229,9,20,0.3);">🗑️ Reset All Settings</button>
+    </div>
+
+    <!-- View page link -->
+    <a href="index.html" class="view-page-btn">🌐 View StreamX Landing Page →</a>
+
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ===== CONSTANTS =====
+const ADMIN_KEY = 'ADMIN123';
+const STORAGE_KEY = 'streamx_config';
+
+// ===== HELPERS =====
+function getConfig() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+  catch(e) { return {}; }
+}
+function saveConfig(cfg) {
+  cfg.lastUpdated = new Date().toISOString();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg));
+  updateStats(cfg);
+}
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'visible' + (isError ? ' error' : '');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.className = ''; }, 3000);
+}
+
+// ===== LOGIN =====
+function togglePass() {
+  const inp = document.getElementById('admin-key');
+  const eye = document.getElementById('pass-eye');
+  if (inp.type === 'password') { inp.type = 'text'; eye.textContent = '🙈'; }
+  else { inp.type = 'password'; eye.textContent = '👁'; }
+}
+document.getElementById('admin-key').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+function doLogin() {
+  const key = document.getElementById('admin-key').value.trim();
+  const err = document.getElementById('login-error');
+  if (key === ADMIN_KEY) {
+    sessionStorage.setItem('sx_admin', '1');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    loadAdminData();
+  } else {
+    err.classList.add('visible');
+    document.getElementById('admin-key').value = '';
+    setTimeout(() => err.classList.remove('visible'), 3000);
+  }
+}
+function doLogout() {
+  sessionStorage.removeItem('sx_admin');
+  document.getElementById('admin-panel').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('admin-key').value = '';
+}
+// Auto-login if session exists
+window.addEventListener('DOMContentLoaded', () => {
+  if (sessionStorage.getItem('sx_admin') === '1') {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    loadAdminData();
+  }
+});
+
+// ===== LOAD DATA =====
+function loadAdminData() {
+  const cfg = getConfig();
+
+  // APK
+  if (cfg.apkUrl) {
+    document.getElementById('apk-url-input').value = cfg.apkUrl;
+    document.getElementById('apk-current-display').classList.add('visible');
+    document.getElementById('apk-name-display').textContent = cfg.apkDisplayName || 'StreamX.apk';
+    document.getElementById('apk-url-display').textContent = cfg.apkUrl;
+  }
+  if (cfg.apkDisplayName) document.getElementById('apk-display-name').value = cfg.apkDisplayName;
+  if (cfg.apkVersion) document.getElementById('apk-version').value = cfg.apkVersion;
+
+  // Video
+  if (cfg.demoVideoUrl) {
+    document.getElementById('video-url-input').value = cfg.demoVideoUrl;
+    document.getElementById('current-video-display').innerHTML = `<strong>${cfg.demoVideoUrl}</strong>`;
+  }
+  if (cfg.demoTitle) document.getElementById('video-title-input').value = cfg.demoTitle;
+  if (cfg.demoDesc) document.getElementById('video-desc-input').value = cfg.demoDesc;
+
+  // App info
+  if (cfg.appName) document.getElementById('app-name-input').value = cfg.appName;
+  if (cfg.appTagline) document.getElementById('app-tagline-input').value = cfg.appTagline;
+  if (cfg.platforms) document.getElementById('platforms-input').value = cfg.platforms;
+
+  updateStats(cfg);
+}
+
+function updateStats(cfg) {
+  document.getElementById('stat-apk').textContent = cfg.apkUrl ? '✅' : '–';
+  document.getElementById('stat-video').textContent = cfg.demoVideoUrl ? '✅' : '–';
+  if (cfg.lastUpdated) {
+    const d = new Date(cfg.lastUpdated);
+    document.getElementById('stat-updated').textContent = d.toLocaleDateString('en-IN', {day:'numeric',month:'short'});
+  }
+}
+
+// ===== SAVE APK =====
+function saveApkConfig() {
+  const url = document.getElementById('apk-url-input').value.trim();
+  const name = document.getElementById('apk-display-name').value.trim() || 'StreamX.apk';
+  const version = document.getElementById('apk-version').value.trim();
+  if (!url) { showToast('Please enter an APK URL', true); return; }
+  const cfg = getConfig();
+  cfg.apkUrl = url;
+  cfg.apkDisplayName = name;
+  cfg.apkVersion = version;
+  saveConfig(cfg);
+  document.getElementById('apk-current-display').classList.add('visible');
+  document.getElementById('apk-name-display').textContent = name;
+  document.getElementById('apk-url-display').textContent = url;
+  showToast('✅ APK settings saved!');
+}
+
+function removeApk() {
+  if (!confirm('Remove APK URL?')) return;
+  const cfg = getConfig();
+  delete cfg.apkUrl; delete cfg.apkDisplayName; delete cfg.apkVersion;
+  saveConfig(cfg);
+  document.getElementById('apk-current-display').classList.remove('visible');
+  document.getElementById('apk-url-input').value = '';
+  showToast('APK URL removed');
+}
+
+function testApkUrl() {
+  const url = document.getElementById('apk-url-input').value.trim();
+  if (!url) { showToast('Enter a URL first', true); return; }
+  window.open(url, '_blank');
+}
+
+// ===== SAVE VIDEO =====
+function saveVideoConfig() {
+  const url = document.getElementById('video-url-input').value.trim();
+  const title = document.getElementById('video-title-input').value.trim() || 'How to Install StreamX App';
+  const desc = document.getElementById('video-desc-input').value.trim();
+  if (!url) { showToast('Please enter a video URL', true); return; }
+  const cfg = getConfig();
+  cfg.demoVideoUrl = url;
+  cfg.demoTitle = title;
+  cfg.demoDesc = desc;
+  saveConfig(cfg);
+  document.getElementById('current-video-display').innerHTML = `<strong>${url}</strong>`;
+  showToast('✅ Video settings saved!');
+}
+
+function previewVideo() {
+  const url = document.getElementById('video-url-input').value.trim();
+  if (!url) { showToast('Enter a video URL first', true); return; }
+  const wrap = document.getElementById('video-preview');
+  const iframe = document.getElementById('preview-iframe');
+  if (url.includes('youtube.com') || url.includes('youtu.be')) {
+    let videoId = '';
+    try {
+      const u = new URL(url);
+      videoId = u.searchParams.get('v') || u.pathname.split('/').pop();
+    } catch(e) { videoId = url.split('/').pop(); }
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=0`;
+    iframe.style.display = 'block';
+    wrap.classList.add('visible');
+  } else {
+    // Direct video
+    wrap.innerHTML = `<video controls src="${url}" style="width:100%;border-radius:10px;background:#000;"></video>`;
+    wrap.classList.add('visible');
+  }
+}
+
+// ===== SAVE APP INFO =====
+function saveAppInfo() {
+  const cfg = getConfig();
+  cfg.appName = document.getElementById('app-name-input').value.trim();
+  cfg.appTagline = document.getElementById('app-tagline-input').value.trim();
+  cfg.platforms = document.getElementById('platforms-input').value.trim();
+  saveConfig(cfg);
+  showToast('✅ App info saved!');
+}
+
+// ===== EXPORT / IMPORT / RESET =====
+function exportConfig() {
+  const cfg = getConfig();
+  const blob = new Blob([JSON.stringify(cfg, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'streamx-config.json';
+  a.click();
+  showToast('Config exported!');
+}
+function importConfig() {
+  const input = document.createElement('input');
+  input.type = 'file'; input.accept = '.json,application/json';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const cfg = JSON.parse(ev.target.result);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg));
+        showToast('✅ Config imported!');
+        loadAdminData();
+      } catch(err) { showToast('Invalid JSON file', true); }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+function resetConfig() {
+  if (!confirm('Reset ALL settings? This cannot be undone.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  loadAdminData();
+  showToast('All settings reset.');
+}
+</script>
+</body>
+</html>
