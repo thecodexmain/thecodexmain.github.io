@@ -406,6 +406,7 @@
       min-height: 178px;
       transform: translateZ(0);
       transition: transform 240ms ease, border-color 240ms ease;
+      cursor: pointer;
     }
     .card:active { transform: scale(0.992); }
     .card:hover { border-color: rgba(229, 9, 20, 0.30); }
@@ -428,7 +429,7 @@
       inset: 0;
       background:
         radial-gradient(400px 180px at 70% 30%, rgba(229,9,20,0.20), transparent 55%),
-        linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.92) 100%),
+        linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.92) 100%),
         linear-gradient(135deg, rgba(25,25,28,1), rgba(10,10,12,1));
       filter: saturate(1.1);
     }
@@ -440,6 +441,15 @@
         radial-gradient(circle at 25% 35%, rgba(255,255,255,0.08), transparent 35%),
         radial-gradient(circle at 80% 25%, rgba(255,255,255,0.06), transparent 40%);
       opacity: 0.9;
+    }
+    .poster[data-thumb] {
+      background-image:
+        radial-gradient(400px 180px at 70% 30%, rgba(229,9,20,0.18), transparent 55%),
+        linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.95) 100%),
+        var(--thumb);
+      background-size: cover;
+      background-position: center;
+      filter: saturate(1.06) contrast(1.05);
     }
     .card-info {
       position: absolute;
@@ -646,6 +656,14 @@
     .admin-note { color: var(--muted2); font-size: 12.5px; line-height: 1.35; }
 
     footer { padding: 40px 0 calc(110px + env(safe-area-inset-bottom)); color: rgba(255,255,255,0.45); font-size: 12px; }
+
+    /* Section reveal (more professional motion) */
+    .reveal { opacity: 0; transform: translateY(10px); transition: opacity 700ms ease, transform 700ms ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-bg, .hero-gradient, .btn-download { animation: none !important; }
+      .reveal { transition: none; opacity: 1; transform: none; }
+    }
   </style>
 </head>
 <body>
@@ -704,7 +722,7 @@
   </section>
 
   <main>
-    <section class="section" id="trending">
+    <section class="section reveal" id="trending">
       <div class="container">
         <div class="section-title">
           <h2>Trending Now</h2>
@@ -712,32 +730,32 @@
         </div>
 
         <div class="carousel" id="trendingCarousel" aria-label="Trending carousel">
-          <article class="card skeleton">
-            <div class="poster"></div>
+          <article class="card skeleton" data-download="1" tabindex="0" role="button" aria-label="Download app">
+            <div class="poster" data-thumb="1"></div>
             <div class="card-info">
               <div class="chip"><span class="chip-dot"></span> New</div>
               <div class="card-title">Shadow City</div>
             </div>
             <div class="rank">1</div>
           </article>
-          <article class="card skeleton">
-            <div class="poster"></div>
+          <article class="card skeleton" data-download="1" tabindex="0" role="button" aria-label="Download app">
+            <div class="poster" data-thumb="2"></div>
             <div class="card-info">
               <div class="chip"><span class="chip-dot"></span> Trending</div>
               <div class="card-title">Neon Drift</div>
             </div>
             <div class="rank">2</div>
           </article>
-          <article class="card skeleton">
-            <div class="poster"></div>
+          <article class="card skeleton" data-download="1" tabindex="0" role="button" aria-label="Download app">
+            <div class="poster" data-thumb="3"></div>
             <div class="card-info">
               <div class="chip"><span class="chip-dot"></span> Top 10</div>
               <div class="card-title">Afterlight</div>
             </div>
             <div class="rank">3</div>
           </article>
-          <article class="card skeleton">
-            <div class="poster"></div>
+          <article class="card skeleton" data-download="1" tabindex="0" role="button" aria-label="Download app">
+            <div class="poster" data-thumb="4"></div>
             <div class="card-info">
               <div class="chip"><span class="chip-dot"></span> Hot</div>
               <div class="card-title">Crimson Code</div>
@@ -748,7 +766,7 @@
       </div>
     </section>
 
-    <section class="section" id="features">
+    <section class="section reveal" id="features">
       <div class="container">
         <div class="section-title">
           <h2>Features</h2>
@@ -796,7 +814,7 @@
       </div>
     </section>
 
-    <section class="section" id="faq">
+    <section class="section reveal" id="faq">
       <div class="container">
         <div class="section-title">
           <h2>FAQ</h2>
@@ -829,7 +847,7 @@
       </div>
     </section>
 
-    <section class="section" id="demo">
+    <section class="section reveal" id="demo">
       <div class="container">
         <div class="section-title">
           <h2>Demo (How to install)</h2>
@@ -1012,11 +1030,159 @@
       downloadUrl(apk.name, apk.url);
     }
 
+    function handleCardDownload(evt) {
+      const card = evt.currentTarget;
+      // Use pointer coordinates for ripple even on cards
+      const fakeEvt = {
+        clientX: evt.clientX || (card.getBoundingClientRect().left + 20),
+        clientY: evt.clientY || (card.getBoundingClientRect().top + 20),
+        currentTarget: card,
+      };
+      addRipple(card, fakeEvt);
+      const apk = getSavedApk();
+      if (!apk) {
+        alert('APK not uploaded yet.');
+        return;
+      }
+      downloadUrl(apk.name, apk.url);
+    }
+
     $('downloadBtn').addEventListener('click', handleDownload);
     $('stickyDownload').addEventListener('click', handleDownload);
 
+    // Trending cards click-to-download + keyboard support
+    document.querySelectorAll('[data-download="1"]').forEach((el) => {
+      el.addEventListener('click', handleCardDownload);
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleCardDownload(e);
+        }
+      });
+    });
+
     function refreshDynamicContent() {
       $('brandPrefix').textContent = getBrandPrefix();
+
+      // Inline, original “realistic” thumbnails (non-copyright). Data-URIs so no external assets.
+      const thumbs = {
+        1: "data:image/svg+xml;utf8," + encodeURIComponent(`<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns='http://www.w3.org/2000/svg' width='600' height='900'>
+  <defs>
+    <linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0' stop-color='#0a0a0d'/>
+      <stop offset='0.55' stop-color='#15070b'/>
+      <stop offset='1' stop-color='#050509'/>
+    </linearGradient>
+    <radialGradient id='glow' cx='40%' cy='25%' r='70%'>
+      <stop offset='0' stop-color='#e50914' stop-opacity='0.45'/>
+      <stop offset='1' stop-color='#e50914' stop-opacity='0'/>
+    </radialGradient>
+    <filter id='grain'>
+      <feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/>
+      <feColorMatrix type='matrix' values='1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .18 0'/>
+    </filter>
+  </defs>
+  <rect width='600' height='900' fill='url(#bg)'/>
+  <rect width='600' height='900' fill='url(#glow)'/>
+  <g opacity='0.95'>
+    <rect x='48' y='110' width='504' height='640' rx='34' fill='#0f0f14'/>
+    <rect x='78' y='150' width='444' height='420' rx='26' fill='#1c0b12'/>
+    <circle cx='160' cy='290' r='120' fill='#e50914' opacity='0.18'/>
+    <circle cx='450' cy='380' r='150' fill='#483dff' opacity='0.12'/>
+    <rect x='78' y='600' width='444' height='96' rx='22' fill='#0b0b10'/>
+  </g>
+  <rect width='600' height='900' filter='url(#grain)' opacity='0.35'/>
+  <rect width='600' height='900' fill='black' opacity='0.22'/>
+</svg>`),
+        2: "data:image/svg+xml;utf8," + encodeURIComponent(`<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns='http://www.w3.org/2000/svg' width='600' height='900'>
+  <defs>
+    <linearGradient id='bg' x1='0' y1='0' x2='0' y2='1'>
+      <stop offset='0' stop-color='#08080b'/>
+      <stop offset='0.55' stop-color='#061120'/>
+      <stop offset='1' stop-color='#030305'/>
+    </linearGradient>
+    <radialGradient id='neon' cx='70%' cy='25%' r='70%'>
+      <stop offset='0' stop-color='#00d1ff' stop-opacity='0.30'/>
+      <stop offset='0.6' stop-color='#e50914' stop-opacity='0.16'/>
+      <stop offset='1' stop-color='#000000' stop-opacity='0'/>
+    </radialGradient>
+    <filter id='blur20'><feGaussianBlur stdDeviation='20'/></filter>
+  </defs>
+  <rect width='600' height='900' fill='url(#bg)'/>
+  <rect width='600' height='900' fill='url(#neon)'/>
+  <g opacity='0.9'>
+    <circle cx='160' cy='340' r='170' fill='#00d1ff' opacity='0.18' filter='url(#blur20)'/>
+    <circle cx='430' cy='280' r='150' fill='#e50914' opacity='0.14' filter='url(#blur20)'/>
+    <rect x='70' y='130' width='460' height='680' rx='36' fill='#0b0b10' opacity='0.95'/>
+    <rect x='100' y='170' width='400' height='460' rx='26' fill='#0b1a2a' opacity='0.95'/>
+  </g>
+  <rect width='600' height='900' fill='black' opacity='0.25'/>
+</svg>`),
+        3: "data:image/svg+xml;utf8," + encodeURIComponent(`<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns='http://www.w3.org/2000/svg' width='600' height='900'>
+  <defs>
+    <linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0' stop-color='#09090c'/>
+      <stop offset='0.55' stop-color='#120a1a'/>
+      <stop offset='1' stop-color='#020203'/>
+    </linearGradient>
+    <radialGradient id='soft' cx='35%' cy='30%' r='70%'>
+      <stop offset='0' stop-color='#ffffff' stop-opacity='0.12'/>
+      <stop offset='0.4' stop-color='#e50914' stop-opacity='0.10'/>
+      <stop offset='1' stop-color='#000000' stop-opacity='0'/>
+    </radialGradient>
+    <filter id='grain'>
+      <feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/>
+      <feColorMatrix type='matrix' values='1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .16 0'/>
+    </filter>
+  </defs>
+  <rect width='600' height='900' fill='url(#bg)'/>
+  <rect width='600' height='900' fill='url(#soft)'/>
+  <g opacity='0.92'>
+    <rect x='58' y='120' width='484' height='660' rx='34' fill='#0b0b10'/>
+    <rect x='88' y='160' width='424' height='420' rx='26' fill='#1b1030'/>
+    <rect x='88' y='604' width='424' height='120' rx='24' fill='#0f0f14'/>
+    <circle cx='410' cy='300' r='150' fill='#e50914' opacity='0.14'/>
+  </g>
+  <rect width='600' height='900' filter='url(#grain)' opacity='0.35'/>
+  <rect width='600' height='900' fill='black' opacity='0.22'/>
+</svg>`),
+        4: "data:image/svg+xml;utf8," + encodeURIComponent(`<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns='http://www.w3.org/2000/svg' width='600' height='900'>
+  <defs>
+    <linearGradient id='bg' x1='0' y1='0' x2='0' y2='1'>
+      <stop offset='0' stop-color='#09090b'/>
+      <stop offset='0.6' stop-color='#190408'/>
+      <stop offset='1' stop-color='#030304'/>
+    </linearGradient>
+    <radialGradient id='heat' cx='55%' cy='25%' r='75%'>
+      <stop offset='0' stop-color='#ff6a6f' stop-opacity='0.18'/>
+      <stop offset='0.35' stop-color='#e50914' stop-opacity='0.18'/>
+      <stop offset='1' stop-color='#000000' stop-opacity='0'/>
+    </radialGradient>
+    <filter id='blur16'><feGaussianBlur stdDeviation='16'/></filter>
+  </defs>
+  <rect width='600' height='900' fill='url(#bg)'/>
+  <rect width='600' height='900' fill='url(#heat)'/>
+  <g opacity='0.92'>
+    <circle cx='180' cy='300' r='180' fill='#e50914' opacity='0.16' filter='url(#blur16)'/>
+    <circle cx='440' cy='360' r='160' fill='#ff6a6f' opacity='0.10' filter='url(#blur16)'/>
+    <rect x='68' y='128' width='464' height='672' rx='36' fill='#0b0b10'/>
+    <rect x='98' y='168' width='404' height='460' rx='26' fill='#2b0306'/>
+  </g>
+  <rect width='600' height='900' fill='black' opacity='0.25'/>
+</svg>`),
+      };
+
+      document.querySelectorAll('.poster[data-thumb]').forEach((el) => {
+        const key = el.getAttribute('data-thumb');
+        if (!key || !thumbs[key]) return;
+        el.style.setProperty('--thumb', `url('${thumbs[key].replace(/'/g, "%27")}')`);
+        // Keep a truthy attribute so CSS applies poster[data-thumb] styling
+        el.setAttribute('data-thumb', '1');
+      });
 
       const apk = getSavedApk();
       $('apkStatus').textContent = apk ? `Ready: ${apk.name}` : 'APK not uploaded yet';
@@ -1052,6 +1218,22 @@
     $('signInBtn').addEventListener('click', () => {
       alert('Sign In (demo)');
     });
+
+    // Section reveal on scroll
+    const revealEls = Array.from(document.querySelectorAll('.reveal'));
+    if ('IntersectionObserver' in window && revealEls.length) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      revealEls.forEach((el) => io.observe(el));
+    } else {
+      revealEls.forEach((el) => el.classList.add('in'));
+    }
 
     (async () => {
       await tryLoadServerSettings();
