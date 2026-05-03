@@ -3,905 +3,1125 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CryptoSwap – Sell USDT with 100% Advance Payment Security</title>
-  <meta name="description" content="CryptoSwap – The most trusted platform to sell USDT with 100% advance payment guarantee. Bank Transfer, CDM Deposit, Physical Cash. Verified clients only." />
+  <title>StreamFlix – Unlimited movies, TV shows and more</title>
+  <meta name="description" content="Premium OTT streaming landing page concept with cinematic dark theme, trending carousel, features, FAQ, and app download CTA." />
 
-  <!-- Google Fonts -->
+  <!-- Typography (Netflix-inspired, not identical) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- AOS – Animate On Scroll -->
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            dark: '#0b0f1a',
-            'dark-card': 'rgba(255,255,255,0.04)',
-            cyan: { DEFAULT: '#00e5ff', 900: '#00b8d4' },
-            teal: { DEFAULT: '#00bfa5' },
-          },
-          fontFamily: { sans: ['Inter', 'sans-serif'] },
-          backgroundImage: {
-            'hero-glow': 'radial-gradient(ellipse 80% 60% at 50% -20%, rgba(0,229,255,0.18) 0%, transparent 70%)',
-            'card-glow': 'linear-gradient(135deg, rgba(0,229,255,0.08) 0%, rgba(0,191,165,0.06) 100%)',
-          },
-        },
-      },
-    };
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
   <style>
-    /* ===== Base ===== */
-    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --bg: #000000;
+      --bg2: #08080b;
+      --card: rgba(255,255,255,0.06);
+      --stroke: rgba(255,255,255,0.10);
+      --soft: rgba(255,255,255,0.70);
+      --muted: rgba(255,255,255,0.62);
+      --muted2: rgba(255,255,255,0.45);
+      --red: #e50914;
+      --red2: #b20710;
+      --deep-red: #2b0306;
+      --shadow: 0 18px 55px rgba(0,0,0,0.65);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
-      background-color: #0b0f1a;
-      color: #e2e8f0;
-      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background:
+        radial-gradient(1200px 800px at 50% 0%, rgba(229, 9, 20, 0.10), transparent 55%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 60%, var(--bg) 100%);
+      color: #ffffff;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
       overflow-x: hidden;
     }
 
-    /* ===== Gradient text ===== */
-    .grad-text {
-      background: linear-gradient(90deg, #00e5ff, #00bfa5);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .grad-text-blue {
-      background: linear-gradient(90deg, #60a5fa, #00e5ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+
+    .container { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
     }
 
-    /* ===== Glassmorphism card ===== */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(0, 229, 255, 0.12);
+    /* ===== Top Bar ===== */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      padding: 16px 0;
+      transition: background 240ms ease, backdrop-filter 240ms ease, box-shadow 240ms ease;
+    }
+    .topbar.scrolled {
+      background: rgba(0,0,0,0.62);
       backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-radius: 1rem;
-      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.42);
     }
-    .glass-card:hover {
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 0 32px rgba(0, 229, 255, 0.18);
-      border-color: rgba(0, 229, 255, 0.35);
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
     }
 
-    /* ===== Glow button ===== */
-    .btn-glow {
-      background: linear-gradient(135deg, #00e5ff, #00bfa5);
-      color: #0b0f1a;
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      user-select: none;
+    }
+    .logo-mark {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--red) 0%, #ff3d45 50%, var(--red2) 100%);
+      position: relative;
+      box-shadow: 0 12px 35px rgba(229, 9, 20, 0.35);
+      overflow: hidden;
+    }
+    .logo-mark::before {
+      content: '';
+      position: absolute;
+      inset: -30% -40%;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.45) 45%, transparent 85%);
+      transform: rotate(20deg);
+      opacity: 0.85;
+    }
+    .logo-text { font-size: 18px; }
+    .logo-text span { color: var(--red); }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .select {
+      height: 36px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.35);
+      color: rgba(255,255,255,0.92);
+      outline: none;
+      appearance: none;
+    }
+    .btn {
+      height: 36px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.92);
       font-weight: 700;
-      border-radius: 9999px;
-      padding: 0.75rem 2rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.45);
       cursor: pointer;
-      border: none;
-      text-decoration: none;
-      font-size: 1rem;
+      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+      user-select: none;
     }
-    .btn-glow:hover {
-      box-shadow: 0 0 40px rgba(0, 229, 255, 0.7), 0 0 80px rgba(0, 229, 255, 0.25);
-      transform: translateY(-2px) scale(1.04);
+    .btn:hover { background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.22); }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary {
+      border-color: rgba(229, 9, 20, 0.35);
+      background: rgba(229, 9, 20, 0.16);
+    }
+    .btn-primary:hover { background: rgba(229, 9, 20, 0.22); }
+
+    /* ===== Hero ===== */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      align-items: flex-end;
+      padding: 92px 0 92px;
+      overflow: hidden;
+      isolation: isolate;
     }
 
-    /* ===== Outline button ===== */
-    .btn-outline {
-      background: transparent;
-      color: #00e5ff;
-      font-weight: 600;
-      border-radius: 9999px;
-      padding: 0.75rem 2rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: all 0.3s ease;
-      border: 1.5px solid rgba(0, 229, 255, 0.5);
-      text-decoration: none;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    .btn-outline:hover {
-      background: rgba(0, 229, 255, 0.08);
-      border-color: #00e5ff;
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.25);
-    }
-
-    /* ===== Navbar ===== */
-    #navbar {
-      transition: background 0.3s, box-shadow 0.3s;
-    }
-    #navbar.scrolled {
-      background: rgba(11, 15, 26, 0.92);
-      box-shadow: 0 2px 24px rgba(0, 229, 255, 0.08);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-    }
-
-    /* ===== Hero animated gradient background ===== */
     .hero-bg {
       position: absolute;
+      inset: -10% -10% -10% -10%;
+      z-index: -3;
+      filter: contrast(1.1) saturate(1.15);
+      transform-origin: center;
+      animation: bgZoom 22s ease-in-out infinite alternate;
+    }
+    @keyframes bgZoom {
+      0% { transform: scale(1) translate3d(0, 0, 0); }
+      100% { transform: scale(1.08) translate3d(-1.5%, -1%, 0); }
+    }
+
+    .hero-collage {
+      position: absolute;
       inset: 0;
-      z-index: 0;
-      overflow: hidden;
+      background:
+        radial-gradient(900px 520px at 15% 35%, rgba(255,255,255,0.08), transparent 52%),
+        radial-gradient(700px 480px at 85% 30%, rgba(229, 9, 20, 0.10), transparent 55%),
+        linear-gradient(180deg, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.92) 75%),
+        linear-gradient(90deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.55) 100%),
+        url('data:image/svg+xml;utf8,\
+        <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900">\
+          <defs>\
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">\
+              <stop offset="0" stop-color="%230b0b0f"/>\
+              <stop offset="0.5" stop-color="%23050507"/>\
+              <stop offset="1" stop-color="%230b0b0f"/>\
+            </linearGradient>\
+          </defs>\
+          <rect width="1600" height="900" fill="url(%23g)"/>\
+          <g opacity="0.95">\
+            <rect x="80" y="90" width="300" height="430" rx="22" fill="%23111114"/>\
+            <rect x="120" y="130" width="220" height="260" rx="18" fill="%232b0306"/>\
+            <rect x="420" y="110" width="310" height="450" rx="22" fill="%23101013"/>\
+            <rect x="460" y="150" width="230" height="280" rx="18" fill="%230d1b2a"/>\
+            <rect x="770" y="70" width="330" height="480" rx="22" fill="%23121216"/>\
+            <rect x="810" y="120" width="250" height="300" rx="18" fill="%231b1030"/>\
+            <rect x="1140" y="115" width="320" height="450" rx="22" fill="%23101013"/>\
+            <rect x="1180" y="160" width="240" height="290" rx="18" fill="%231a1a1a"/>\
+            <circle cx="300" cy="560" r="140" fill="%23e50914" opacity="0.10"/>\
+            <circle cx="1250" cy="620" r="180" fill="%23e50914" opacity="0.08"/>\
+          </g>\
+          <g opacity="0.25">\
+            <path d="M0,720 C240,640 420,820 640,750 C900,670 1110,910 1600,760 L1600,900 L0,900 Z" fill="%23e50914"/>\
+          </g>\
+        </svg>');
+      background-size: cover;
+      background-position: center;
+      filter: blur(1px);
     }
-    .hero-bg::before {
-      content: '';
+
+    .hero-vignette {
       position: absolute;
-      top: -30%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 900px;
-      height: 600px;
-      background: radial-gradient(ellipse, rgba(0, 229, 255, 0.14) 0%, transparent 70%);
-      animation: heroPulse 6s ease-in-out infinite alternate;
-    }
-    .hero-bg::after {
-      content: '';
-      position: absolute;
-      bottom: -20%;
-      right: -10%;
-      width: 600px;
-      height: 400px;
-      background: radial-gradient(ellipse, rgba(0, 191, 165, 0.10) 0%, transparent 70%);
-      animation: heroPulse 8s ease-in-out 2s infinite alternate-reverse;
-    }
-    @keyframes heroPulse {
-      0%   { opacity: 0.6; transform: translateX(-50%) scale(1); }
-      100% { opacity: 1;   transform: translateX(-50%) scale(1.12); }
-    }
-
-    /* ===== Badge ===== */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      background: rgba(0, 229, 255, 0.1);
-      border: 1px solid rgba(0, 229, 255, 0.3);
-      border-radius: 9999px;
-      padding: 0.35rem 1rem;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #00e5ff;
-      letter-spacing: 0.04em;
-    }
-
-    /* ===== Steps connector ===== */
-    .step-connector {
-      position: absolute;
-      top: 50%;
-      left: 100%;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, rgba(0,229,255,0.5), transparent);
-      transform: translateY(-50%);
-    }
-
-    /* ===== Section divider ===== */
-    .section-divider {
-      border: none;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(0,229,255,0.2), transparent);
-      margin: 0 auto;
-    }
-
-    /* ===== Warning card ===== */
-    .warn-card {
-      background: rgba(239, 68, 68, 0.08);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      border-radius: 1rem;
-      backdrop-filter: blur(12px);
-    }
-
-    /* ===== Mobile menu ===== */
-    #mobile-menu {
-      transition: max-height 0.4s ease, opacity 0.4s ease;
-      max-height: 0;
-      opacity: 0;
-      overflow: hidden;
-    }
-    #mobile-menu.open {
-      max-height: 400px;
-      opacity: 1;
-    }
-
-    /* ===== Floating orbs ===== */
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.15;
+      inset: -20% -10% -30% -10%;
+      z-index: -2;
+      background: radial-gradient(closest-side at 50% 28%, rgba(0,0,0,0.06), rgba(0,0,0,0.92) 78%);
       pointer-events: none;
     }
 
-    /* ===== Number circle ===== */
-    .step-num {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #00e5ff, #00bfa5);
+    .hero-gradient {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(120deg, rgba(0,0,0,0.80) 0%, rgba(43, 3, 6, 0.35) 35%, rgba(0,0,0,0.78) 80%),
+        radial-gradient(800px 400px at 30% 25%, rgba(229, 9, 20, 0.18), transparent 55%);
+      animation: gradientShift 7.5s ease-in-out infinite alternate;
+      mix-blend-mode: screen;
+      opacity: 0.8;
+    }
+    @keyframes gradientShift {
+      0% { filter: hue-rotate(0deg); opacity: 0.7; }
+      100% { filter: hue-rotate(-8deg); opacity: 0.9; }
+    }
+
+    .particles {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 5;
+      padding-bottom: 30px;
+      max-width: 680px;
+    }
+    .headline {
+      font-size: clamp(34px, 6.3vw, 56px);
+      line-height: 1.02;
+      margin: 0;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+    .subtext {
+      margin-top: 12px;
+      font-size: 16px;
+      line-height: 1.45;
+      color: var(--soft);
+      max-width: 44ch;
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 700ms ease forwards;
+    }
+    .fade-up.d2 { animation-delay: 120ms; }
+    .fade-up.d3 { animation-delay: 240ms; }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Primary CTA button (Download) ===== */
+    .cta-row {
+      margin-top: 18px;
       display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .btn-download {
+      position: relative;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: #0b0f1a;
-      flex-shrink: 0;
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.45);
+      gap: 10px;
+      width: min(520px, 100%);
+      padding: 16px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(229, 9, 20, 0.40);
+      background: linear-gradient(135deg, rgba(229,9,20,0.92), rgba(178,7,16,0.92));
+      color: #fff;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      box-shadow: 0 20px 60px rgba(229, 9, 20, 0.35);
+      transform: translateZ(0);
+      user-select: none;
+      overflow: hidden;
+      animation: glowBreath 2.6s ease-in-out infinite;
+      will-change: transform, box-shadow;
+    }
+    .btn-download::after {
+      content: '';
+      position: absolute;
+      inset: -30% -25%;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.35), transparent 35%),
+        radial-gradient(circle at 70% 50%, rgba(255,255,255,0.20), transparent 48%);
+      opacity: 0.55;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+    .btn-download .icon {
+      width: 22px;
+      height: 22px;
+      filter: drop-shadow(0 0 16px rgba(255, 52, 60, 0.75));
+    }
+    .btn-download .mini {
+      width: 16px;
+      height: 16px;
+      opacity: 0.9;
+      filter: drop-shadow(0 0 10px rgba(255, 52, 60, 0.65));
+    }
+    .btn-download:active { transform: scale(0.985); }
+    @keyframes glowBreath {
+      0% { box-shadow: 0 22px 70px rgba(229, 9, 20, 0.28), 0 0 0 rgba(229, 9, 20, 0.0); }
+      60% { box-shadow: 0 28px 90px rgba(229, 9, 20, 0.45), 0 0 30px rgba(229, 9, 20, 0.18); }
+      100% { box-shadow: 0 22px 70px rgba(229, 9, 20, 0.28), 0 0 0 rgba(229, 9, 20, 0.0); }
     }
 
-    /* ===== Telegram CTA ===== */
-    .tg-section {
-      background: linear-gradient(135deg, rgba(0,229,255,0.06), rgba(0,191,165,0.04));
-      border: 1px solid rgba(0, 229, 255, 0.15);
-      border-radius: 1.5rem;
+    .cta-reflection {
+      width: min(520px, 100%);
+      height: 22px;
+      background: radial-gradient(closest-side at 50% 0%, rgba(229,9,20,0.34), transparent 70%);
+      filter: blur(2px);
+      opacity: 0.7;
+      transform: translateY(-8px);
+      pointer-events: none;
+    }
+    .cta-meta {
+      color: var(--muted2);
+      font-size: 12.5px;
+      letter-spacing: 0.01em;
     }
 
-    /* ===== Region tag ===== */
-    .region-tag {
+    /* Ripple */
+    .ripple {
+      position: absolute;
+      border-radius: 999px;
+      transform: scale(0);
+      animation: ripple 600ms ease-out;
+      background: rgba(255, 255, 255, 0.35);
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+    @keyframes ripple {
+      to { transform: scale(4.2); opacity: 0; }
+    }
+
+    /* ===== Sections ===== */
+    main { position: relative; z-index: 10; }
+    .section { padding: 28px 0; }
+    .section-title {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0;
+    }
+    .section-title h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+    .section-title p { margin: 0; color: var(--muted2); font-size: 12.5px; }
+
+    /* Trending carousel */
+    .carousel {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 74%;
+      gap: 14px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 14px 2px 8px;
+      -webkit-overflow-scrolling: touch;
+    }
+    @media (min-width: 520px) { .carousel { grid-auto-columns: 40%; } }
+    @media (min-width: 900px) { .carousel { grid-auto-columns: 23%; } }
+    .carousel::-webkit-scrollbar { height: 6px; }
+    .carousel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 999px; }
+
+    .card {
+      scroll-snap-align: start;
+      border-radius: var(--radius);
       background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(0, 229, 255, 0.12);
-      border-radius: 0.75rem;
-      padding: 0.75rem 1.25rem;
+      border: 1px solid rgba(255,255,255,0.10);
+      overflow: hidden;
+      position: relative;
+      box-shadow: var(--shadow);
+      min-height: 178px;
+      transform: translateZ(0);
+      transition: transform 240ms ease, border-color 240ms ease;
+    }
+    .card:active { transform: scale(0.992); }
+    .card:hover { border-color: rgba(229, 9, 20, 0.30); }
+
+    .rank {
+      position: absolute;
+      left: 12px;
+      bottom: 8px;
+      font-size: 70px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.08em;
+      color: rgba(255,255,255,0.07);
+      text-shadow: 0 18px 50px rgba(0,0,0,0.8);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .poster {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(400px 180px at 70% 30%, rgba(229,9,20,0.20), transparent 55%),
+        linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.92) 100%),
+        linear-gradient(135deg, rgba(25,25,28,1), rgba(10,10,12,1));
+      filter: saturate(1.1);
+    }
+    .poster::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 25% 35%, rgba(255,255,255,0.08), transparent 35%),
+        radial-gradient(circle at 80% 25%, rgba(255,255,255,0.06), transparent 40%);
+      opacity: 0.9;
+    }
+    .card-info {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      top: 14px;
+      z-index: 3;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.42);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.86);
+      font-size: 12px;
+      font-weight: 700;
+      backdrop-filter: blur(14px);
+    }
+    .chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 99px;
+      background: var(--red);
+      box-shadow: 0 0 16px rgba(229,9,20,0.6);
+    }
+    .card-title {
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: rgba(255,255,255,0.94);
+      text-shadow: 0 18px 60px rgba(0,0,0,0.8);
+    }
+
+    /* Features (glassmorphism) */
+    .grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1fr;
+      margin-top: 14px;
+    }
+    @media (min-width: 820px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+    .glass {
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(21, 21, 28, 0.62) 0%, rgba(35, 6, 10, 0.38) 55%, rgba(9, 16, 38, 0.42) 100%);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      transition: transform 240ms ease, border-color 240ms ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .glass::before {
+      content: '';
+      position: absolute;
+      inset: -40% -30%;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(229,9,20,0.20), transparent 50%),
+        radial-gradient(circle at 75% 45%, rgba(72, 61, 255, 0.12), transparent 52%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+    .glass:active { transform: scale(0.995); }
+    .glass:hover { border-color: rgba(229,9,20,0.30); transform: translateY(-2px); }
+    .glass h3 { margin: 14px 0 6px; font-size: 15px; font-weight: 900; letter-spacing: -0.02em; }
+    .glass p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .neon-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 0 0 1px rgba(229,9,20,0.10) inset, 0 20px 60px rgba(229,9,20,0.14);
+      position: relative;
+      z-index: 2;
+    }
+    .neon-icon svg { width: 22px; height: 22px; filter: drop-shadow(0 0 12px rgba(229, 9, 20, 0.65)); }
+
+    /* FAQ accordion */
+    .faq { margin-top: 12px; }
+    details {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    details + details { margin-top: 12px; }
+    summary {
+      cursor: pointer;
+      list-style: none;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      font-weight: 500;
-      transition: all 0.3s;
+      justify-content: space-between;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
     }
-    .region-tag:hover {
-      border-color: rgba(0, 229, 255, 0.4);
-      background: rgba(0, 229, 255, 0.07);
-      transform: scale(1.04);
+    summary::-webkit-details-marker { display: none; }
+    .plus {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.12);
+      flex-shrink: 0;
+      position: relative;
     }
+    .plus::before,
+    .plus::after { content: ''; position: absolute; background: rgba(255,255,255,0.85); border-radius: 2px; }
+    .plus::before { width: 14px; height: 2px; }
+    .plus::after { width: 2px; height: 14px; transition: transform 200ms ease; }
+    details[open] .plus::after { transform: scaleY(0); }
+    .faq-body { color: var(--muted); font-size: 13px; line-height: 1.45; margin-top: 10px; }
 
-    /* ===== Scrollbar ===== */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #0b0f1a; }
-    ::-webkit-scrollbar-thumb { background: rgba(0,229,255,0.3); border-radius: 3px; }
+    /* Sticky bottom bar */
+    .sticky {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 60;
+      padding: 12px 0 calc(12px + env(safe-area-inset-bottom));
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(255,255,255,0.10);
+    }
+    .sticky-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .sticky-title { font-weight: 900; letter-spacing: -0.02em; }
+    .sticky-sub { color: var(--muted2); font-size: 12px; }
+    .sticky-btn {
+      width: auto;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(229, 9, 20, 0.35);
+      background: linear-gradient(135deg, rgba(229,9,20,0.90), rgba(178,7,16,0.90));
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 16px 45px rgba(229,9,20,0.30);
+    }
+    .sticky-btn:active { transform: scale(0.985); }
+
+    /* Skeleton shimmer */
+    .skeleton { position: relative; background: rgba(255,255,255,0.07); overflow: hidden; }
+    .skeleton::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      transform: translateX(-100%);
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 40%, rgba(255,255,255,0.14) 55%, transparent 100%);
+      animation: shimmer 1.2s linear infinite;
+    }
+    @keyframes shimmer { to { transform: translateX(100%); } }
+
+    /* Admin panel */
+    .admin { margin-top: 24px; padding-top: 8px; }
+    .admin-panel {
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .admin-head {
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+      background: linear-gradient(135deg, rgba(229, 9, 20, 0.10), rgba(255,255,255,0.02));
+    }
+    .admin-head h3 { margin: 0; font-size: 14px; font-weight: 900; letter-spacing: -0.02em; }
+    .admin-body { padding: 14px; display: grid; gap: 12px; }
+    .row { display: grid; gap: 10px; }
+    .row input[type="password"],
+    .row input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.35);
+      color: rgba(255,255,255,0.90);
+      outline: none;
+    }
+    .admin-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pill {
+      font-size: 12px;
+      color: rgba(255,255,255,0.80);
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 999px;
+      padding: 7px 10px;
+    }
+    .admin-note { color: var(--muted2); font-size: 12.5px; line-height: 1.35; }
+
+    footer { padding: 40px 0 calc(110px + env(safe-area-inset-bottom)); color: rgba(255,255,255,0.45); font-size: 12px; }
   </style>
 </head>
 <body>
-
-<!-- ======================================================
-     NAVBAR
-====================================================== -->
-<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 px-4 py-4">
-  <div class="max-w-6xl mx-auto flex items-center justify-between">
-    <!-- Logo -->
-    <a href="#" class="flex items-center gap-2 text-xl font-extrabold tracking-tight">
-      <span class="text-2xl">⚡</span>
-      <span class="grad-text">CryptoSwap</span>
-    </a>
-
-    <!-- Desktop Nav -->
-    <ul class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-      <li><a href="#features" class="hover:text-cyan-400 transition-colors">Features</a></li>
-      <li><a href="#services" class="hover:text-cyan-400 transition-colors">Services</a></li>
-      <li><a href="#how-it-works" class="hover:text-cyan-400 transition-colors">How It Works</a></li>
-      <li><a href="#regions" class="hover:text-cyan-400 transition-colors">Regions</a></li>
-    </ul>
-
-    <!-- CTA + Hamburger -->
-    <div class="flex items-center gap-3">
-      <a href="https://t.me/CryptoSwap2026_Bot" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex btn-glow text-sm py-2 px-5">
-        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
-        Telegram
-      </a>
-      <!-- Hamburger -->
-      <button id="hamburger" aria-label="Toggle menu" class="md:hidden flex flex-col gap-1.5 p-2">
-        <span class="hamburger-line block w-6 h-0.5 bg-cyan-400 rounded transition-all duration-300"></span>
-        <span class="hamburger-line block w-6 h-0.5 bg-cyan-400 rounded transition-all duration-300"></span>
-        <span class="hamburger-line block w-6 h-0.5 bg-cyan-400 rounded transition-all duration-300"></span>
-      </button>
-    </div>
-  </div>
-
-  <!-- Mobile Menu -->
-  <div id="mobile-menu" class="md:hidden">
-    <div class="max-w-6xl mx-auto mt-4 px-2 pb-4">
-      <div class="glass-card p-4 flex flex-col gap-3 text-sm font-medium text-slate-300">
-        <a href="#features"     class="hover:text-cyan-400 transition-colors py-1" onclick="closeMobileMenu()">Features</a>
-        <a href="#services"     class="hover:text-cyan-400 transition-colors py-1" onclick="closeMobileMenu()">Services</a>
-        <a href="#how-it-works" class="hover:text-cyan-400 transition-colors py-1" onclick="closeMobileMenu()">How It Works</a>
-        <a href="#regions"      class="hover:text-cyan-400 transition-colors py-1" onclick="closeMobileMenu()">Regions</a>
-        <a href="https://t.me/CryptoSwap2026_Bot" target="_blank" rel="noopener noreferrer" class="btn-glow justify-center text-sm py-2 mt-2">
-          Open Telegram Bot
+  <header class="topbar" id="topbar">
+    <div class="container">
+      <div class="topbar-inner">
+        <a class="logo" href="#">
+          <span class="logo-mark" aria-hidden="true"></span>
+          <span class="logo-text">Stream<span>Flix</span></span>
         </a>
-      </div>
-    </div>
-  </div>
-</nav>
 
-<!-- ======================================================
-     HERO SECTION
-====================================================== -->
-<section class="relative min-h-screen flex items-center justify-center px-4 pt-24 pb-16 overflow-hidden">
-  <div class="hero-bg"></div>
-
-  <!-- Background orbs -->
-  <div class="orb w-96 h-96 bg-cyan-400 top-10 -left-20"></div>
-  <div class="orb w-72 h-72 bg-teal-400 bottom-0 right-0"></div>
-
-  <div class="relative z-10 max-w-4xl mx-auto text-center">
-    <!-- Badge -->
-    <div class="mb-6" data-aos="fade-down" data-aos-duration="600">
-      <span class="badge">
-        <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-        Advance Payment Guaranteed
-      </span>
-    </div>
-
-    <!-- Headline -->
-    <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-6" data-aos="fade-up" data-aos-duration="700">
-      Sell USDT with<br />
-      <span class="grad-text">100% Advance Payment</span><br />
-      Security
-    </h1>
-
-    <!-- Subtitle -->
-    <p class="text-slate-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
-      The most trusted OTC crypto exchange. We pay you <strong class="text-slate-200">before</strong> you send any USDT.
-      Verified clients, zero risk, lightning-fast settlements.
-    </p>
-
-    <!-- CTA Buttons -->
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
-      <a href="https://t.me/CryptoSwap2026_Bot" target="_blank" rel="noopener noreferrer" class="btn-glow text-base">
-        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
-        Contact on Telegram
-      </a>
-      <a href="#how-it-works" class="btn-outline text-base">
-        <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
-        How It Works
-      </a>
-    </div>
-
-    <!-- Scroll hint -->
-    <div class="mt-16 flex justify-center opacity-40 animate-bounce" data-aos="fade-up" data-aos-delay="600">
-      <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-    </div>
-  </div>
-</section>
-
-<!-- ======================================================
-     TRUST BADGES
-====================================================== -->
-<section class="py-12 px-4">
-  <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
-    <!-- SSL -->
-    <div class="glass-card p-5 flex flex-col items-center text-center gap-3" data-aos="zoom-in" data-aos-duration="500" data-aos-delay="0">
-      <div class="w-12 h-12 rounded-full bg-cyan-400/10 flex items-center justify-center text-cyan-400">
-        <svg class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
-      </div>
-      <p class="font-bold text-sm text-slate-200">SSL Secured</p>
-      <p class="text-xs text-slate-400">End-to-end encrypted</p>
-    </div>
-    <!-- Advance Payment -->
-    <div class="glass-card p-5 flex flex-col items-center text-center gap-3" data-aos="zoom-in" data-aos-duration="500" data-aos-delay="80">
-      <div class="w-12 h-12 rounded-full bg-cyan-400/10 flex items-center justify-center text-cyan-400">
-        <svg class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/></svg>
-      </div>
-      <p class="font-bold text-sm text-slate-200">Advance Payment</p>
-      <p class="text-xs text-slate-400">Pay before you send</p>
-    </div>
-    <!-- Best Rates -->
-    <div class="glass-card p-5 flex flex-col items-center text-center gap-3" data-aos="zoom-in" data-aos-duration="500" data-aos-delay="160">
-      <div class="w-12 h-12 rounded-full bg-cyan-400/10 flex items-center justify-center text-cyan-400">
-        <svg class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd"/></svg>
-      </div>
-      <p class="font-bold text-sm text-slate-200">Best Rates</p>
-      <p class="text-xs text-slate-400">Market-competitive pricing</p>
-    </div>
-    <!-- Zero Risk -->
-    <div class="glass-card p-5 flex flex-col items-center text-center gap-3" data-aos="zoom-in" data-aos-duration="500" data-aos-delay="240">
-      <div class="w-12 h-12 rounded-full bg-cyan-400/10 flex items-center justify-center text-cyan-400">
-        <svg class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-      </div>
-      <p class="font-bold text-sm text-slate-200">Zero Risk</p>
-      <p class="text-xs text-slate-400">Fully verified process</p>
-    </div>
-  </div>
-</section>
-
-<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
-
-<!-- ======================================================
-     FEATURES GRID
-====================================================== -->
-<section id="features" class="py-20 px-4">
-  <div class="max-w-6xl mx-auto">
-    <div class="text-center mb-14" data-aos="fade-up">
-      <span class="badge mb-4">Why CryptoSwap</span>
-      <h2 class="text-3xl sm:text-4xl font-extrabold mt-4">
-        Built for <span class="grad-text">Trust &amp; Scale</span>
-      </h2>
-      <p class="text-slate-400 mt-3 max-w-xl mx-auto">Everything you need to exchange USDT safely, fast, and at the best rates.</p>
-    </div>
-
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      <!-- China-Based -->
-      <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="0">
-        <div class="text-3xl mb-4">🇨🇳</div>
-        <h3 class="font-bold text-lg text-slate-100 mb-2">China-Based Operations</h3>
-        <p class="text-sm text-slate-400 leading-relaxed">Headquartered in China with deep liquidity access and strong banking relationships across Asia.</p>
-      </div>
-      <!-- Verified -->
-      <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="80">
-        <div class="text-3xl mb-4">✅</div>
-        <h3 class="font-bold text-lg text-slate-100 mb-2">Verified &amp; Trusted</h3>
-        <p class="text-sm text-slate-400 leading-relaxed">Every transaction is KYC-backed. Only verified clients can trade, ensuring a safe ecosystem for all.</p>
-      </div>
-      <!-- Global Clients -->
-      <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="160">
-        <div class="text-3xl mb-4">🌏</div>
-        <h3 class="font-bold text-lg text-slate-100 mb-2">Global Client Base</h3>
-        <p class="text-sm text-slate-400 leading-relaxed">Serving clients across Southeast Asia, South Asia, and beyond with a growing international network.</p>
-      </div>
-      <!-- Liquidity -->
-      <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="240">
-        <div class="text-3xl mb-4">💧</div>
-        <h3 class="font-bold text-lg text-slate-100 mb-2">Strong Liquidity</h3>
-        <p class="text-sm text-slate-400 leading-relaxed">Handle large-volume OTC orders with ease. No slippage, no delays — just instant execution.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
-
-<!-- ======================================================
-     SERVICES
-====================================================== -->
-<section id="services" class="py-20 px-4 relative overflow-hidden">
-  <div class="orb w-80 h-80 bg-teal-400 top-0 -right-20 opacity-10"></div>
-
-  <div class="max-w-6xl mx-auto">
-    <div class="text-center mb-14" data-aos="fade-up">
-      <span class="badge mb-4">Payment Methods</span>
-      <h2 class="text-3xl sm:text-4xl font-extrabold mt-4">
-        Flexible <span class="grad-text">Services</span>
-      </h2>
-      <p class="text-slate-400 mt-3 max-w-xl mx-auto">Choose the payment method that works best for you.</p>
-    </div>
-
-    <div class="grid sm:grid-cols-3 gap-6">
-      <!-- Bank Transfer -->
-      <div class="glass-card p-8 relative" data-aos="zoom-in" data-aos-delay="0">
-        <div class="absolute top-4 right-4">
-          <span class="text-xs font-bold bg-gradient-to-r from-cyan-400 to-teal-400 text-dark px-3 py-1 rounded-full">Most Popular</span>
-        </div>
-        <div class="text-4xl mb-5">🏦</div>
-        <h3 class="text-xl font-bold text-white mb-3">Bank Transfer</h3>
-        <p class="text-slate-400 text-sm leading-relaxed mb-5">Direct bank wire to your account. Secure, traceable, and accepted in all regions we operate in.</p>
-        <ul class="space-y-2 text-sm text-slate-300">
-          <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Same-day settlement</li>
-          <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> All major banks</li>
-          <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Full paper trail</li>
-        </ul>
-      </div>
-
-      <!-- CDM Deposit -->
-      <div class="glass-card p-8 relative" data-aos="zoom-in" data-aos-delay="100">
-        <div class="absolute top-4 right-4">
-          <span class="text-xs font-bold bg-blue-500/20 text-blue-300 border border-blue-400/30 px-3 py-1 rounded-full">Fast</span>
-        </div>
-        <div class="text-4xl mb-5">🏧</div>
-        <h3 class="text-xl font-bold text-white mb-3">CDM Deposit</h3>
-        <p class="text-slate-400 text-sm leading-relaxed mb-5">Cash Deposit Machine drop – fast, anonymous, and verifiable. Ideal for clients who prefer offline transactions.</p>
-        <ul class="space-y-2 text-sm text-slate-300">
-          <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> No bank visit needed</li>
-          <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Instant confirmation</li>
-          <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Available 24/7</li>
-        </ul>
-      </div>
-
-      <!-- Physical Cash -->
-      <div class="glass-card p-8 relative" data-aos="zoom-in" data-aos-delay="200">
-        <div class="absolute top-4 right-4">
-          <span class="text-xs font-bold bg-teal-500/20 text-teal-300 border border-teal-400/30 px-3 py-1 rounded-full">Instant</span>
-        </div>
-        <div class="text-4xl mb-5">💵</div>
-        <h3 class="text-xl font-bold text-white mb-3">Physical Cash</h3>
-        <p class="text-slate-400 text-sm leading-relaxed mb-5">In-person cash handover in selected cities. Escrow-style meeting with a trusted intermediary.</p>
-        <ul class="space-y-2 text-sm text-slate-300">
-          <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Face-to-face deal</li>
-          <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Immediate exchange</li>
-          <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Selected cities</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
-
-<!-- ======================================================
-     HOW IT WORKS
-====================================================== -->
-<section id="how-it-works" class="py-20 px-4">
-  <div class="max-w-4xl mx-auto">
-    <div class="text-center mb-14" data-aos="fade-up">
-      <span class="badge mb-4">Process</span>
-      <h2 class="text-3xl sm:text-4xl font-extrabold mt-4">
-        How It <span class="grad-text">Works</span>
-      </h2>
-      <p class="text-slate-400 mt-3 max-w-xl mx-auto">Three simple steps to sell your USDT safely and quickly.</p>
-    </div>
-
-    <div class="space-y-6">
-      <!-- Step 1 -->
-      <div class="glass-card p-6 sm:p-8 flex gap-5 items-start" data-aos="fade-right" data-aos-delay="0">
-        <div class="step-num shrink-0">1</div>
-        <div>
-          <h3 class="text-xl font-bold text-white mb-2">Contact &amp; Confirm Rate</h3>
-          <p class="text-slate-400 leading-relaxed">Reach out via our Telegram bot <span class="text-cyan-400 font-semibold">@CryptoSwap2026_Bot</span>. Our agent confirms the live exchange rate, your preferred payment method, and the transaction amount.</p>
+        <div class="top-actions">
+          <label class="sr-only" for="lang">Language</label>
+          <select class="select" id="lang" aria-label="Language selector">
+            <option value="en" selected>English</option>
+            <option value="hi">Hindi</option>
+            <option value="es">Español</option>
+          </select>
+          <button class="btn btn-primary" id="signInBtn" type="button">Sign In</button>
         </div>
       </div>
+    </div>
+  </header>
 
-      <!-- Step 2 – Highlighted -->
-      <div style="background: linear-gradient(135deg, rgba(0,229,255,0.08), rgba(0,191,165,0.05)); border: 1px solid rgba(0,229,255,0.3);"
-           class="rounded-xl p-6 sm:p-8 flex gap-5 items-start relative overflow-hidden" data-aos="fade-right" data-aos-delay="100">
-        <div class="absolute top-0 right-0 w-40 h-40 bg-cyan-400/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl"></div>
-        <div class="step-num shrink-0">2</div>
-        <div>
-          <div class="flex items-center gap-3 mb-2">
-            <h3 class="text-xl font-bold text-white">Receive Advance Payment</h3>
-            <span class="badge text-xs">Key Step</span>
+  <section class="hero" aria-label="Hero">
+    <div class="hero-bg" aria-hidden="true">
+      <div class="hero-collage"></div>
+      <div class="hero-vignette"></div>
+      <div class="hero-gradient"></div>
+      <canvas class="particles" id="particles"></canvas>
+    </div>
+
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="headline fade-up">Unlimited movies, TV shows and more</h1>
+        <p class="subtext fade-up d2">Watch anywhere. Cancel anytime.</p>
+
+        <div class="cta-row fade-up d3">
+          <button class="btn-download" id="downloadBtn" type="button">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 3v10" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              <path d="M7 11l5 5 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M5 20h14" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>Download Netflix App</span>
+            <svg class="mini" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M8 6h5.2c2.7 0 4.8 2.1 4.8 4.8 0 2.6-2.1 4.7-4.8 4.7H8V6Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M8 6v12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="cta-reflection" aria-hidden="true"></div>
+          <div class="cta-meta">Available on Android, iOS, Smart TVs</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="section" id="trending">
+      <div class="container">
+        <div class="section-title">
+          <h2>Trending Now</h2>
+          <p>Swipe • Snap scrolling</p>
+        </div>
+
+        <div class="carousel" id="trendingCarousel" aria-label="Trending carousel">
+          <article class="card skeleton">
+            <div class="poster"></div>
+            <div class="card-info">
+              <div class="chip"><span class="chip-dot"></span> New</div>
+              <div class="card-title">Shadow City</div>
+            </div>
+            <div class="rank">1</div>
+          </article>
+          <article class="card skeleton">
+            <div class="poster"></div>
+            <div class="card-info">
+              <div class="chip"><span class="chip-dot"></span> Trending</div>
+              <div class="card-title">Neon Drift</div>
+            </div>
+            <div class="rank">2</div>
+          </article>
+          <article class="card skeleton">
+            <div class="poster"></div>
+            <div class="card-info">
+              <div class="chip"><span class="chip-dot"></span> Top 10</div>
+              <div class="card-title">Afterlight</div>
+            </div>
+            <div class="rank">3</div>
+          </article>
+          <article class="card skeleton">
+            <div class="poster"></div>
+            <div class="card-info">
+              <div class="chip"><span class="chip-dot"></span> Hot</div>
+              <div class="card-title">Crimson Code</div>
+            </div>
+            <div class="rank">4</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-title">
+          <h2>Features</h2>
+          <p>Glassmorphism • Neon icons</p>
+        </div>
+
+        <div class="grid">
+          <div class="glass">
+            <div class="neon-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M4 7h16v10H4V7Z" stroke="white" stroke-width="2"/>
+                <path d="M8 21h8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                <path d="M12 17v4" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>Enjoy on your TV</h3>
+            <p>Smart TVs, PlayStation, Xbox, Chromecast, Apple TV, Blu-ray players and more.</p>
           </div>
-          <p class="text-slate-300 leading-relaxed">This is what sets us apart. <strong class="text-cyan-400">We send you the full payment first</strong> — via bank transfer, CDM, or cash — before you release a single USDT. Zero risk for sellers.</p>
-        </div>
-      </div>
 
-      <!-- Step 3 -->
-      <div class="glass-card p-6 sm:p-8 flex gap-5 items-start" data-aos="fade-right" data-aos-delay="200">
-        <div class="step-num shrink-0">3</div>
-        <div>
-          <h3 class="text-xl font-bold text-white mb-2">Send USDT After Payment</h3>
-          <p class="text-slate-400 leading-relaxed">Once payment is confirmed in your account, transfer the agreed USDT amount to our wallet. Transaction complete — simple, secure, and stress-free.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+          <div class="glass">
+            <div class="neon-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M8 21h8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                <path d="M12 17v4" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                <path d="M7 3h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="white" stroke-width="2"/>
+                <path d="M9 11l3 3 3-3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Download your shows to watch offline</h3>
+            <p>Save your favorites easily and always have something to watch.</p>
+          </div>
 
-<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
-
-<!-- ======================================================
-     PAYMENT MODEL
-====================================================== -->
-<section class="py-20 px-4 relative overflow-hidden">
-  <div class="orb w-96 h-96 bg-cyan-400 -top-20 -left-32 opacity-8"></div>
-
-  <div class="max-w-5xl mx-auto">
-    <div class="text-center mb-14" data-aos="fade-up">
-      <span class="badge mb-4">Payment Model</span>
-      <h2 class="text-3xl sm:text-4xl font-extrabold mt-4">
-        Our <span class="grad-text">Secure Model</span>
-      </h2>
-    </div>
-
-    <div class="grid sm:grid-cols-3 gap-6">
-      <div class="glass-card p-7 text-center" data-aos="zoom-in" data-aos-delay="0">
-        <div class="text-4xl mb-4">🛡️</div>
-        <h3 class="text-lg font-bold text-white mb-2">Verified Clients Only</h3>
-        <p class="text-slate-400 text-sm">We only transact with KYC-verified clients. No anonymous trades — safety for everyone.</p>
-      </div>
-      <div class="glass-card p-7 text-center" data-aos="zoom-in" data-aos-delay="100">
-        <div class="text-4xl mb-4">💳</div>
-        <h3 class="text-lg font-bold text-white mb-2">Payment First</h3>
-        <p class="text-slate-400 text-sm">You receive 100% of the agreed amount before any USDT changes hands. Always, no exceptions.</p>
-      </div>
-      <div class="glass-card p-7 text-center" data-aos="zoom-in" data-aos-delay="200">
-        <div class="text-4xl mb-4">🪪</div>
-        <h3 class="text-lg font-bold text-white mb-2">Identity Verification</h3>
-        <p class="text-slate-400 text-sm">Robust identity checks protect both parties. Trade with complete confidence and legal clarity.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
-
-<!-- ======================================================
-     WHY CHOOSE US
-====================================================== -->
-<section class="py-20 px-4">
-  <div class="max-w-5xl mx-auto">
-    <div class="text-center mb-14" data-aos="fade-up">
-      <span class="badge mb-4">Advantages</span>
-      <h2 class="text-3xl sm:text-4xl font-extrabold mt-4">
-        Why <span class="grad-text">Choose CryptoSwap</span>
-      </h2>
-    </div>
-
-    <div class="grid sm:grid-cols-3 gap-6">
-      <div class="glass-card p-7" data-aos="fade-up" data-aos-delay="0">
-        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400/20 to-teal-400/10 flex items-center justify-center text-cyan-400 mb-5">
-          <svg class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-        </div>
-        <h3 class="text-lg font-bold text-white mb-2">Advance Payment Guarantee</h3>
-        <p class="text-slate-400 text-sm leading-relaxed">Our core promise: you get paid in full before any USDT transfer. Backed by our track record of thousands of successful transactions.</p>
-      </div>
-      <div class="glass-card p-7" data-aos="fade-up" data-aos-delay="100">
-        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400/20 to-teal-400/10 flex items-center justify-center text-cyan-400 mb-5">
-          <svg class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-        </div>
-        <h3 class="text-lg font-bold text-white mb-2">Zero Risk</h3>
-        <p class="text-slate-400 text-sm leading-relaxed">Our payment-first model completely eliminates seller risk. You're always protected — no chargeback, no reversal, no excuses.</p>
-      </div>
-      <div class="glass-card p-7" data-aos="fade-up" data-aos-delay="200">
-        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400/20 to-teal-400/10 flex items-center justify-center text-cyan-400 mb-5">
-          <svg class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
-        </div>
-        <h3 class="text-lg font-bold text-white mb-2">Trusted Liquidity</h3>
-        <p class="text-slate-400 text-sm leading-relaxed">Deep capital reserves ensure we can handle large volume orders instantly — from $1K to multi-million dollar trades.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
-
-<!-- ======================================================
-     EXTRA FEATURES
-====================================================== -->
-<section class="py-20 px-4 relative overflow-hidden">
-  <div class="orb w-80 h-80 bg-cyan-400 bottom-0 left-1/2 opacity-8 -translate-x-1/2"></div>
-
-  <div class="max-w-5xl mx-auto">
-    <div class="text-center mb-14" data-aos="fade-up">
-      <span class="badge mb-4">Platform Features</span>
-      <h2 class="text-3xl sm:text-4xl font-extrabold mt-4">
-        Everything You <span class="grad-text">Need</span>
-      </h2>
-    </div>
-
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-      <div class="glass-card p-6 text-center" data-aos="zoom-in" data-aos-delay="0">
-        <div class="text-3xl mb-3">⚡</div>
-        <h3 class="font-bold text-white mb-1">Lightning Fast</h3>
-        <p class="text-xs text-slate-400">Payments processed in minutes, not hours.</p>
-      </div>
-      <div class="glass-card p-6 text-center" data-aos="zoom-in" data-aos-delay="80">
-        <div class="text-3xl mb-3">🕐</div>
-        <h3 class="font-bold text-white mb-1">24/7 Support</h3>
-        <p class="text-xs text-slate-400">Our team is online around the clock for you.</p>
-      </div>
-      <div class="glass-card p-6 text-center" data-aos="zoom-in" data-aos-delay="160">
-        <div class="text-3xl mb-3">📈</div>
-        <h3 class="font-bold text-white mb-1">Competitive Rates</h3>
-        <p class="text-xs text-slate-400">Real-time market rates with minimal spread.</p>
-      </div>
-      <div class="glass-card p-6 text-center" data-aos="zoom-in" data-aos-delay="240">
-        <div class="text-3xl mb-3">🔒</div>
-        <h3 class="font-bold text-white mb-1">Privacy First</h3>
-        <p class="text-xs text-slate-400">Your data stays private. No leaks, no sharing.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
-
-<!-- ======================================================
-     REGIONS GRID
-====================================================== -->
-<section id="regions" class="py-20 px-4">
-  <div class="max-w-5xl mx-auto">
-    <div class="text-center mb-14" data-aos="fade-up">
-      <span class="badge mb-4">Coverage</span>
-      <h2 class="text-3xl sm:text-4xl font-extrabold mt-4">
-        Regions We <span class="grad-text">Serve</span>
-      </h2>
-      <p class="text-slate-400 mt-3 max-w-xl mx-auto">Active in major markets across Asia and expanding globally.</p>
-    </div>
-
-    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4" data-aos="fade-up" data-aos-delay="100">
-      <div class="region-tag"><span>🇮🇳</span> India</div>
-      <div class="region-tag"><span>🇲🇾</span> Malaysia</div>
-      <div class="region-tag"><span>🇸🇬</span> Singapore</div>
-      <div class="region-tag"><span>🇮🇩</span> Indonesia</div>
-      <div class="region-tag"><span>🇹🇭</span> Thailand</div>
-      <div class="region-tag"><span>🇭🇰</span> Hong Kong</div>
-      <div class="region-tag"><span>🇵🇭</span> Philippines</div>
-      <div class="region-tag"><span>🇻🇳</span> Vietnam</div>
-      <div class="region-tag" style="background: linear-gradient(135deg, rgba(0,229,255,0.08), rgba(0,191,165,0.05)); border-color: rgba(0,229,255,0.3);">
-        <span>🌐</span> <span class="grad-text font-bold">Global</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
-
-<!-- ======================================================
-     WARNING SECTION
-====================================================== -->
-<section class="py-16 px-4">
-  <div class="max-w-4xl mx-auto">
-    <div class="warn-card p-8 sm:p-10" data-aos="zoom-in">
-      <div class="flex items-start gap-4">
-        <div class="text-red-400 shrink-0 mt-1">
-          <svg class="w-8 h-8" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
-        </div>
-        <div>
-          <h2 class="text-2xl font-extrabold text-red-400 mb-3">⚠️ Important Notice</h2>
-          <div class="space-y-3 text-slate-300 leading-relaxed">
-            <p><strong class="text-red-300">Verified Clients Only:</strong> CryptoSwap exclusively operates with KYC-verified individuals and entities. We do not engage with anonymous or unverified parties under any circumstances.</p>
-            <p><strong class="text-red-300">Zero Tolerance for Fraud:</strong> Any attempt at fraud, scamming, or misrepresentation will be reported immediately to relevant authorities and our legal team. All transactions are logged and monitored.</p>
-            <p class="text-sm text-slate-400">By engaging with CryptoSwap, you agree to our terms of service and confirm that your funds are of legitimate origin.</p>
+          <div class="glass">
+            <div class="neon-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M3 7h8v14H3V7Z" stroke="white" stroke-width="2"/>
+                <path d="M13 3h8v18h-8V3Z" stroke="white" stroke-width="2"/>
+                <path d="M7 10h0" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>Watch everywhere</h3>
+            <p>Stream unlimited movies and TV shows on your phone, tablet, laptop, and TV.</p>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-title">
+          <h2>FAQ</h2>
+          <p>Tap to expand</p>
+        </div>
 
-<!-- ======================================================
-     TELEGRAM SECTION
-====================================================== -->
-<section class="py-20 px-4">
-  <div class="max-w-3xl mx-auto" data-aos="zoom-in">
-    <div class="tg-section p-10 sm:p-14 text-center">
-      <div class="text-5xl mb-5">
-        <svg class="w-16 h-16 mx-auto" viewBox="0 0 24 24" fill="currentColor" style="color: #00e5ff;">
-          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/>
-        </svg>
-      </div>
-      <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-3">Connect on Telegram</h2>
-      <p class="text-slate-400 mb-2 text-lg">Start your transaction in minutes</p>
-      <p class="grad-text text-2xl font-bold mb-8">@CryptoSwap2026_Bot</p>
-      <a href="https://t.me/CryptoSwap2026_Bot" target="_blank" rel="noopener noreferrer" class="btn-glow text-base">
-        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
-        Open Telegram Bot
-      </a>
-    </div>
-  </div>
-</section>
-
-<hr class="section-divider max-w-4xl mx-4 md:mx-auto" />
-
-<!-- ======================================================
-     FINAL CTA
-====================================================== -->
-<section class="py-24 px-4 relative overflow-hidden">
-  <div class="orb w-96 h-96 bg-cyan-400 top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10"></div>
-
-  <div class="max-w-3xl mx-auto text-center relative z-10">
-    <div data-aos="fade-up">
-      <h2 class="text-4xl sm:text-5xl font-extrabold text-white mb-4">
-        Ready to exchange<br />
-        your <span class="grad-text">USDT?</span>
-      </h2>
-      <p class="text-slate-400 text-lg mb-10">Join thousands of verified traders who trust CryptoSwap for safe, advance-payment-guaranteed USDT exchanges.</p>
-      <a href="https://t.me/CryptoSwap2026_Bot" target="_blank" rel="noopener noreferrer" class="btn-glow text-lg px-10 py-4">
-        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
-        Start Trading Now
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ======================================================
-     FOOTER
-====================================================== -->
-<footer class="border-t border-white/5 py-12 px-4">
-  <div class="max-w-6xl mx-auto">
-    <div class="grid sm:grid-cols-3 gap-10 mb-10">
-      <!-- Brand -->
-      <div>
-        <a href="#" class="flex items-center gap-2 text-xl font-extrabold mb-4">
-          <span>⚡</span>
-          <span class="grad-text">CryptoSwap</span>
-        </a>
-        <p class="text-slate-500 text-sm leading-relaxed">
-          The most trusted OTC USDT exchange. Advance payment guaranteed. Verified clients only.
-        </p>
-      </div>
-
-      <!-- Quick Links -->
-      <div>
-        <h4 class="text-slate-200 font-semibold mb-4">Quick Links</h4>
-        <ul class="space-y-2 text-sm text-slate-500">
-          <li><a href="#features"     class="hover:text-cyan-400 transition-colors">Features</a></li>
-          <li><a href="#services"     class="hover:text-cyan-400 transition-colors">Services</a></li>
-          <li><a href="#how-it-works" class="hover:text-cyan-400 transition-colors">How It Works</a></li>
-          <li><a href="#regions"      class="hover:text-cyan-400 transition-colors">Regions</a></li>
-        </ul>
-      </div>
-
-      <!-- Contact -->
-      <div>
-        <h4 class="text-slate-200 font-semibold mb-4">Contact</h4>
-        <div class="space-y-3">
-          <a href="https://t.me/CryptoSwap2026_Bot" target="_blank" rel="noopener noreferrer"
-             class="flex items-center gap-2 text-sm text-slate-400 hover:text-cyan-400 transition-colors">
-            <svg class="w-4 h-4 text-cyan-400 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
-            @CryptoSwap2026_Bot
-          </a>
+        <div class="faq">
+          <details>
+            <summary>
+              <span>What is StreamFlix?</span>
+              <span class="plus" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-body">StreamFlix is a concept redesign for a premium OTT landing page. It uses a similar visual language (cinematic dark UI) without copying copyrighted assets.</div>
+          </details>
+          <details>
+            <summary>
+              <span>How do I install the app?</span>
+              <span class="plus" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-body">Use the “Download Netflix App” button to get the latest APK (admin-uploaded). Watch the demo video below for installation steps.</div>
+          </details>
+          <details>
+            <summary>
+              <span>Can I change the demo video?</span>
+              <span class="plus" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-body">Yes. Open the admin panel and unlock it using the key <strong>ADMIN123</strong>, then upload a new demo video file.</div>
+          </details>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Disclaimer + Copyright -->
-    <div class="border-t border-white/5 pt-8 space-y-3">
-      <p class="text-xs text-slate-600 leading-relaxed">
-        <strong class="text-slate-500">Disclaimer:</strong> CryptoSwap is an OTC peer-to-peer USDT exchange service. Cryptocurrency trading involves risk. Only verified clients are eligible to trade. All transactions are subject to KYC/AML compliance. CryptoSwap does not provide financial advice. Past performance is not indicative of future results.
-      </p>
-      <p class="text-xs text-slate-600">&copy; 2026 CryptoSwap. All rights reserved.</p>
+    <section class="section" id="demo">
+      <div class="container">
+        <div class="section-title">
+          <h2>Demo (How to install)</h2>
+          <p>Admin can upload a new video</p>
+        </div>
+
+        <div class="admin-panel" style="margin-top: 14px;">
+          <div class="admin-head">
+            <h3>Installation Demo Video</h3>
+            <span class="pill" id="demoStatus">No custom video</span>
+          </div>
+          <div class="admin-body">
+            <video id="demoVideo" controls playsinline style="width: 100%; border-radius: 14px; background: #000; border: 1px solid rgba(255,255,255,0.12);"></video>
+            <div class="admin-note">If no video is uploaded, this section stays empty. Upload a video from the admin panel below.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section admin" id="admin">
+      <div class="container">
+        <div class="section-title">
+          <h2>Admin Panel</h2>
+          <p>Key required</p>
+        </div>
+
+        <div class="admin-panel" style="margin-top: 14px;">
+          <div class="admin-head">
+            <h3>Upload APK &amp; Demo Video</h3>
+            <span class="pill" id="adminLockState">Locked</span>
+          </div>
+          <div class="admin-body">
+            <div class="row">
+              <label for="adminKey" class="admin-note">Enter admin key to unlock uploads:</label>
+              <input type="password" id="adminKey" placeholder="ADMIN KEY" autocomplete="off" />
+              <div class="admin-actions">
+                <button class="btn btn-primary" id="unlockAdmin" type="button">Unlock</button>
+                <button class="btn" id="lockAdmin" type="button">Lock</button>
+              </div>
+              <div class="admin-note" id="adminMsg" aria-live="polite"></div>
+            </div>
+
+            <div class="row" id="uploadControls" style="display:none;">
+              <div class="admin-note">Uploads are stored in your browser (localStorage). For GitHub Pages this is a client-side demo, not a server upload.</div>
+              <label class="admin-note" for="apkFile">Upload APK:</label>
+              <input type="file" id="apkFile" accept=".apk,application/vnd.android.package-archive" />
+
+              <label class="admin-note" for="demoFile">Upload demo video:</label>
+              <input type="file" id="demoFile" accept="video/*" />
+
+              <div class="admin-actions">
+                <button class="btn btn-primary" id="saveUploads" type="button">Save</button>
+                <button class="btn" id="clearUploads" type="button">Clear Saved</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <div>Concept redesign. Not affiliated with Netflix.</div>
+      </div>
+    </footer>
+  </main>
+
+  <div class="sticky" role="region" aria-label="Sticky download bar">
+    <div class="container">
+      <div class="sticky-inner">
+        <div>
+          <div class="sticky-title">Download App</div>
+          <div class="sticky-sub" id="apkStatus">APK not uploaded yet</div>
+        </div>
+        <button class="sticky-btn" id="stickyDownload" type="button">Download App</button>
+      </div>
     </div>
   </div>
-</footer>
 
-<!-- ======================================================
-     AOS – Animate On Scroll
-====================================================== -->
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
-  // ── AOS init ──────────────────────────────────────────
-  AOS.init({
-    once: true,
-    duration: 650,
-    easing: 'ease-out-cubic',
-    offset: 60,
-  });
+  <script>
+    const STORAGE_KEYS = {
+      apkName: 'streamflix_admin_apk_name',
+      apkDataUrl: 'streamflix_admin_apk_dataurl',
+      demoName: 'streamflix_admin_demo_name',
+      demoDataUrl: 'streamflix_admin_demo_dataurl',
+    };
 
-  // ── Navbar scroll effect ──────────────────────────────
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 40);
-  }, { passive: true });
+    function $(id) { return document.getElementById(id); }
 
-  // ── Mobile hamburger ──────────────────────────────────
-  const hamburger   = document.getElementById('hamburger');
-  const mobileMenu  = document.getElementById('mobile-menu');
-  const hamburgerLines = hamburger.querySelectorAll('.hamburger-line');
-  let menuOpen = false;
+    // Topbar scroll
+    const topbar = $('topbar');
+    window.addEventListener('scroll', () => {
+      topbar.classList.toggle('scrolled', window.scrollY > 12);
+    }, { passive: true });
 
-  function openMobileMenu() {
-    menuOpen = true;
-    mobileMenu.classList.add('open');
-    // Animate to X
-    hamburgerLines[0].style.transform = 'translateY(8px) rotate(45deg)';
-    hamburgerLines[1].style.opacity   = '0';
-    hamburgerLines[2].style.transform = 'translateY(-8px) rotate(-45deg)';
-  }
+    // Background particles (light flares)
+    const canvas = $('particles');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
 
-  function closeMobileMenu() {
-    menuOpen = false;
-    mobileMenu.classList.remove('open');
-    hamburgerLines[0].style.transform = '';
-    hamburgerLines[1].style.opacity   = '';
-    hamburgerLines[2].style.transform = '';
-  }
-
-  hamburger.addEventListener('click', () => {
-    menuOpen ? closeMobileMenu() : openMobileMenu();
-  });
-
-  // Close on outside click
-  document.addEventListener('click', (e) => {
-    if (menuOpen && !navbar.contains(e.target)) {
-      closeMobileMenu();
+    function resizeCanvas() {
+      const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+      canvas.width = Math.floor(window.innerWidth * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
-  });
-</script>
+
+    function seedParticles() {
+      const count = Math.max(18, Math.floor(window.innerWidth / 38));
+      particles = Array.from({ length: count }).map(() => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        r: 0.7 + Math.random() * 2.2,
+        vx: -0.05 + Math.random() * 0.10,
+        vy: -0.08 + Math.random() * 0.16,
+        a: 0.08 + Math.random() * 0.18,
+      }));
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      for (const p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < -20) p.x = window.innerWidth + 20;
+        if (p.x > window.innerWidth + 20) p.x = -20;
+        if (p.y < -20) p.y = window.innerHeight + 20;
+        if (p.y > window.innerHeight + 20) p.y = -20;
+
+        const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 14);
+        grd.addColorStop(0, `rgba(229,9,20,${p.a})`);
+        grd.addColorStop(1, 'rgba(229,9,20,0)');
+        ctx.fillStyle = grd;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * 14, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      requestAnimationFrame(drawParticles);
+    }
+
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      seedParticles();
+    }, { passive: true });
+
+    resizeCanvas();
+    seedParticles();
+    drawParticles();
+
+    // Ripple + download action
+    function addRipple(button, evt) {
+      const rect = button.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const ripple = document.createElement('span');
+      ripple.className = 'ripple';
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = (evt.clientX - rect.left - size / 2) + 'px';
+      ripple.style.top = (evt.clientY - rect.top - size / 2) + 'px';
+      button.appendChild(ripple);
+      ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
+    }
+
+    function getSavedApk() {
+      const name = localStorage.getItem(STORAGE_KEYS.apkName);
+      const dataUrl = localStorage.getItem(STORAGE_KEYS.apkDataUrl);
+      if (!name || !dataUrl) return null;
+      return { name, dataUrl };
+    }
+
+    function downloadDataUrl(filename, dataUrl) {
+      const a = document.createElement('a');
+      a.href = dataUrl;
+      a.download = filename;
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    function handleDownload(evt) {
+      addRipple(evt.currentTarget, evt);
+      const apk = getSavedApk();
+      if (!apk) {
+        alert('APK not uploaded yet. Please upload from Admin Panel.');
+        return;
+      }
+      downloadDataUrl(apk.name, apk.dataUrl);
+    }
+
+    $('downloadBtn').addEventListener('click', handleDownload);
+    $('stickyDownload').addEventListener('click', handleDownload);
+
+    // Admin panel (client-side)
+    const ADMIN_KEY = 'ADMIN123';
+    let unlocked = false;
+
+    function setLockState(next) {
+      unlocked = next;
+      $('adminLockState').textContent = unlocked ? 'Unlocked' : 'Locked';
+      $('uploadControls').style.display = unlocked ? 'grid' : 'none';
+    }
+
+    $('unlockAdmin').addEventListener('click', () => {
+      const key = $('adminKey').value || '';
+      if (key === ADMIN_KEY) {
+        setLockState(true);
+        $('adminMsg').textContent = 'Admin unlocked. You can now upload APK and demo video.';
+      } else {
+        setLockState(false);
+        $('adminMsg').textContent = 'Invalid key.';
+      }
+    });
+    $('lockAdmin').addEventListener('click', () => {
+      setLockState(false);
+      $('adminKey').value = '';
+      $('adminMsg').textContent = 'Locked.';
+    });
+
+    function fileToDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result));
+        reader.onerror = () => reject(new Error('Failed to read file'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function saveUploads() {
+      const apkFile = $('apkFile').files && $('apkFile').files[0];
+      const demoFile = $('demoFile').files && $('demoFile').files[0];
+
+      if (!apkFile && !demoFile) {
+        $('adminMsg').textContent = 'Select an APK and/or a demo video first.';
+        return;
+      }
+
+      try {
+        if (apkFile) {
+          const apkDataUrl = await fileToDataUrl(apkFile);
+          localStorage.setItem(STORAGE_KEYS.apkName, apkFile.name);
+          localStorage.setItem(STORAGE_KEYS.apkDataUrl, apkDataUrl);
+        }
+        if (demoFile) {
+          const demoDataUrl = await fileToDataUrl(demoFile);
+          localStorage.setItem(STORAGE_KEYS.demoName, demoFile.name);
+          localStorage.setItem(STORAGE_KEYS.demoDataUrl, demoDataUrl);
+        }
+
+        $('adminMsg').textContent = 'Saved successfully.';
+        refreshDynamicContent();
+      } catch (e) {
+        $('adminMsg').textContent = 'Save failed. File might be too large for browser storage.';
+      }
+    }
+
+    function clearUploads() {
+      for (const k of Object.values(STORAGE_KEYS)) localStorage.removeItem(k);
+      $('apkFile').value = '';
+      $('demoFile').value = '';
+      $('adminMsg').textContent = 'Cleared.';
+      refreshDynamicContent();
+    }
+
+    $('saveUploads').addEventListener('click', () => { if (unlocked) saveUploads(); });
+    $('clearUploads').addEventListener('click', () => { if (unlocked) clearUploads(); });
+
+    function refreshDynamicContent() {
+      const apk = getSavedApk();
+      $('apkStatus').textContent = apk ? `Ready: ${apk.name}` : 'APK not uploaded yet';
+
+      const demoName = localStorage.getItem(STORAGE_KEYS.demoName);
+      const demoDataUrl = localStorage.getItem(STORAGE_KEYS.demoDataUrl);
+      if (demoName && demoDataUrl) {
+        $('demoStatus').textContent = `Playing: ${demoName}`;
+        $('demoVideo').src = demoDataUrl;
+      } else {
+        $('demoStatus').textContent = 'No custom video';
+        $('demoVideo').removeAttribute('src');
+        $('demoVideo').load();
+      }
+
+      // end skeleton shimmer once loaded (simple transition)
+      window.setTimeout(() => {
+        document.querySelectorAll('.skeleton').forEach(el => el.classList.remove('skeleton'));
+      }, 900);
+    }
+
+    // Sign-in (demo)
+    $('signInBtn').addEventListener('click', () => {
+      alert('Sign In (demo)');
+    });
+
+    setLockState(false);
+    refreshDynamicContent();
+  </script>
 </body>
 </html>
+
