@@ -486,7 +486,7 @@
             box-shadow: var(--shadow);
             min-height: 178px;
             transform: translateZ(0);
-            transition: transform 240ms ease, border-color 240ms ease;
+            transition: transform 260ms ease, border-color 240ms ease, box-shadow 260ms ease;
             cursor: pointer;
         }
 
@@ -495,7 +495,9 @@
         }
 
         .card:hover {
-            border-color: rgba(229, 9, 20, 0.30);
+            border-color: rgba(229, 9, 20, 0.55);
+            transform: translateY(-5px) scale(1.025);
+            box-shadow: 0 28px 68px rgba(229, 9, 20, 0.30), var(--shadow);
         }
 
         .rank {
@@ -908,6 +910,124 @@
                 transform: none;
             }
         }
+        /* ===== Get App Button ===== */
+        .btn-get-app {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(229, 9, 20, 0.88), rgba(178, 7, 16, 0.88)) !important;
+            border-color: rgba(229, 9, 20, 0.55) !important;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            animation: getAppGlow 2.5s ease-in-out infinite;
+        }
+
+        .btn-get-app::before {
+            content: '';
+            position: absolute;
+            inset: -40% -30%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.22), transparent 55%);
+            pointer-events: none;
+        }
+
+        @keyframes getAppGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(229, 9, 20, 0); }
+            50% { box-shadow: 0 0 0 5px rgba(229, 9, 20, 0.22), 0 8px 28px rgba(229, 9, 20, 0.38); }
+        }
+
+        /* ===== Trending Ticker ===== */
+        .ticker-wrap {
+            overflow: hidden;
+            background: rgba(229, 9, 20, 0.07);
+            border-top: 1px solid rgba(229, 9, 20, 0.16);
+            border-bottom: 1px solid rgba(229, 9, 20, 0.16);
+            padding: 9px 0;
+            white-space: nowrap;
+            position: relative;
+            z-index: 10;
+        }
+
+        .ticker-inner {
+            display: inline-flex;
+            align-items: center;
+            animation: tickerScroll 40s linear infinite;
+            will-change: transform;
+        }
+
+        .ticker-wrap:hover .ticker-inner {
+            animation-play-state: paused;
+        }
+
+        @keyframes tickerScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 26px;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.78);
+            letter-spacing: 0.01em;
+        }
+
+        .ticker-label {
+            color: var(--red);
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+        }
+
+        .ticker-divider {
+            color: rgba(255, 255, 255, 0.22);
+        }
+
+        /* ===== Live Badge ===== */
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 9px;
+            border-radius: 999px;
+            background: rgba(229, 9, 20, 0.14);
+            border: 1px solid rgba(229, 9, 20, 0.32);
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--red);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            vertical-align: middle;
+        }
+
+        .live-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--red);
+            border-radius: 99px;
+            animation: livePulse 1.3s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes livePulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(229, 9, 20, 0.70); opacity: 1; }
+            50% { box-shadow: 0 0 0 6px rgba(229, 9, 20, 0); opacity: 0.60; }
+        }
+
+        /* ===== Chip dot pulse ===== */
+        .chip-dot {
+            animation: chipPulse 1.8s ease-in-out infinite;
+        }
+
+        @keyframes chipPulse {
+            0%, 100% { box-shadow: 0 0 8px rgba(229, 9, 20, 0.50); }
+            50% { box-shadow: 0 0 18px rgba(229, 9, 20, 0.90), 0 0 0 5px rgba(229, 9, 20, 0); }
+        }
+
     </style>
 </head>
 
@@ -927,7 +1047,12 @@
                         <option value="hi">Hindi</option>
                         <option value="es">Español</option>
                     </select>
-                    <button class="btn btn-primary" id="signInBtn" type="button">Sign In</button>
+                    <button class="btn btn-get-app" id="getAppBtn" type="button">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0">
+                            <path d="M12 3v10M7 11l5 5 5-5M5 20h14" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Get App
+                    </button>
                 </div>
             </div>
         </div>
@@ -969,50 +1094,18 @@
     </section>
 
     <main>
+        <div class="ticker-wrap" id="tickerWrap" aria-hidden="true">
+            <div class="ticker-inner" id="tickerInner"></div>
+        </div>
+
         <section class="section reveal" id="trending">
             <div class="container">
                 <div class="section-title">
-                    <h2>Trending Now</h2>
+                    <h2>Trending Now <span class="live-badge"><span class="live-dot"></span>Live</span></h2>
                     <p>Swipe • Snap scrolling</p>
                 </div>
 
                 <div class="carousel" id="trendingCarousel" aria-label="Trending carousel">
-                    <article class="card skeleton" data-download="1" tabindex="0" role="button"
-                        aria-label="Download app">
-                        <div class="poster" data-thumb="1"></div>
-                        <div class="card-info">
-                            <div class="chip"><span class="chip-dot"></span> New</div>
-                            <div class="card-title">Shadow City</div>
-                        </div>
-                        <div class="rank">1</div>
-                    </article>
-                    <article class="card skeleton" data-download="1" tabindex="0" role="button"
-                        aria-label="Download app">
-                        <div class="poster" data-thumb="2"></div>
-                        <div class="card-info">
-                            <div class="chip"><span class="chip-dot"></span> Trending</div>
-                            <div class="card-title">Neon Drift</div>
-                        </div>
-                        <div class="rank">2</div>
-                    </article>
-                    <article class="card skeleton" data-download="1" tabindex="0" role="button"
-                        aria-label="Download app">
-                        <div class="poster" data-thumb="3"></div>
-                        <div class="card-info">
-                            <div class="chip"><span class="chip-dot"></span> Top 10</div>
-                            <div class="card-title">Afterlight</div>
-                        </div>
-                        <div class="rank">3</div>
-                    </article>
-                    <article class="card skeleton" data-download="1" tabindex="0" role="button"
-                        aria-label="Download app">
-                        <div class="poster" data-thumb="4"></div>
-                        <div class="card-info">
-                            <div class="chip"><span class="chip-dot"></span> Hot</div>
-                            <div class="card-title">Crimson Code</div>
-                        </div>
-                        <div class="rank">4</div>
-                    </article>
                 </div>
             </div>
         </section>
@@ -1309,27 +1402,110 @@
         $('downloadBtn').addEventListener('click', handleDownload);
         $('stickyDownload').addEventListener('click', handleDownload);
 
-        // Trending cards click-to-download + keyboard support
-        document.querySelectorAll('[data-download="1"]').forEach((el) => {
-            el.addEventListener('click', handleCardDownload);
-            el.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handleCardDownload(e);
+        // Get App button (header)
+        const getAppBtn = $('getAppBtn');
+        if (getAppBtn) {
+            getAppBtn.addEventListener('click', (evt) => {
+                addRipple(getAppBtn, evt);
+                const apk = getSavedApk();
+                if (!apk) {
+                    alert('APK not uploaded yet. Please upload from Admin Panel.');
+                    return;
                 }
+                downloadUrl(apk.name, apk.url);
             });
-        });
+        }
+
+        // ===== Trending Movies Data (real 2024-2025 movies) =====
+        const trendingMovies = [
+            { title: 'Deadpool & Wolverine', badge: 'Hot',      thumb: 'https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg' },
+            { title: 'Inside Out 2',         badge: 'Top 10',   thumb: 'https://image.tmdb.org/t/p/w500/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg' },
+            { title: 'Alien: Romulus',        badge: 'New',      thumb: 'https://image.tmdb.org/t/p/w500/b33nnKl1GSFbao4l3fZDDqsMx0F.jpg' },
+            { title: 'The Wild Robot',        badge: 'Popular',  thumb: 'https://image.tmdb.org/t/p/w500/wTnV3PCVW5O92JMrFvvrRcV39RU.jpg' },
+            { title: 'Wicked',                badge: 'Trending', thumb: 'https://image.tmdb.org/t/p/w500/c5Tqxeo1UpBvnAc3csUm7j3hlQl.jpg' },
+            { title: 'Gladiator II',          badge: 'Hot',      thumb: 'https://image.tmdb.org/t/p/w500/2cxhvwyE0QGrgLotO6p9hTUDkHI.jpg' },
+            { title: 'Moana 2',               badge: 'New',      thumb: 'https://image.tmdb.org/t/p/w500/4YZpsylmjHbqeWzjKpUEF8gcLNW.jpg' },
+            { title: 'A Minecraft Movie',     badge: 'Top 10',   thumb: 'https://image.tmdb.org/t/p/w500/iPPTGh2OXuIv6d7cwuoPkw9K5KO.jpg' },
+        ];
+
+        // Build scrolling ticker from movie titles
+        function buildTicker(movies) {
+            const inner = $('tickerInner');
+            if (!inner) return;
+            const itemsHtml = movies.map(m =>
+                `<span class="ticker-item"><span class="ticker-label">Trending</span> ${m.title} <span class="ticker-divider">•</span></span>`
+            ).join('');
+            // Duplicate for seamless infinite scroll
+            inner.innerHTML = itemsHtml + itemsHtml;
+        }
+
+        // Build trending cards dynamically
+        function buildTrendingCards(movies) {
+            const carousel = $('trendingCarousel');
+            if (!carousel) return;
+            carousel.innerHTML = movies.map((m, i) =>
+                `<article class="card skeleton" data-download="1" tabindex="0" role="button" aria-label="Download app">
+                    <div class="poster" data-thumb="${i + 1}"></div>
+                    <div class="card-info">
+                        <div class="chip"><span class="chip-dot"></span> ${m.badge}</div>
+                        <div class="card-title">${m.title}</div>
+                    </div>
+                    <div class="rank">${i + 1}</div>
+                </article>`
+            ).join('');
+
+            // Bind click/keyboard handlers to newly created cards
+            carousel.querySelectorAll('[data-download="1"]').forEach((el) => {
+                el.addEventListener('click', handleCardDownload);
+                el.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleCardDownload(e);
+                    }
+                });
+            });
+        }
+
+        // Staggered entrance animation for cards when carousel scrolls into view
+        function setupCardEntrance() {
+            const carousel = $('trendingCarousel');
+            if (!carousel || !('IntersectionObserver' in window)) return;
+            const cards = Array.from(carousel.querySelectorAll('.card'));
+            const ENTER_DURATION = 460; // ms — duration of each card fade-in
+            const ENTER_STAGGER  = 90;  // ms — delay increment per card
+            const HOVER_DURATION = 260; // ms — duration of hover transitions
+            // Set invisible initial state
+            cards.forEach((card, i) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(18px)';
+                card.style.transition = `opacity ${ENTER_DURATION}ms ease ${i * ENTER_STAGGER}ms, transform ${ENTER_DURATION}ms ease ${i * ENTER_STAGGER}ms, border-color 240ms ease, box-shadow ${HOVER_DURATION}ms ease`;
+            });
+            const maxDelay = (cards.length - 1) * ENTER_STAGGER;
+            const io = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    cards.forEach((card) => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateZ(0)';
+                    });
+                    // Remove inline transition after all cards finish so hover CSS takes over
+                    setTimeout(() => {
+                        cards.forEach((card) => {
+                            card.style.transition = '';
+                            card.style.opacity = '';
+                            card.style.transform = '';
+                        });
+                    }, maxDelay + ENTER_DURATION + 40); // +40ms buffer after last card finishes
+                    io.disconnect();
+                }
+            }, { threshold: 0.08 });
+            io.observe(carousel);
+        }
 
         function refreshDynamicContent() {
             $('brandPrefix').textContent = getBrandPrefix();
 
-            // Real thumbnails
-            const thumbs = {
-                1: "https://image.tmdb.org/t/p/w600_and_h900_bestv2/vUUqzWa2LnHIVqkaKVlVGkVcZIW.jpg",
-                2: "https://image.tmdb.org/t/p/w600_and_h900_bestv2/reEMJA1uzscCbkpeRJeTT2bjqUp.jpg",
-                3: "https://image.tmdb.org/t/p/w600_and_h900_bestv2/A45dXEPi1v1vw1sURcsXgBEEIWa.jpg",
-                4: "https://image.tmdb.org/t/p/w600_and_h900_bestv2/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg"
-            };
+            // Thumbnails from trendingMovies array
+            const thumbs = Object.fromEntries(trendingMovies.map((m, i) => [i + 1, m.thumb]));
 
             document.querySelectorAll('.poster[data-thumb]').forEach((el) => {
                 const key = el.getAttribute('data-thumb');
@@ -1363,7 +1539,7 @@
                 logoMark.classList.remove('has-dp');
             }
 
-            // end skeleton shimmer once loaded (simple transition)
+            // End skeleton shimmer once loaded
             window.setTimeout(() => {
                 document.querySelectorAll('.skeleton').forEach(el => el.classList.remove('skeleton'));
             }, 900);
@@ -1387,11 +1563,6 @@
             }
         }
 
-        // Sign-in (demo)
-        $('signInBtn').addEventListener('click', () => {
-            alert('Sign In (demo)');
-        });
-
         // Section reveal on scroll
         const revealEls = Array.from(document.querySelectorAll('.reveal'));
         if ('IntersectionObserver' in window && revealEls.length) {
@@ -1407,6 +1578,11 @@
         } else {
             revealEls.forEach((el) => el.classList.add('in'));
         }
+
+        // Build UI and init
+        buildTicker(trendingMovies);
+        buildTrendingCards(trendingMovies);
+        setupCardEntrance();
 
         (async () => {
             await tryLoadServerSettings();
