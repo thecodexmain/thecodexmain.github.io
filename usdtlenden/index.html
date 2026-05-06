@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>USDTLenDen — Buy USDT &amp; TRX Fast</title>
+  <meta name="description" content="Premium OTC crypto desk. Buy USDT &amp; TRX quickly and securely via WhatsApp. Fast release, trusted rates, reliable support." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Reset & Base ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #050505;
+      --bg2:       #0d0d12;
+      --card:      rgba(255,255,255,0.05);
+      --stroke:    rgba(255,255,255,0.10);
+      --purple:    #8b5cf6;
+      --violet:    #a855f7;
+      --white:     #ffffff;
+      --gray:      rgba(255,255,255,0.60);
+      --radius:    18px;
+      --radius-lg: 28px;
+      --shadow:    0 20px 60px rgba(0,0,0,0.70);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Inter', -apple-system, 'SF Pro Display', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    /* ─── Canvas / Spotlight Background ────────────────────────────── */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .spotlight {
+      position: fixed;
+      top: -30%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 900px;
+      background: radial-gradient(ellipse at center, rgba(139,92,246,0.22) 0%, transparent 68%);
+      z-index: 0;
+      pointer-events: none;
+      animation: spotPulse 6s ease-in-out infinite;
+    }
+
+    @keyframes spotPulse {
+      0%,100% { opacity: .9; transform: translateX(-50%) scale(1); }
+      50%      { opacity: 1;  transform: translateX(-50%) scale(1.08); }
+    }
+
+    /* ─── Floating Particles ────────────────────────────────────────── */
+    .particle {
+      position: fixed;
+      border-radius: 50%;
+      background: var(--violet);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 0;
+      animation: floatParticle linear infinite;
+    }
+
+    @keyframes floatParticle {
+      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+      10%  { opacity: .4; }
+      90%  { opacity: .15; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+
+    /* ─── Floating Header ───────────────────────────────────────────── */
+    .floating-header {
+      position: fixed;
+      top: 12px;
+      top: calc(12px + env(safe-area-inset-top));
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      width: calc(100% - 32px);
+      max-width: 480px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: rgba(255,255,255,0.10);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 9999px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.06) inset;
+    }
+
+    .hdr-icon {
+      width: 34px; height: 34px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      cursor: pointer;
+      transition: background .2s;
+      flex-shrink: 0;
+    }
+    .hdr-icon:hover { background: rgba(255,255,255,0.15); }
+    .hdr-icon svg { width: 16px; height: 16px; fill: none; stroke: #fff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+    .hdr-url {
+      flex: 1;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: .3px;
+      padding: 0 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .hdr-url span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 9999px;
+      padding: 3px 12px;
+    }
+
+    .lock-icon { width: 11px; height: 11px; }
+
+    /* ─── Main content wrapper ──────────────────────────────────────── */
+    .main-wrap {
+      position: relative;
+      z-index: 1;
+      padding-top: calc(80px + env(safe-area-inset-top));
+      padding-bottom: 120px;
+    }
+
+    /* ─── Section utility ───────────────────────────────────────────── */
+    .section { padding: 40px 20px; max-width: 600px; margin: 0 auto; }
+
+    /* ─── Hero ──────────────────────────────────────────────────────── */
+    .hero { text-align: center; padding-top: 60px; }
+
+    .logo-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+      animation: fadeUp .7s ease both;
+    }
+
+    .logo-icon {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, #26a17b, #1a8c65);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      box-shadow: 0 0 20px rgba(38,161,123,.5);
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      display: flex; flex-direction: column; text-align: left;
+    }
+    .logo-name {
+      font-size: 22px; font-weight: 800; letter-spacing: -.4px;
+      background: linear-gradient(90deg, #fff 0%, rgba(255,255,255,.75) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .logo-sub {
+      font-size: 11px; font-weight: 500; color: var(--gray); letter-spacing: .6px; text-transform: uppercase;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 7vw, 44px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.18;
+      color: #fff;
+      margin-bottom: 16px;
+      animation: fadeUp .75s .1s ease both;
+    }
+
+    .hero p {
+      font-size: 15px;
+      color: var(--gray);
+      max-width: 340px;
+      margin: 0 auto 32px;
+      line-height: 1.65;
+      animation: fadeUp .8s .2s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── CTA Buttons ───────────────────────────────────────────────── */
+    .cta-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      animation: fadeUp .85s .3s ease both;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 15px 28px;
+      border-radius: 9999px;
+      font-size: 15px; font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      transition: transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s, background .2s;
+      width: 100%; max-width: 340px;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .btn:active { transform: scale(.96) !important; }
+
+    .btn-primary {
+      background: #ffffff;
+      color: #000000;
+      box-shadow: 0 4px 24px rgba(255,255,255,.15);
+    }
+    .btn-primary:hover { transform: scale(1.03); box-shadow: 0 8px 32px rgba(255,255,255,.22); }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.07);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+    .btn-secondary:hover { transform: scale(1.03); background: rgba(255,255,255,0.12); }
+
+    .rules-link {
+      font-size: 13px; color: var(--gray); cursor: pointer; text-decoration: none;
+      transition: color .2s;
+      margin-top: 4px;
+    }
+    .rules-link:hover { color: #fff; }
+    .rules-link .accent { color: var(--purple); font-weight: 600; }
+
+    /* ─── Divider ────────────────────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
+      margin: 0 20px;
+    }
+
+    /* ─── Glass Card ────────────────────────────────────────────────── */
+    .glass-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+    }
+
+    /* ─── Rate Table ────────────────────────────────────────────────── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -.4px;
+      margin-bottom: 20px;
+    }
+
+    .rate-table-wrap { overflow: hidden; }
+
+    .rate-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .rate-table thead th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--gray);
+      background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .rate-table thead th:last-child { text-align: right; }
+
+    .rate-table tbody tr {
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: background .18s;
+    }
+    .rate-table tbody tr:last-child { border-bottom: none; }
+    .rate-table tbody tr:hover { background: rgba(255,255,255,0.04); }
+
+    .rate-table td {
+      padding: 14px 16px;
+      vertical-align: middle;
+    }
+
+    .coin-info { display: flex; align-items: center; gap: 10px; }
+
+    .coin-badge {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .badge-usdt { background: linear-gradient(135deg,#26a17b,#1a8c65); }
+    .badge-trx  { background: linear-gradient(135deg,#ef4444,#dc2626); }
+
+    .coin-name  { font-weight: 600; font-size: 13px; }
+    .coin-method { font-size: 11px; color: var(--gray); margin-top: 1px; }
+
+    .rate-cell {
+      text-align: right;
+    }
+    .rate-amount {
+      font-size: 17px;
+      font-weight: 700;
+      color: #34d399;
+    }
+    .rate-note {
+      font-size: 10px;
+      color: var(--gray);
+      margin-top: 1px;
+    }
+
+    /* ─── Stats ─────────────────────────────────────────────────────── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .stat-card {
+      padding: 24px 20px;
+      text-align: center;
+      border-radius: var(--radius);
+    }
+
+    .stat-number {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(90deg, var(--purple), var(--violet));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--gray);
+      margin-top: 4px;
+    }
+
+    /* ─── Floating WhatsApp ─────────────────────────────────────────── */
+    .wa-float {
+      position: fixed;
+      bottom: calc(28px + env(safe-area-inset-bottom));
+      right: 20px;
+      z-index: 90;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .wa-btn {
+      width: 58px; height: 58px;
+      background: #25d366;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 28px rgba(37,211,102,.4);
+      animation: waFloat 3s ease-in-out infinite, waPulse 2.5s ease-in-out infinite;
+      transition: transform .2s;
+      position: relative;
+    }
+    .wa-btn:hover { transform: scale(1.1); }
+
+    .wa-badge {
+      position: absolute;
+      top: -4px; right: -4px;
+      width: 18px; height: 18px;
+      background: #ef4444;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid var(--bg);
+    }
+
+    @keyframes waFloat {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-6px); }
+    }
+
+    @keyframes waPulse {
+      0%,100% { box-shadow: 0 6px 28px rgba(37,211,102,.4); }
+      50%      { box-shadow: 0 6px 40px rgba(37,211,102,.7), 0 0 0 10px rgba(37,211,102,.12); }
+    }
+
+    .wa-icon { width: 30px; height: 30px; fill: #fff; }
+
+    /* ─── Modal Overlay ─────────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,.6);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex; align-items: flex-end; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal-sheet {
+      width: 100%; max-width: 600px;
+      background: var(--bg2);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-bottom: none;
+      border-radius: 28px 28px 0 0;
+      padding: 20px 20px calc(28px + env(safe-area-inset-bottom));
+      transform: translateY(100%);
+      transition: transform .38s cubic-bezier(.32,1,.4,1);
+      max-height: 88dvh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .modal-overlay.open .modal-sheet { transform: translateY(0); }
+
+    .modal-handle {
+      width: 40px; height: 4px;
+      background: rgba(255,255,255,.15);
+      border-radius: 9999px;
+      margin: 0 auto 20px;
+    }
+
+    .modal-pill {
+      display: inline-flex;
+      align-items: center; gap: 5px;
+      background: rgba(139,92,246,.15);
+      border: 1px solid rgba(139,92,246,.3);
+      border-radius: 9999px;
+      padding: 4px 12px;
+      font-size: 11px; font-weight: 600; color: var(--violet);
+      letter-spacing: .5px; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .modal-title { font-size: 22px; font-weight: 700; letter-spacing: -.4px; margin-bottom: 6px; }
+    .modal-sub   { font-size: 13px; color: var(--gray); margin-bottom: 20px; }
+
+    /* Rate mini card */
+    .rate-mini {
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(52,211,153,.06);
+      border: 1px solid rgba(52,211,153,.2);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 18px;
+    }
+    .rate-mini-label { font-size: 12px; font-weight: 600; color: var(--gray); }
+    .rate-mini-price { font-size: 24px; font-weight: 800; color: #34d399; letter-spacing: -1px; }
+
+    /* Method cards */
+    .method-cards { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+
+    .method-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      transition: background .2s, border-color .2s;
+    }
+    .method-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(139,92,246,.25); }
+
+    .method-badge {
+      display: inline-block;
+      background: rgba(139,92,246,.15);
+      border: 1px solid rgba(139,92,246,.25);
+      color: var(--violet);
+      font-size: 10px; font-weight: 600; letter-spacing: .4px; text-transform: uppercase;
+      border-radius: 9999px;
+      padding: 2px 9px;
+      margin-bottom: 8px;
+    }
+    .method-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .method-desc  { font-size: 12px; color: var(--gray); line-height: 1.55; }
+
+    .btn-modal-cta {
+      background: #fff; color: #000;
+      padding: 16px;
+      font-size: 15px; font-weight: 700;
+      border-radius: 9999px;
+      width: 100%;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      cursor: pointer; border: none;
+      transition: transform .2s, box-shadow .2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-modal-cta:hover { transform: scale(1.02); box-shadow: 0 8px 32px rgba(255,255,255,.18); }
+    .btn-modal-cta:active { transform: scale(.97); }
+
+    /* ─── Footer ────────────────────────────────────────────────────── */
+    .footer {
+      text-align: center;
+      padding: 24px 20px;
+      font-size: 12px;
+      color: rgba(255,255,255,.3);
+      border-top: 1px solid rgba(255,255,255,.05);
+    }
+
+    /* ─── Scroll-fade utility ───────────────────────────────────────── */
+    .scroll-fade {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .scroll-fade.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Purple spotlight glow -->
+  <div class="spotlight"></div>
+
+  <!-- Floating particles (injected by JS) -->
+
+  <!-- ─── Floating Safari Header ───────────────────────────────────── -->
+  <header class="floating-header" aria-label="Site header">
+    <!-- Close icon -->
+    <div class="hdr-icon" aria-label="Close" role="button" tabindex="0">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </div>
+
+    <!-- URL pill -->
+    <div class="hdr-url">
+      <span>
+        <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="2" stroke-linecap="round">
+          <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        usdtlenden.com
+      </span>
+    </div>
+
+    <!-- Menu icon -->
+    <div class="hdr-icon" id="menuBtn" aria-label="Menu" role="button" tabindex="0">
+      <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </div>
+  </header>
+
+  <!-- ─── Main content ─────────────────────────────────────────────── -->
+  <main class="main-wrap">
+
+    <!-- Hero Section -->
+    <section class="section hero" id="hero">
+      <!-- Logo -->
+      <div class="logo-wrap">
+        <div class="logo-icon">₮</div>
+        <div class="logo-text">
+          <span class="logo-name">USDTLenDen</span>
+          <span class="logo-sub">OTC Crypto Desk</span>
+        </div>
+      </div>
+
+      <h1>Buy USDT quickly<br>and securely.</h1>
+      <p>Secure OTC crypto buying via WhatsApp with fast release, trusted rates, and reliable support.</p>
+
+      <!-- CTA Buttons -->
+      <div class="cta-group">
+        <a href="https://wa.me/919999999999?text=Hi%2C%20I%20want%20to%20Buy%20USDT"
+           target="_blank" rel="noopener noreferrer"
+           class="btn btn-primary"
+           onclick="openModal(); return false;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+          Buy USDT on WhatsApp
+        </a>
+
+        <a href="https://wa.me/919999999999"
+           target="_blank" rel="noopener noreferrer"
+           class="btn btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+          Chat on WhatsApp
+        </a>
+
+        <button class="rules-link" onclick="openModal()">
+          Must read our <span class="accent">Rules</span>
+        </button>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Rate Table -->
+    <section class="section scroll-fade" id="rates">
+      <div class="section-label">Live Rates</div>
+      <div class="section-title">Today's Buy Rates</div>
+
+      <div class="glass-card rate-table-wrap">
+        <table class="rate-table">
+          <thead>
+            <tr>
+              <th>Crypto</th>
+              <th>Buy Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="coin-info">
+                  <div class="coin-badge badge-usdt">₮</div>
+                  <div>
+                    <div class="coin-name">USDT</div>
+                    <div class="coin-method">Bank RTGS / NEFT</div>
+                  </div>
+                </div>
+              </td>
+              <td class="rate-cell">
+                <div class="rate-amount">₹93</div>
+                <div class="rate-note">per USDT</div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="coin-info">
+                  <div class="coin-badge badge-usdt">₮</div>
+                  <div>
+                    <div class="coin-name">USDT</div>
+                    <div class="coin-method">Cash Angadia</div>
+                  </div>
+                </div>
+              </td>
+              <td class="rate-cell">
+                <div class="rate-amount">₹96.40</div>
+                <div class="rate-note">per USDT</div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="coin-info">
+                  <div class="coin-badge badge-usdt">₮</div>
+                  <div>
+                    <div class="coin-name">USDT</div>
+                    <div class="coin-method">CDM Cash Deposit</div>
+                  </div>
+                </div>
+              </td>
+              <td class="rate-cell">
+                <div class="rate-amount">₹101</div>
+                <div class="rate-note">per USDT</div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="coin-info">
+                  <div class="coin-badge badge-trx">T</div>
+                  <div>
+                    <div class="coin-name">TRX (TRON)</div>
+                    <div class="coin-method">Bank RTGS / NEFT</div>
+                  </div>
+                </div>
+              </td>
+              <td class="rate-cell">
+                <div class="rate-amount">₹40</div>
+                <div class="rate-note">per TRX</div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="coin-info">
+                  <div class="coin-badge badge-trx">T</div>
+                  <div>
+                    <div class="coin-name">TRX (TRON)</div>
+                    <div class="coin-method">Cash Angadia</div>
+                  </div>
+                </div>
+              </td>
+              <td class="rate-cell">
+                <div class="rate-amount">₹40</div>
+                <div class="rate-note">per TRX</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Stats Section -->
+    <section class="section scroll-fade" id="stats">
+      <div class="section-label">Our Track Record</div>
+      <div class="stats-grid">
+        <div class="glass-card stat-card">
+          <div class="stat-number">15k+</div>
+          <div class="stat-label">Transacted with us</div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-number">$5B+</div>
+          <div class="stat-label">Amount Transaction</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      Copyright &copy; 2026 CryptoPay. All Rights Reserved.
+    </footer>
+  </main>
+
+  <!-- ─── Floating WhatsApp Button ─────────────────────────────────── -->
+  <a href="https://wa.me/919999999999" target="_blank" rel="noopener noreferrer"
+     class="wa-float" aria-label="Chat on WhatsApp">
+    <div class="wa-btn">
+      <svg class="wa-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+      </svg>
+      <div class="wa-badge">1</div>
+    </div>
+  </a>
+
+  <!-- ─── Buy Methods Modal ─────────────────────────────────────────── -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-sheet" id="modalSheet">
+      <div class="modal-handle"></div>
+
+      <div class="modal-pill">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        USDT Buy
+      </div>
+
+      <div class="modal-title" id="modalTitle">Buy USDT Methods</div>
+      <div class="modal-sub">Fast release · WhatsApp support · Trusted OTC service</div>
+
+      <!-- Rate mini -->
+      <div class="rate-mini">
+        <div>
+          <div class="rate-mini-label">Cash Buy Rate</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:2px;">Live rate — updated daily</div>
+        </div>
+        <div class="rate-mini-price">₹95</div>
+      </div>
+
+      <!-- Method cards -->
+      <div class="method-cards">
+        <div class="method-card">
+          <div class="method-badge">Cash / Angadia</div>
+          <div class="method-title">Buy USDT with Cash</div>
+          <div class="method-desc">Trade via WhatsApp with secure offline settlement and premium cash rates.</div>
+        </div>
+        <div class="method-card">
+          <div class="method-badge">Bank Transfer</div>
+          <div class="method-title">Buy USDT via RTGS/NEFT</div>
+          <div class="method-desc">Send bank payment and receive USDT after confirmation.</div>
+        </div>
+        <div class="method-card">
+          <div class="method-badge">CDM Deposit</div>
+          <div class="method-title">Buy via Cash Deposit</div>
+          <div class="method-desc">Cash deposit supported with quick USDT release.</div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <button class="btn-modal-cta" onclick="closeModal()">
+        📋 Read Full Rules &amp; Terms
+      </button>
+    </div>
+  </div>
+
+  <script>
+    /* ── Particles ───────────────────────────────────────────────────── */
+    (function spawnParticles() {
+      const count = 18;
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = Math.random() * 3 + 1.5;
+        const left = Math.random() * 100;
+        const dur  = Math.random() * 14 + 10;
+        const del  = Math.random() * 14;
+        p.style.cssText = `
+          width:${size}px;height:${size}px;
+          left:${left}%;
+          animation-duration:${dur}s;
+          animation-delay:-${del}s;
+          opacity:0;
+        `;
+        document.body.appendChild(p);
+      }
+    })();
+
+    /* ── Scroll-fade observer ────────────────────────────────────────── */
+    const fades = document.querySelectorAll('.scroll-fade');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    fades.forEach(el => observer.observe(el));
+
+    /* ── Modal ───────────────────────────────────────────────────────── */
+    const overlay = document.getElementById('modalOverlay');
+
+    function openModal() {
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // Close on backdrop click
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closeModal();
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Menu button opens modal
+    document.getElementById('menuBtn').addEventListener('click', openModal);
+    document.getElementById('menuBtn').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(); }
+    });
+
+    /* ── Touch swipe-down to close modal ─────────────────────────────── */
+    let touchStartY = 0;
+    const sheet = document.getElementById('modalSheet');
+    sheet.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
+    sheet.addEventListener('touchend', e => {
+      if (e.changedTouches[0].clientY - touchStartY > 80) closeModal();
+    }, { passive: true });
+  </script>
+</body>
+</html>
