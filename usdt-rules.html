@@ -7,7 +7,7 @@
   <meta name="description" content="Full rules, terms and conditions for USDT LenDen – Buy & Sell USDT in India via Cash (Angadia) and Bank Transfer." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg: #0a0a0f;
@@ -28,7 +28,7 @@
     body {
       background: var(--bg);
       color: #fff;
-      font-family: Inter, system-ui, -apple-system, sans-serif;
+      font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
       overflow-x: hidden;
       line-height: 1.7;
     }
@@ -47,13 +47,36 @@
       z-index: 50;
     }
     .logo {
-      font-weight: 800;
-      font-size: 1.2rem;
+      font-weight: 700;
+      font-size: 1.1rem;
       text-decoration: none;
       color: #fff;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      line-height: 1;
+    }
+    .logo-top {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 5px;
+    }
+    .logo-globe {
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(circle at 38% 38%, #4ade80 0%, #16a34a 50%, #064e3b 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      flex-shrink: 0;
+      box-shadow: 0 0 6px rgba(74,222,128,0.5);
+      animation: globePulse 3s ease-in-out infinite;
+    }
+    @keyframes globePulse {
+      0%, 100% { box-shadow: 0 0 6px rgba(74,222,128,0.5); }
+      50%       { box-shadow: 0 0 14px rgba(74,222,128,0.9); }
     }
     .btn-back {
       background: rgba(255,255,255,0.10);
@@ -268,6 +291,30 @@
     }
     .btn-wa:hover { opacity: 0.88; transform: translateY(-1px); }
 
+    /* SCROLL REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* PAGE HEADER ENTRANCE */
+    .page-header .chip,
+    .page-header h1,
+    .page-header p {
+      animation: fadeUp .7s ease both;
+    }
+    .page-header h1  { animation-delay: .1s; }
+    .page-header p   { animation-delay: .2s; }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
     /* FOOTER */
     footer {
       text-align: center;
@@ -286,7 +333,13 @@
 
 <!-- NAV -->
 <nav>
-  <a class="logo" href="usdtlenden.html">🌐 USDT LenDen</a>
+  <a class="logo" href="usdtlenden.html">
+    <div class="logo-top">
+      <span>usdt</span>
+      <span class="logo-globe">🌍</span>
+    </div>
+    <div>lenden</div>
+  </a>
   <a class="btn-back" href="usdtlenden.html">← Back to Home</a>
 </nav>
 
@@ -301,7 +354,7 @@
 <main class="content">
 
   <!-- 1. Overview -->
-  <div class="rule-card">
+  <div class="rule-card reveal">
     <div class="rule-card-header">
       <div class="rule-num">1</div>
       <h2>Overview <span class="subtitle">General Rules</span></h2>
@@ -314,7 +367,7 @@
   </div>
 
   <!-- 2. Cash Method -->
-  <div class="rule-card">
+  <div class="rule-card reveal">
     <div class="rule-card-header">
       <div class="rule-num">2</div>
       <h2>Cash Method <span class="subtitle">Angadia / Cash Lenden</span></h2>
@@ -330,7 +383,7 @@
   </div>
 
   <!-- 3. Bank – Sell -->
-  <div class="rule-card">
+  <div class="rule-card reveal">
     <div class="rule-card-header">
       <div class="rule-num">3</div>
       <h2>Bank Method – Selling USDT <span class="subtitle">Receive INR via Bank Transfer</span></h2>
@@ -345,7 +398,7 @@
   </div>
 
   <!-- 4. Bank – Buy -->
-  <div class="rule-card">
+  <div class="rule-card reveal">
     <div class="rule-card-header">
       <div class="rule-num">4</div>
       <h2>Bank Method – Buying USDT <span class="subtitle">Pay INR via Bank Transfer</span></h2>
@@ -360,7 +413,7 @@
   </div>
 
   <!-- 5. Pricing -->
-  <div class="rule-card">
+  <div class="rule-card reveal">
     <div class="rule-card-header">
       <div class="rule-num">5</div>
       <h2>Pricing &amp; Rate Policy</h2>
@@ -380,7 +433,7 @@
   </div>
 
   <!-- 6. Transaction Rules -->
-  <div class="rule-card">
+  <div class="rule-card reveal">
     <div class="rule-card-header">
       <div class="rule-num">6</div>
       <h2>Transaction Rules</h2>
@@ -396,7 +449,7 @@
   </div>
 
   <!-- 7. Safety -->
-  <div class="rule-card">
+  <div class="rule-card reveal">
     <div class="rule-card-header">
       <div class="rule-num">7</div>
       <h2>Safety &amp; Fraud Protection</h2>
@@ -409,7 +462,7 @@
   </div>
 
   <!-- 8. Timing -->
-  <div class="rule-card">
+  <div class="rule-card reveal">
     <div class="rule-card-header">
       <div class="rule-num">8</div>
       <h2>Timing &amp; Availability</h2>
@@ -423,7 +476,7 @@
   </div>
 
   <!-- 9. User Responsibility -->
-  <div class="rule-card">
+  <div class="rule-card reveal">
     <div class="rule-card-header">
       <div class="rule-num">9</div>
       <h2>User Responsibility</h2>
@@ -436,7 +489,7 @@
   </div>
 
   <!-- CTA -->
-  <div class="cta-section">
+  <div class="cta-section reveal">
     <h3>Ready to Transact?</h3>
     <p>All rules read? Connect with us on WhatsApp to start your USDT buy or sell deal.</p>
     <a href="https://wa.link/usdtlenden" target="_blank" rel="noopener" class="btn-wa">
@@ -452,5 +505,21 @@
   <p style="margin-top:6px;">Services available across 700+ cities in India. All transactions are final.</p>
 </footer>
 
+<script>
+  (function () {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.10 });
+    document.querySelectorAll('.reveal').forEach(function (el, i) {
+      el.style.transitionDelay = (i * 60) + 'ms';
+      io.observe(el);
+    });
+  })();
+</script>
 </body>
 </html>
