@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>USDT LenDen – Rules &amp; Terms</title>
+  <meta name="description" content="Full rules, terms and conditions for USDT LenDen – Buy & Sell USDT in India via Cash (Angadia) and Bank Transfer." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #100e1a;
+      --card: rgba(255,255,255,0.05);
+      --stroke: rgba(255,255,255,0.10);
+      --muted: rgba(255,255,255,0.55);
+      --soft: rgba(255,255,255,0.80);
+      --purple: #7c3aed;
+      --purple-light: #a78bfa;
+      --green: #22c55e;
+      --orange: #fb923c;
+      --red: #f87171;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: #fff;
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 32px;
+      border-bottom: 1px solid var(--stroke);
+      position: sticky;
+      top: 0;
+      background: rgba(10,10,15,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 50;
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 1.2rem;
+      text-decoration: none;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-back {
+      background: rgba(255,255,255,0.10);
+      border: 1px solid var(--stroke);
+      color: #fff;
+      border-radius: 50px;
+      padding: 8px 18px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .2s;
+    }
+    .btn-back:hover { background: rgba(255,255,255,0.18); }
+
+    /* PAGE HEADER */
+    .page-header {
+      text-align: center;
+      padding: 60px 24px 48px;
+      background: radial-gradient(ellipse 700px 400px at 50% 0%, rgba(124,58,237,0.30), transparent 65%);
+    }
+    .page-header .chip {
+      display: inline-block;
+      background: rgba(124,58,237,0.25);
+      color: var(--purple-light);
+      border-radius: 50px;
+      padding: 5px 16px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 16px;
+    }
+    .page-header h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+    .page-header p {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* CONTENT */
+    .content {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* SECTION CARD */
+    .rule-card {
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 28px 28px 24px;
+      margin-bottom: 18px;
+    }
+    .rule-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .rule-num {
+      background: rgba(124,58,237,0.25);
+      color: var(--purple-light);
+      border-radius: 10px;
+      min-width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .rule-card h2 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+    .rule-card h2 .subtitle {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* TAG */
+    .method-tag {
+      display: inline-block;
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 12px;
+    }
+    .tag-cash  { background: rgba(34,197,94,0.15);  color: #4ade80; }
+    .tag-bank  { background: rgba(251,146,60,0.15); color: var(--orange); }
+    .tag-sell  { background: rgba(239,68,68,0.18);  color: var(--red); }
+    .tag-buy   { background: rgba(168,85,247,0.20); color: #c084fc; }
+    .tag-price { background: rgba(250,204,21,0.15); color: #fde047; }
+    .tag-safe  { background: rgba(34,197,94,0.15);  color: #4ade80; }
+    .tag-time  { background: rgba(96,165,250,0.15); color: #93c5fd; }
+    .tag-user  { background: rgba(244,114,182,0.15);color: #f9a8d4; }
+
+    /* RULE LIST */
+    .rule-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .rule-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 0.92rem;
+      color: var(--soft);
+    }
+    .rule-list li::before {
+      content: '•';
+      color: var(--purple-light);
+      font-size: 1.1rem;
+      line-height: 1.5;
+      flex-shrink: 0;
+    }
+    .rule-list li strong { color: #fff; }
+    .rule-list li .hindi {
+      display: block;
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-top: 2px;
+    }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--stroke);
+      margin: 18px 0;
+    }
+
+    /* EXAMPLE BOX */
+    .example-box {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--stroke);
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-top: 14px;
+    }
+    .example-box .ex-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .ex-rates {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .ex-rate-item { font-size: 0.9rem; color: var(--soft); }
+    .ex-rate-item span { font-size: 1.2rem; font-weight: 800; }
+    .ex-rate-item span.buy  { color: var(--green); }
+    .ex-rate-item span.sell { color: var(--orange); }
+
+    /* WARNING BOX */
+    .warn-box {
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.25);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 0.88rem;
+      color: #fca5a5;
+      margin-top: 14px;
+    }
+
+    /* CTA */
+    .cta-section {
+      text-align: center;
+      margin-top: 40px;
+      padding: 32px 24px;
+      background: rgba(124,58,237,0.10);
+      border: 1px solid rgba(124,58,237,0.25);
+      border-radius: var(--radius);
+    }
+    .cta-section h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; }
+    .cta-section p  { color: var(--muted); font-size: 0.9rem; margin-bottom: 20px; }
+    .btn-wa {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #25d366;
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 13px 28px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity .2s, transform .15s;
+    }
+    .btn-wa:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 28px 20px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--stroke);
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="usdtlenden.html">🌐 USDT LenDen</a>
+  <a class="btn-back" href="usdtlenden.html">← Back to Home</a>
+</nav>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="chip">📋 Official Rules &amp; Terms</div>
+  <h1>USDT LenDen Rules</h1>
+  <p>Read all rules carefully before initiating any transaction.</p>
+</header>
+
+<!-- CONTENT -->
+<main class="content">
+
+  <!-- 1. Overview -->
+  <div class="rule-card">
+    <div class="rule-card-header">
+      <div class="rule-num">1</div>
+      <h2>Overview <span class="subtitle">General Rules</span></h2>
+    </div>
+    <ul class="rule-list">
+      <li>USDTLenDen provides <strong>USDT Buy &amp; Sell</strong> services via Cash (Angadia Method) and Bank Transfer (NEFT/RTGS).</li>
+      <li>Services are available in <strong>700+ cities</strong> across India.</li>
+      <li>All deals are handled via <strong>WhatsApp communication</strong>.</li>
+    </ul>
+  </div>
+
+  <!-- 2. Cash Method -->
+  <div class="rule-card">
+    <div class="rule-card-header">
+      <div class="rule-num">2</div>
+      <h2>Cash Method <span class="subtitle">Angadia / Cash Lenden</span></h2>
+    </div>
+    <span class="method-tag tag-cash">Cash / Angadia</span>
+    <ul class="rule-list">
+      <li><strong>No KYC required</strong> for cash transactions. <span class="hindi">Cash (Angadia) deal में KYC की जरूरत नहीं है।</span></li>
+      <li>Minimum transaction: <strong>1,100 USDT</strong>. <span class="hindi">Minimum 1100 USDT का transaction होगा।</span></li>
+      <li>In some cities, higher limits may apply (<strong>₹1 lakh+</strong>). <span class="hindi">कुछ cities में minimum ₹1 लाख का deal हो सकता है।</span></li>
+      <li>USDT delivered within <strong>~10 minutes</strong> after cash confirmation. <span class="hindi">Cash confirm होते ही ~10 मिनट में USDT मिल जाएगा।</span></li>
+      <li><strong>Best available market rates</strong> offered.</li>
+    </ul>
+  </div>
+
+  <!-- 3. Bank – Sell -->
+  <div class="rule-card">
+    <div class="rule-card-header">
+      <div class="rule-num">3</div>
+      <h2>Bank Method – Selling USDT <span class="subtitle">Receive INR via Bank Transfer</span></h2>
+    </div>
+    <span class="method-tag tag-sell">Bank — Sell USDT</span>
+    <ul class="rule-list">
+      <li>Minimum: <strong>100 USDT</strong>. <span class="hindi">Bank से USDT बेचने पर minimum 100 USDT allowed है।</span></li>
+      <li>You will receive <strong>₹2 less per USDT</strong> compared to cash rate. <span class="hindi">आपको cash rate से ₹2 कम मिलेगा।</span></li>
+      <li>Payment timing: <strong>11 AM – 6 PM</strong>. Processing time: <strong>1–2 hours</strong>. <span class="hindi">Payment 1–2 घंटे में मिलेगा (11 AM – 6 PM)।</span></li>
+      <li>Funds are <strong>100% cyber-safe and clean</strong>. <span class="hindi">Funds पूरी तरह safe और clean होते हैं।</span></li>
+    </ul>
+  </div>
+
+  <!-- 4. Bank – Buy -->
+  <div class="rule-card">
+    <div class="rule-card-header">
+      <div class="rule-num">4</div>
+      <h2>Bank Method – Buying USDT <span class="subtitle">Pay INR via Bank Transfer</span></h2>
+    </div>
+    <span class="method-tag tag-buy">Bank — Buy USDT</span>
+    <ul class="rule-list">
+      <li><strong>PAN + Aadhaar required</strong>. <span class="hindi">USDT खरीदने के लिए PAN + Aadhaar जरूरी है।</span></li>
+      <li>Bank account must be <strong>in same name</strong>. <span class="hindi">Same name के bank account से payment करना होगा।</span></li>
+      <li>After payment received: USDT delivered in <strong>2–4 hours</strong> (delay is for chargeback fraud protection). <span class="hindi">Payment आने के 2–4 घंटे बाद USDT मिलेगा।</span></li>
+      <li>Rate: approx <strong>₹7 higher than cash rate</strong>. Note: International exchanges may charge ~₹14 higher. <span class="hindi">Rate cash से ₹7 ज्यादा होगा।</span></li>
+    </ul>
+  </div>
+
+  <!-- 5. Pricing -->
+  <div class="rule-card">
+    <div class="rule-card-header">
+      <div class="rule-num">5</div>
+      <h2>Pricing &amp; Rate Policy</h2>
+    </div>
+    <span class="method-tag tag-price">Rates</span>
+    <ul class="rule-list">
+      <li>Rates are <strong>not fixed</strong> and may change anytime.</li>
+      <li><strong>Final rate</strong> will be confirmed at deal time only.</li>
+    </ul>
+    <div class="example-box">
+      <div class="ex-label">Example Rate (USDT/INR)</div>
+      <div class="ex-rates">
+        <div class="ex-rate-item">Cash Buy: <span class="buy">₹95</span></div>
+        <div class="ex-rate-item">Cash Sell: <span class="sell">₹96.50</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Transaction Rules -->
+  <div class="rule-card">
+    <div class="rule-card-header">
+      <div class="rule-num">6</div>
+      <h2>Transaction Rules</h2>
+    </div>
+    <ul class="rule-list">
+      <li>All transactions are <strong>final once confirmed</strong>.</li>
+      <li><strong>No cancellation</strong> after: cash accepted or USDT transferred.</li>
+      <li>Always verify: <strong>wallet address</strong> and <strong>payment details</strong> before confirming.</li>
+    </ul>
+    <div class="warn-box">
+      ⚠️ Double-check all wallet addresses and payment details. Errors cannot be reversed after confirmation.
+    </div>
+  </div>
+
+  <!-- 7. Safety -->
+  <div class="rule-card">
+    <div class="rule-card-header">
+      <div class="rule-num">7</div>
+      <h2>Safety &amp; Fraud Protection</h2>
+    </div>
+    <span class="method-tag tag-safe">Security</span>
+    <ul class="rule-list">
+      <li>Any suspicious activity may result in <strong>delay, cancellation, or permanent ban</strong>.</li>
+      <li>Chargeback / fake payment = <strong>strict action + blacklist</strong>.</li>
+    </ul>
+  </div>
+
+  <!-- 8. Timing -->
+  <div class="rule-card">
+    <div class="rule-card-header">
+      <div class="rule-num">8</div>
+      <h2>Timing &amp; Availability</h2>
+    </div>
+    <span class="method-tag tag-time">Hours</span>
+    <ul class="rule-list">
+      <li><strong>Cash deals:</strong> Depends on city &amp; availability.</li>
+      <li><strong>Bank payouts:</strong> 11 AM – 6 PM.</li>
+      <li>Processing may vary based on banking system and Angadia network.</li>
+    </ul>
+  </div>
+
+  <!-- 9. User Responsibility -->
+  <div class="rule-card">
+    <div class="rule-card-header">
+      <div class="rule-num">9</div>
+      <h2>User Responsibility</h2>
+    </div>
+    <span class="method-tag tag-user">User</span>
+    <ul class="rule-list">
+      <li>User must ensure <strong>funds are legal</strong> and no illegal activity is involved.</li>
+      <li>Wrong details given by user = <strong>user is responsible</strong>. <span class="hindi">Wrong details देने पर user जिम्मेदार होगा।</span></li>
+    </ul>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h3>Ready to Transact?</h3>
+    <p>All rules read? Connect with us on WhatsApp to start your USDT buy or sell deal.</p>
+    <a href="https://wa.link/usdtlenden" target="_blank" rel="noopener" class="btn-wa">
+      💬 Chat on WhatsApp
+    </a>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 CryptoPay / USDTLenDen. All Rights Reserved.</p>
+  <p style="margin-top:6px;">Services available across 700+ cities in India. All transactions are final.</p>
+</footer>
+
+</body>
+</html>
