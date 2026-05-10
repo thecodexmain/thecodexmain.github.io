@@ -1,0 +1,14 @@
+[
+  {
+    "id": "LOG001",
+    "action": "bootstrap",
+    "message": "Prime Keys portal initialized with demo owner and reseller accounts.",
+    "actor_id": "system",
+    "actor_name": "System",
+    "actor_role": "system",
+    "created_at": "2026-05-10 00:00:00",
+    "meta": {
+      "portal": "primekeys"
+    }
+  }
+]

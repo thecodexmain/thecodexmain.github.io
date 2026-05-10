@@ -1,0 +1,36 @@
+[
+  {
+    "id": "KEY001",
+    "key_code": "PK-TRIAL-A1B2",
+    "generator_type": "random",
+    "label_seed": "",
+    "duration_days": 30,
+    "status": "unused",
+    "owner_user_id": "OWN001",
+    "created_by_id": "OWN001",
+    "created_by_name": "Prime Owner",
+    "created_by_role": "owner",
+    "assigned_to": "",
+    "created_at": "2026-05-10 00:00:00",
+    "used_at": "",
+    "expires_at": "2026-06-09 00:00:00",
+    "cost_charged": 0
+  },
+  {
+    "id": "KEY002",
+    "key_code": "DEMO-7DAY-X9Q2",
+    "generator_type": "name_random",
+    "label_seed": "Demo",
+    "duration_days": 7,
+    "status": "used",
+    "owner_user_id": "RES001",
+    "created_by_id": "RES001",
+    "created_by_name": "Demo Reseller",
+    "created_by_role": "reseller",
+    "assigned_to": "USR001",
+    "created_at": "2026-05-10 00:00:00",
+    "used_at": "2026-05-10 00:05:00",
+    "expires_at": "2026-05-17 00:00:00",
+    "cost_charged": 70
+  }
+]

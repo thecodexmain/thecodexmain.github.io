@@ -1,0 +1,18 @@
+{
+  "brand_name": "PRIME KEYS",
+  "brand_tagline": "Owner & Reseller Key Control Panel",
+  "theme_color": "#0d6efd",
+  "maintenance_mode": false,
+  "library_online": true,
+  "mod_name": "Prime Android Suite",
+  "mod_status": "Online",
+  "referral_mode": "single_use",
+  "price_per_day": 10,
+  "features": {
+    "esp": true,
+    "item": true,
+    "aimbot": true,
+    "bullet_tracking": false,
+    "memory": true
+  }
+}

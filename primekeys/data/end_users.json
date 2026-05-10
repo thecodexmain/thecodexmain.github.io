@@ -1,0 +1,17 @@
+[
+  {
+    "id": "USR001",
+    "name": "Demo User",
+    "username": "demo-user",
+    "password": "$2y$10$veagzpe4mb2beCYA2sWAaeLVT2Q0c3TMM6TSYr4L5qGksIrk/17VG",
+    "email": "demo@primekeys.local",
+    "status": "active",
+    "referral_code": "DEMO-REF",
+    "referred_by_code": "",
+    "owner_user_id": "RES001",
+    "key_id": "KEY002",
+    "expiry_at": "2026-05-17 00:00:00",
+    "created_at": "2026-05-10 00:00:00",
+    "updated_at": "2026-05-10 00:00:00"
+  }
+]

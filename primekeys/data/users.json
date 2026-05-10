@@ -1,0 +1,26 @@
+[
+  {
+    "id": "OWN001",
+    "name": "Prime Owner",
+    "username": "owner",
+    "password": "$2y$10$xvQ8NsEh/HftLF/XcWxQPudeOUrIcX04FTrQPc9cPNffx3Eta0D0e",
+    "role": "owner",
+    "email": "owner@primekeys.local",
+    "status": "active",
+    "balance": 0,
+    "created_at": "2026-05-10 00:00:00",
+    "last_login_at": ""
+  },
+  {
+    "id": "RES001",
+    "name": "Demo Reseller",
+    "username": "reseller",
+    "password": "$2y$10$5gXFWEI0wttbcEwU5JWFa.q/aYmfNyEHUEnT72uCcdjMTWjeJoX9m",
+    "role": "reseller",
+    "email": "reseller@primekeys.local",
+    "status": "active",
+    "balance": 500,
+    "created_at": "2026-05-10 00:00:00",
+    "last_login_at": ""
+  }
+]
