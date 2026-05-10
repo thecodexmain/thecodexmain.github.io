@@ -17,8 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $labelSeed = primeRaw($_POST['label_seed'] ?? '');
     $quantity = max(1, min(100, (int)($_POST['quantity'] ?? 1)));
     $durationDays = max(1, min(365, (int)($_POST['duration_days'] ?? 30)));
-    $unitPrice = primePriceForDuration($durationDays);
-    $totalCost = $unitPrice * $quantity;
+    $unit_price = primePriceForDuration($durationDays);
+    $total_cost = $unit_price * $quantity;
 
     $users = primeLoadData('users');
     $keys = primeLoadData('keys');
@@ -27,12 +27,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (($currentUser['role'] ?? '') === 'reseller') {
         foreach ($users as &$user) {
             if (($user['id'] ?? '') === ($currentUser['id'] ?? '')) {
-                if ((float)($user['balance'] ?? 0) < $totalCost) {
+                if ((float)($user['balance'] ?? 0) < $total_cost) {
                     primeSetFlash('error', 'Insufficient balance to generate the requested keys.');
                     header('Location: ' . $baseUrl . '/generator.php');
                     exit;
                 }
-                $user['balance'] = round((float)$user['balance'] - $totalCost, 2);
+                $user['balance'] = round((float)$user['balance'] - $total_cost, 2);
                 $currentUser = $user;
                 $_SESSION['primekeys_balance'] = $user['balance'];
                 break;
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'created_at' => primeNow(),
             'used_at' => '',
             'expires_at' => date('Y-m-d H:i:s', strtotime('+' . $durationDays . ' days')),
-            'cost_charged' => ($currentUser['role'] ?? '') === 'reseller' ? $unitPrice : 0,
+            'cost_charged' => ($currentUser['role'] ?? '') === 'reseller' ? $unit_price : 0,
         ];
     }
 
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     primeAddAuditLog($currentUser, 'generate_keys', 'Generated ' . $quantity . ' ' . $generatorType . ' key(s).', [
         'quantity' => $quantity,
         'duration_days' => $durationDays,
-        'total_cost' => $totalCost,
+        'total_cost' => $total_cost,
     ]);
     primeSetFlash('success', 'Generated ' . $quantity . ' key(s) successfully.');
     header('Location: ' . $baseUrl . '/generator.php');

@@ -59,8 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = primeRaw($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
         $status = $_POST['status'] ?? 'active';
-                $rawReferralCode = primeRaw($_POST['referred_by_code'] ?? '');
-                $referredByCode = $rawReferralCode !== '' ? strtoupper(primeSlug($rawReferralCode)) : '';
+        $referred_by_code = primeNormalizeReferralCode($_POST['referred_by_code'] ?? '');
         $selectedKeyId = $_POST['key_id'] ?? '';
         $expiryAt = trim((string)($_POST['expiry_at'] ?? ''));
         $status = in_array($status, ['active', 'inactive'], true) ? $status : 'active';
@@ -79,8 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        $referralOwner = $referredByCode ? primeFindEndUserByReferralCode($referredByCode) : null;
-        if ($referredByCode && (!$referralOwner || !primeCanUseReferralCode($referredByCode, $recordId))) {
+        $referralOwner = $referred_by_code ? primeFindEndUserByReferralCode($referred_by_code) : null;
+        if ($referred_by_code && (!$referralOwner || !primeCanUseReferralCode($referred_by_code, $recordId))) {
             primeSetFlash('error', 'Referral code is invalid for the current referral mode.');
             header('Location: ' . $baseUrl . '/users.php' . ($recordId ? '?edit=' . urlencode($recordId) : ''));
             exit;
@@ -110,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ];
         }
 
-        if ($referredByCode !== '' && ($record['referral_code'] ?? '') === $referredByCode) {
+        if ($referred_by_code !== '' && ($record['referral_code'] ?? '') === $referred_by_code) {
             primeSetFlash('error', 'Users cannot register with their own referral code.');
             header('Location: ' . $baseUrl . '/users.php' . ($recordId ? '?edit=' . urlencode($recordId) : ''));
             exit;
@@ -153,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $record['username'] = $username;
         $record['email'] = $email;
         $record['status'] = $status;
-        $record['referred_by_code'] = $referredByCode;
+        $record['referred_by_code'] = $referred_by_code;
         $record['referral_code'] = $record['referral_code'] ?? primeCreateReferralCode($name);
         $record['updated_at'] = primeNow();
         $record['key_id'] = $newKeyId;
@@ -161,18 +160,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($password !== '') {
             $record['password'] = password_hash($password, PASSWORD_DEFAULT);
         } elseif (empty($record['password'])) {
-            $record['password'] = password_hash('demo123', PASSWORD_DEFAULT);
+            primeSetFlash('error', 'Password is required when creating a new user.');
+            header('Location: ' . $baseUrl . '/users.php');
+            exit;
         }
 
-        $chosenExpiry = $expiryAt !== '' ? date('Y-m-d H:i:s', strtotime($expiryAt . ' 00:00:00')) : '';
+        $chosen_expiry = $expiryAt !== '' ? date('Y-m-d H:i:s', strtotime($expiryAt . ' 00:00:00')) : '';
         if ($newKeyId !== '') {
             foreach ($keys as &$key) {
                 if (($key['id'] ?? '') === $newKeyId) {
                     $key['assigned_to'] = $record['id'];
                     $key['used_at'] = $key['used_at'] ?: primeNow();
                     $key['status'] = !empty($key['expires_at']) && strtotime($key['expires_at']) < time() ? 'expired' : 'used';
-                    if ($chosenExpiry === '' || strtotime($chosenExpiry) > strtotime($key['expires_at'])) {
-                        $chosenExpiry = $key['expires_at'];
+                    if ($chosen_expiry === '' || strtotime($chosen_expiry) > strtotime($key['expires_at'])) {
+                        $chosen_expiry = $key['expires_at'];
                     }
                     break;
                 }
@@ -180,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             unset($key);
         }
 
-        $record['expiry_at'] = $chosenExpiry ?: date('Y-m-d H:i:s', strtotime('+30 days'));
+        $record['expiry_at'] = $chosen_expiry ?: date('Y-m-d H:i:s', strtotime('+30 days'));
 
         if ($targetIndex === null) {
             $endUsers[] = $record;
@@ -236,7 +237,7 @@ include __DIR__ . '/includes/header.php';
                             <div class="col-md-6"><label class="form-label">Name</label><input type="text" class="form-control" name="name" value="<?php echo htmlspecialchars($editingUser['name'] ?? ''); ?>" required></div>
                             <div class="col-md-6"><label class="form-label">Username</label><input type="text" class="form-control" name="username" value="<?php echo htmlspecialchars($editingUser['username'] ?? ''); ?>" required></div>
                             <div class="col-12"><label class="form-label">Email</label><input type="email" class="form-control" name="email" value="<?php echo htmlspecialchars($editingUser['email'] ?? ''); ?>"></div>
-                            <div class="col-md-6"><label class="form-label">Password <?php echo $editingUser ? '(leave blank to keep)' : ''; ?></label><input type="password" class="form-control" name="password"></div>
+                                    <div class="col-md-6"><label class="form-label">Password <?php echo $editingUser ? '(leave blank to keep)' : '(required)'; ?></label><input type="password" class="form-control" name="password" <?php echo $editingUser ? '' : 'required'; ?>></div>
                             <div class="col-md-6">
                                 <label class="form-label">Status</label>
                                 <select class="form-select" name="status">
