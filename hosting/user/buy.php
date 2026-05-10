@@ -12,6 +12,42 @@ $baseUrl = hostingGetBaseUrl();
 $services = hostingEnsureDefaultServices();
 
 $selected = $_GET['service'] ?? '';
+
+$error = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    hostingVerifyCsrf();
+    $serviceId = (string)($_POST['service_id'] ?? '');
+    $domain = trim((string)($_POST['domain'] ?? ''));
+    $notes = trim((string)($_POST['notes'] ?? ''));
+
+    $service = hostingFindService($serviceId);
+    if (!$service || empty($service['active'])) {
+        $error = 'Please select a valid plan.';
+    } elseif ($domain !== '' && !preg_match('/^[a-z0-9.-]+\\.[a-z]{2,}$/i', $domain)) {
+        $error = 'Please enter a valid domain (example.com).';
+    } else {
+        $user = hostingCurrentUser();
+        $orders = hostingLoadData('orders');
+        $orders[] = [
+            'id' => 'O-' . hostingGenerateId(),
+            'user_id' => $user['id'],
+            'service_id' => $service['id'],
+            'service_name' => $service['name'],
+            'status' => 'pending',
+            'domain' => $domain,
+            'notes' => $notes,
+            'requested_at' => hostingNow(),
+            'updated_at' => hostingNow(),
+            'approved_at' => null,
+            'cpanel' => []
+        ];
+        hostingSaveData('orders', $orders);
+        hostingSetFlash('success', 'Request submitted. You will get an email after admin approval.');
+        header('Location: ' . hostingGetBaseUrl() . '/user/services.php');
+        exit;
+    }
+    $selected = $serviceId;
+}
 ?>
 <?php require __DIR__ . '/../includes/header.php'; ?>
 
@@ -27,16 +63,40 @@ $selected = $_GET['service'] ?? '';
     <i class="bi bi-info-circle me-2"></i>After you submit a request, an admin will approve it and send your cPanel details automatically.
 </div>
 
+<?php if ($error): ?>
+    <div class="alert alert-danger"><i class="bi bi-exclamation-triangle me-2"></i><?php echo htmlspecialchars($error); ?></div>
+<?php endif; ?>
+
 <div class="card">
     <div class="card-body">
-        <div class="text-muted">Ordering flow is enabled in the next step.</div>
-        <div class="small">For now you can browse plans on the home page.</div>
-        <a class="btn btn-primary mt-3" href="<?php echo $baseUrl; ?>/index.php#plans"><i class="bi bi-bag-check me-1"></i>Browse plans</a>
-        <?php if ($selected): ?>
-            <div class="small text-muted mt-2">Selected plan: <span class="fw-semibold"><?php echo htmlspecialchars($selected); ?></span></div>
-        <?php endif; ?>
+        <form method="post" action="" class="row g-3">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(hostingCsrfToken()); ?>">
+            <div class="col-12">
+                <label class="form-label fw-semibold">Plan</label>
+                <select class="form-select" name="service_id" required>
+                    <option value="" <?php echo $selected ? '' : 'selected'; ?> disabled>Select a plan</option>
+                    <?php foreach ($services as $s): if (empty($s['active'])) continue; ?>
+                        <option value="<?php echo htmlspecialchars($s['id']); ?>" <?php echo ($selected === ($s['id'] ?? '')) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($s['name']); ?> — $<?php echo number_format((float)$s['price'], 2); ?>/<?php echo htmlspecialchars($s['billing_cycle']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Domain (optional)</label>
+                <input class="form-control" name="domain" placeholder="example.com">
+                <div class="form-text">If you already have a domain, enter it here.</div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Notes (optional)</label>
+                <input class="form-control" name="notes" placeholder="Any extra requirements">
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary" type="submit"><i class="bi bi-send-check me-1"></i>Submit request</button>
+                <a class="btn btn-outline-secondary ms-2" href="<?php echo $baseUrl; ?>/index.php#plans">Compare plans</a>
+            </div>
+        </form>
     </div>
 </div>
 
 <?php require __DIR__ . '/../includes/footer.php'; ?>
-

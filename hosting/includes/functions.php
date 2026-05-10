@@ -25,6 +25,10 @@ function hostingGenerateId(string $prefix = ''): string {
     return $prefix . strtoupper(bin2hex(random_bytes(4)));
 }
 
+function hostingNow(): string {
+    return date('Y-m-d H:i:s');
+}
+
 function hostingSanitize(string $input): string {
     return htmlspecialchars(strip_tags(trim($input)), ENT_QUOTES, 'UTF-8');
 }
@@ -143,3 +147,10 @@ function hostingEnsureDefaultServices(): array {
     return $services;
 }
 
+function hostingFindService(string $serviceId): ?array {
+    $services = hostingEnsureDefaultServices();
+    foreach ($services as $s) {
+        if (($s['id'] ?? '') === $serviceId) return $s;
+    }
+    return null;
+}
