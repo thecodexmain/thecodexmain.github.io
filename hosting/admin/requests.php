@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $req['status'] = 'approved';
                 $req['processed_at'] = date('Y-m-d H:i:s');
-                $req['approved_by'] = $admin['name'];
+                $req['processed_by'] = $admin['name'];
                 $req['cpanel_url'] = $cpanelUrl;
                 $req['cpanel_user'] = $cpanelUser;
                 $req['cpanel_pass'] = $cpanelPass;
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($action === 'reject') {
                 $req['status'] = 'rejected';
                 $req['processed_at'] = date('Y-m-d H:i:s');
-                $req['approved_by'] = $admin['name'];
+                $req['processed_by'] = $admin['name'];
                 hostingSendAutoMail($req['user_email'], 'Hosting request update', "Hi {$req['user_name']},\n\nYour request {$req['id']} was reviewed and is currently rejected. Please contact support for details.", ['event' => 'request_rejected', 'request_id' => $req['id']]);
                 hostingSetFlash('warning', "Request {$req['id']} rejected.");
             }
@@ -105,7 +105,7 @@ hostingLayoutStart('Manage Requests - CodexHost');
                                 <button class="btn btn-outline-danger btn-sm w-100">Reject</button>
                             </form>
                         <?php else: ?>
-                            <small class="text-muted">Processed by <?php echo hostingSanitize($r['approved_by'] ?? 'admin'); ?></small>
+                            <small class="text-muted">Processed by <?php echo hostingSanitize($r['processed_by'] ?? 'admin'); ?></small>
                         <?php endif; ?>
                     </td>
                 </tr>

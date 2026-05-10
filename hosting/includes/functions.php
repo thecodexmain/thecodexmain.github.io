@@ -179,6 +179,7 @@ function hostingSafeUrl(string $url): string {
     if ($url === '') return '';
     if (!filter_var($url, FILTER_VALIDATE_URL)) return '';
     $parts = parse_url($url);
+    if ($parts === false) return '';
     $scheme = strtolower($parts['scheme'] ?? '');
     if (!in_array($scheme, ['http', 'https'], true)) return '';
     return $url;
