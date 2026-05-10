@@ -1,0 +1,10 @@
+body { background: #f5f7fb; }
+.card { border: 0; box-shadow: 0 6px 24px rgba(0,0,0,.06); border-radius: 14px; }
+.story-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; }
+.story-item { min-width: 110px; }
+.media-box img, .media-box video { width: 100%; border-radius: 10px; max-height: 520px; object-fit: cover; background: #000; }
+.post-meta { font-size: .9rem; color: #6b7280; }
+.small-pill { border-radius: 999px; font-size: .75rem; }
+.message-bubble { padding: 10px 12px; border-radius: 12px; max-width: 80%; }
+.message-me { background: #111827; color: #fff; margin-left: auto; }
+.message-other { background: #e5e7eb; color: #111827; }
