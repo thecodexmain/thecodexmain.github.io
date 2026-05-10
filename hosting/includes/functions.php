@@ -13,7 +13,7 @@ function loadHostingData(string $file): array {
 
 function saveHostingData(string $file, array $data): bool {
     $path = hostingDataPath($file);
-    return file_put_contents($path, json_encode(array_values($data), JSON_PRETTY_PRINT)) !== false;
+    return file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT)) !== false;
 }
 
 function hostingGenerateId(string $prefix = ''): string {
@@ -74,6 +74,10 @@ function hostingFindById(array $rows, string $id): ?array {
 }
 
 function hostingEnsureSeedData(): void {
+    static $initialized = false;
+    if ($initialized) return;
+    $initialized = true;
+
     $users = loadHostingData('users');
     if (empty($users)) {
         $users[] = [

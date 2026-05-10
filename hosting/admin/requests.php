@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 $req['status'] = 'approved';
-                $req['approved_at'] = date('Y-m-d H:i:s');
+                $req['processed_at'] = date('Y-m-d H:i:s');
                 $req['approved_by'] = $admin['name'];
                 $req['cpanel_url'] = $cpanelUrl;
                 $req['cpanel_user'] = $cpanelUser;
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($action === 'reject') {
                 $req['status'] = 'rejected';
-                $req['approved_at'] = date('Y-m-d H:i:s');
+                $req['processed_at'] = date('Y-m-d H:i:s');
                 $req['approved_by'] = $admin['name'];
                 hostingSendAutoMail($req['user_email'], 'Hosting request update', "Hi {$req['user_name']},\n\nYour request {$req['id']} was reviewed and is currently rejected. Please contact support for details.", ['event' => 'request_rejected', 'request_id' => $req['id']]);
                 hostingSetFlash('warning', "Request {$req['id']} rejected.");

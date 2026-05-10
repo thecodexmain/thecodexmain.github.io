@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         hostingSetFlash('danger', 'Please select a valid hosting plan.');
     } elseif ($domain === '') {
         hostingSetFlash('danger', 'Domain is required.');
-    } elseif (!preg_match('/^(?=.{1,253}$)(?!-)(?:[a-zA-Z0-9-]{1,63}\\.)+[a-zA-Z]{2,63}$/', $domain)) {
+    } elseif (!preg_match('/^(?=.{1,253}$)(?:(?!-)[a-zA-Z0-9-]{1,63}(?<!-)\\.)+[a-zA-Z]{2,63}$/', $domain)) {
         hostingSetFlash('danger', 'Please provide a valid domain name (example.com).');
     } else {
         $requests = loadHostingData('service_requests');
