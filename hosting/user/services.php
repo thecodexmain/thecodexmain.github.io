@@ -60,6 +60,15 @@ $myOrders = array_values(array_filter($orders, fn($o) => ($o['user_id'] ?? '') =
                                     <div class="col-md-3"><span class="text-muted">Password:</span> <?php echo htmlspecialchars($o['cpanel']['password'] ?? '-'); ?></div>
                                     <div class="col-md-3"><span class="text-muted">Nameservers:</span> <?php echo htmlspecialchars($o['cpanel']['nameservers'] ?? '-'); ?></div>
                                 </div>
+                                <?php if (!empty($o['admin_note'])): ?>
+                                    <div class="mt-2"><span class="text-muted">Admin note:</span> <?php echo nl2br(htmlspecialchars($o['admin_note'] ?? '')); ?></div>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php elseif (($o['status'] ?? '') === 'rejected' && !empty($o['rejection_reason'])): ?>
+                        <tr class="table-light">
+                            <td colspan="5" class="small">
+                                <span class="text-muted">Rejection reason:</span> <?php echo nl2br(htmlspecialchars($o['rejection_reason'] ?? '')); ?>
                             </td>
                         </tr>
                     <?php endif; ?>
@@ -71,4 +80,3 @@ $myOrders = array_values(array_filter($orders, fn($o) => ($o['user_id'] ?? '') =
 </div>
 
 <?php require __DIR__ . '/../includes/footer.php'; ?>
-
