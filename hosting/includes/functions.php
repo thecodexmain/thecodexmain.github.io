@@ -154,3 +154,11 @@ function hostingFindService(string $serviceId): ?array {
     }
     return null;
 }
+
+function hostingFindUser(string $userId): ?array {
+    $users = hostingLoadData('users');
+    foreach ($users as $u) {
+        if (($u['id'] ?? '') === $userId) return $u;
+    }
+    return null;
+}
