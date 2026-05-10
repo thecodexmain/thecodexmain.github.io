@@ -1,0 +1,35 @@
+[
+    {
+        "id": "usr_cfc5b1e27a93",
+        "username": "admin_user",
+        "display_name": "Admin User",
+        "password_hash": "$2y$10$t3pTksQ8GxtLvtGxrydZuunFyMTEo.fujkSxUmPGlDgk8XT9IFmZW",
+        "bio": "",
+        "avatar": "",
+        "role": "admin",
+        "privacy": "public",
+        "created_at": "2026-05-10T05:13:27+00:00"
+    },
+    {
+        "id": "usr_45f5b66d3b65",
+        "username": "alice",
+        "display_name": "Alice",
+        "password_hash": "$2y$10$vJme0QBL6hc7T8LQucQi9eTrN4Hhd7V74hUWaljdTKnd1HGGGFtMC",
+        "bio": "",
+        "avatar": "",
+        "role": "user",
+        "privacy": "public",
+        "created_at": "2026-05-10T05:13:27+00:00"
+    },
+    {
+        "id": "usr_07c7ee6c0b2f",
+        "username": "bob",
+        "display_name": "Bob",
+        "password_hash": "$2y$10$DruN4INxsMZzTB349hyZL.kk62BB1PqcozVlt82tI2MlUo4xWqxrm",
+        "bio": "",
+        "avatar": "",
+        "role": "user",
+        "privacy": "public",
+        "created_at": "2026-05-10T05:13:27+00:00"
+    }
+]

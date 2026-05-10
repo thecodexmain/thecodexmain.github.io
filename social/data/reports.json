@@ -1,0 +1,11 @@
+[
+    {
+        "id": "rpt_2317c2fa9b3d",
+        "reporter_id": "usr_45f5b66d3b65",
+        "target_user_id": "usr_07c7ee6c0b2f",
+        "reason": "abuse",
+        "details": "details",
+        "status": "open",
+        "created_at": "2026-05-10T05:13:27+00:00"
+    }
+]

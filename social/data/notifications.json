@@ -1,0 +1,29 @@
+[
+    {
+        "id": "noti_b8397a3d46f4",
+        "user_id": "usr_07c7ee6c0b2f",
+        "actor_user_id": "usr_45f5b66d3b65",
+        "type": "mention",
+        "message": "mentioned you in a post",
+        "is_read": false,
+        "created_at": "2026-05-10T05:13:27+00:00"
+    },
+    {
+        "id": "noti_bcea816e8f1d",
+        "user_id": "usr_45f5b66d3b65",
+        "actor_user_id": "usr_07c7ee6c0b2f",
+        "type": "follow",
+        "message": "started following you",
+        "is_read": false,
+        "created_at": "2026-05-10T05:13:27+00:00"
+    },
+    {
+        "id": "noti_3d6f199268f8",
+        "user_id": "usr_07c7ee6c0b2f",
+        "actor_user_id": "usr_45f5b66d3b65",
+        "type": "message",
+        "message": "sent you a message",
+        "is_read": false,
+        "created_at": "2026-05-10T05:13:27+00:00"
+    }
+]
