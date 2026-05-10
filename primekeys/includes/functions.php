@@ -191,7 +191,7 @@
         function primeGetBaseUrl() {
             $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
             $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-            $scriptDir = str_replace('\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? ''));
+            $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? ''));
             $parts = explode('/', trim($scriptDir, '/'));
             $primeIdx = false;
             foreach (array_reverse($parts, true) as $i => $part) {
