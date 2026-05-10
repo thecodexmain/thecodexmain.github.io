@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/auth.php';
+require_once __DIR__ . '/../includes/mailer.php';
 hostingRequireRole(['admin']);
 $baseUrl = hostingGetBaseUrl();
 
@@ -64,6 +65,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'nameservers' => $nameservers,
                 ];
                 hostingSaveData('orders', $orders);
+                $target = hostingFindUser((string)($orders[$idx]['user_id'] ?? ''));
+                if ($target && !empty($target['email'])) {
+                    $settings = hostingGetSettings();
+                    $body = "Hi " . ($target['name'] ?? 'there') . ",\n\nYour order has been approved.\n\nPlan: " . ($orders[$idx]['service_name'] ?? '') . "\nOrder: " . ($orders[$idx]['id'] ?? '') . "\n\ncPanel URL: {$url}\nUsername: {$username}\nPassword: {$password}\nNameservers: " . ($nameservers ?: '-') . "\n\n" . ($note ? ("Admin note:\n{$note}\n\n") : "") . "Login anytime from your dashboard.\n\nThanks,\n" . ($settings['brand_name'] ?? 'CodexHost');
+                    hostingQueueMail((string)$target['email'], 'Your hosting is ready: ' . ($orders[$idx]['service_name'] ?? ''), $body);
+                    hostingDispatchMailQueue(5);
+                }
                 hostingSetFlash('success', 'Order approved and cPanel details saved.');
                 header('Location: ' . hostingGetBaseUrl() . '/admin/orders.php?id=' . urlencode($id));
                 exit;
@@ -77,6 +85,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $orders[$idx]['updated_at'] = hostingNow();
             $orders[$idx]['rejection_reason'] = $reason;
             hostingSaveData('orders', $orders);
+            $target = hostingFindUser((string)($orders[$idx]['user_id'] ?? ''));
+            if ($target && !empty($target['email'])) {
+                $settings = hostingGetSettings();
+                $body = "Hi " . ($target['name'] ?? 'there') . ",\n\nYour order was rejected.\n\nPlan: " . ($orders[$idx]['service_name'] ?? '') . "\nOrder: " . ($orders[$idx]['id'] ?? '') . "\nReason: {$reason}\n\nIf you have questions, open a ticket from your dashboard.\n\nThanks,\n" . ($settings['brand_name'] ?? 'CodexHost');
+                hostingQueueMail((string)$target['email'], 'Order update: ' . ($orders[$idx]['service_name'] ?? ''), $body);
+                hostingDispatchMailQueue(5);
+            }
             hostingSetFlash('success', 'Order rejected.');
             header('Location: ' . hostingGetBaseUrl() . '/admin/orders.php?id=' . urlencode($id));
             exit;

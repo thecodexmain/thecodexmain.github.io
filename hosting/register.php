@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/auth.php';
+require_once __DIR__ . '/includes/mailer.php';
 
 if (hostingIsLoggedIn()) {
     header('Location: ' . hostingGetBaseUrl() . '/dashboard.php');
@@ -42,6 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'created_at' => date('Y-m-d')
             ];
             hostingSaveData('users', $users);
+            hostingQueueMail($email, 'Welcome to ' . (hostingGetSettings()['brand_name'] ?? 'CodexHost'), "Hi {$name},\n\nYour account is ready. You can now request a hosting service from your dashboard.\n\nLogin: {$username}\n\nThanks,\n" . (hostingGetSettings()['brand_name'] ?? 'CodexHost'));
+            hostingDispatchMailQueue(3);
             hostingSetFlash('success', 'Account created. Please sign in.');
             header('Location: ' . hostingGetBaseUrl() . '/login.php');
             exit;
@@ -120,4 +123,3 @@ $baseUrl = hostingGetBaseUrl();
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-

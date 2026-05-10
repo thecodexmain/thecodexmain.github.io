@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/auth.php';
+require_once __DIR__ . '/../includes/mailer.php';
 hostingRequireRole(['admin']);
 $baseUrl = hostingGetBaseUrl();
 
@@ -48,6 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $tickets[$idx]['updated_at'] = hostingNow();
                 $tickets[$idx]['status'] = 'open';
                 hostingSaveData('tickets', $tickets);
+                $target = hostingFindUser((string)($tickets[$idx]['user_id'] ?? ''));
+                if ($target && !empty($target['email'])) {
+                    $settings = hostingGetSettings();
+                    hostingQueueMail((string)$target['email'], 'Support reply: ' . ($tickets[$idx]['subject'] ?? 'Ticket'), "Hi " . ($target['name'] ?? 'there') . ",\n\nSupport replied to your ticket.\n\nTicket: " . ($tickets[$idx]['id'] ?? '') . "\nSubject: " . ($tickets[$idx]['subject'] ?? '') . "\n\nReply:\n{$message}\n\nYou can reply from your dashboard.\n\nThanks,\n" . ($settings['brand_name'] ?? 'CodexHost'));
+                    hostingDispatchMailQueue(5);
+                }
                 hostingSetFlash('success', 'Reply sent.');
                 header('Location: ' . hostingGetBaseUrl() . '/admin/tickets.php?id=' . urlencode($id));
                 exit;

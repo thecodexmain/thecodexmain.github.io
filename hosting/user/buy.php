@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/auth.php';
+require_once __DIR__ . '/../includes/mailer.php';
 
 if (!hostingIsLoggedIn()) {
     hostingSetFlash('warning', 'Please sign in to request a service.');
@@ -28,8 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $user = hostingCurrentUser();
         $orders = hostingLoadData('orders');
+        $orderId = 'O-' . hostingGenerateId();
         $orders[] = [
-            'id' => 'O-' . hostingGenerateId(),
+            'id' => $orderId,
             'user_id' => $user['id'],
             'service_id' => $service['id'],
             'service_name' => $service['name'],
@@ -42,6 +44,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'cpanel' => []
         ];
         hostingSaveData('orders', $orders);
+        $settings = hostingGetSettings();
+        $support = (string)($settings['support_email'] ?? '');
+        if ($support) {
+            hostingQueueMail($support, 'New hosting order request: ' . $service['name'], "A new order request was submitted.\n\nCustomer: {$user['name']} ({$user['email']})\nPlan: {$service['name']}\nDomain: " . ($domain ?: '-') . "\nOrder: {$orderId}\n\nReview: " . hostingGetBaseUrl() . "/admin/orders.php?id={$orderId}");
+        }
+        hostingQueueMail($user['email'], 'Order request received: ' . $service['name'], "Hi {$user['name']},\n\nWe received your request for {$service['name']}. An admin will approve it soon and send your cPanel details.\n\nOrder status: pending\n\nThanks,\n" . ($settings['brand_name'] ?? 'CodexHost'));
+        hostingDispatchMailQueue(5);
         hostingSetFlash('success', 'Request submitted. You will get an email after admin approval.');
         header('Location: ' . hostingGetBaseUrl() . '/user/services.php');
         exit;

@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/auth.php';
+require_once __DIR__ . '/../includes/mailer.php';
 hostingRequireRole(['user']);
 
 $baseUrl = hostingGetBaseUrl();
@@ -50,6 +51,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ]]
             ];
             hostingSaveData('tickets', $tickets);
+            $settings = hostingGetSettings();
+            $support = (string)($settings['support_email'] ?? '');
+            if ($support) {
+                hostingQueueMail($support, 'New ticket: ' . $subject, "A new ticket was created.\n\nCustomer: {$user['name']} ({$user['email']})\nTicket: {$id}\nSubject: {$subject}\n\nOpen: " . hostingGetBaseUrl() . "/admin/tickets.php?id={$id}\n\nMessage:\n{$message}");
+                hostingDispatchMailQueue(5);
+            }
             hostingSetFlash('success', 'Ticket created.');
             header('Location: ' . hostingGetBaseUrl() . '/user/tickets.php?id=' . urlencode($id));
             exit;
@@ -76,6 +83,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             unset($t);
             hostingSaveData('tickets', $tickets);
+            $settings = hostingGetSettings();
+            $support = (string)($settings['support_email'] ?? '');
+            if ($support) {
+                hostingQueueMail($support, 'Ticket reply: ' . $ticketId, "Customer replied to ticket {$ticketId}.\n\nCustomer: {$user['name']} ({$user['email']})\n\nMessage:\n{$message}\n\nOpen: " . hostingGetBaseUrl() . "/admin/tickets.php?id={$ticketId}");
+                hostingDispatchMailQueue(5);
+            }
             hostingSetFlash('success', 'Reply sent.');
             header('Location: ' . hostingGetBaseUrl() . '/user/tickets.php?id=' . urlencode($ticketId));
             exit;

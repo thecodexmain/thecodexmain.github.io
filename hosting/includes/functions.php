@@ -85,6 +85,7 @@ function hostingGetSettings(): array {
             'smtp_user' => '',
             'smtp_pass' => '',
             'smtp_secure' => 'tls',
+            'smtp_timeout' => 10,
             'from_email' => 'noreply@example.com',
             'from_name' => 'CodexHost'
         ]
