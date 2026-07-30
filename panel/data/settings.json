@@ -1,0 +1,22 @@
+{
+  "site_name": "Prime Webs",
+  "site_logo": "",
+  "site_favicon": "",
+  "theme_color": "#6366f1",
+  "footer_text": "Prime Webs - Made by @PrimeTheOfficial with love",
+  "maintenance_mode": false,
+  "maintenance_message": "We are under maintenance. Please check back soon.",
+  "meta_title": "Prime Webs - Web Hosting Panel",
+  "meta_description": "Professional web hosting and script deployment panel",
+  "smtp_host": "",
+  "smtp_port": 587,
+  "smtp_user": "",
+  "smtp_pass": "",
+  "smtp_from": "",
+  "2fa_enabled": false,
+  "max_login_attempts": 5,
+  "lock_duration": 30,
+  "default_timezone": "UTC",
+  "currency": "USD",
+  "installed": true
+}

@@ -1,0 +1,8 @@
+/* Prime Webs - Dark mode overrides (loaded dynamically) */
+[data-theme="dark"] .login-card { background: #1e293b; color: #f1f5f9; }
+[data-theme="dark"] .login-logo h1 { color: #f1f5f9; }
+[data-theme="dark"] .form-control { background: #273549; border-color: #334155; color: #f1f5f9; }
+[data-theme="dark"] .btn-secondary { background: #273549; border-color: #334155; color: #f1f5f9; }
+[data-theme="dark"] .code-editor { background: #0d1117; color: #e6edf3; border-color: #334155; }
+[data-theme="dark"] .script-thumb { filter: brightness(0.9); }
+[data-theme="dark"] .topbar-btn { background: #273549; border-color: #334155; }

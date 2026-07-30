@@ -1,0 +1,44 @@
+[
+  {
+    "id": "basic",
+    "name": "Basic",
+    "price": 5,
+    "duration_days": 30,
+    "max_sites": 1,
+    "max_scripts": 3,
+    "storage_mb": 512,
+    "custom_domain": false,
+    "file_manager": true,
+    "short_links": 10,
+    "backup": false,
+    "description": "Perfect for beginners"
+  },
+  {
+    "id": "pro",
+    "name": "Pro",
+    "price": 15,
+    "duration_days": 30,
+    "max_sites": 3,
+    "max_scripts": 10,
+    "storage_mb": 2048,
+    "custom_domain": true,
+    "file_manager": true,
+    "short_links": 50,
+    "backup": true,
+    "description": "For growing businesses"
+  },
+  {
+    "id": "premium",
+    "name": "Premium",
+    "price": 30,
+    "duration_days": 30,
+    "max_sites": 10,
+    "max_scripts": 999,
+    "storage_mb": 10240,
+    "custom_domain": true,
+    "file_manager": true,
+    "short_links": 999,
+    "backup": true,
+    "description": "Unlimited power"
+  }
+]

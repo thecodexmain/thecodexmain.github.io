@@ -1,0 +1,15 @@
+[
+  {
+    "id": "s001",
+    "name": "WordPress Starter",
+    "version": "1.0",
+    "category": "Blog",
+    "description": "A simple WordPress-like blog starter",
+    "demo_link": "#",
+    "file": "",
+    "size_kb": 0,
+    "created_at": "2024-01-01T00:00:00Z",
+    "status": "active",
+    "thumbnail": ""
+  }
+]
